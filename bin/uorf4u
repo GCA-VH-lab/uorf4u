@@ -1,0 +1,33 @@
+import uorf4u
+
+parameters = uorf4u.manager.Parameters()
+parameters.load_config()
+parameters.parse_cmd_arguments()
+
+if "accession_number" in parameters.arguments.keys():
+    refseq_protein = uorf4u.data_processing.RefSeqProtein(
+        accession_number=parameters.arguments['accession_number'],
+        parameters=parameters)
+    homologous_list = refseq_protein.blastp_searching_for_homologous()
+if "homologous_list_file" in parameters.arguments.keys():
+    try:
+        with open(parameters.arguments["homologous_list_file"]) as hlf:
+            homologous_list = hlf.read().split('\n')
+    except:
+        raise uorf4u.manager.Ant4suorfError(f"Unable to parse the file with a list of homologous."
+                                            f"Please, check your file: {parameters.arguments['homologous_list_file']}")
+
+if "homologous_list" in parameters.arguments.keys():
+    homologous_list = parameters.arguments["homologous_list"]
+
+print(homologous_list)
+homologous = uorf4u.data_processing.Homologous(homologous_list, parameters)
+homologous.get_upstream_sequences()
+homologous.annotate_orfs()
+homologous.filter_orfs_by_sd_annotation()  # add an argument to control
+if parameters.arguments['save_annotated_orfs'] is True:
+    homologous.save_annotated_orfs()
+homologous.conserved_orf_searching()
+homologous.get_msa_of_conseved_orfs()
+homologous.save_msa()
+homologous.plot_msa()
