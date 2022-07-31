@@ -521,6 +521,15 @@ Path to a file with list of accession numbers. File format: one accession number
 <p><strong>OPTIONAL ARGUMENTS</strong></p>
 <ul>
 <li>
+<p><code>-al</code> <em>path_to/assemblies_list.tsv</em><br />
+Path to an assemblies list file. During each run of uorf4u, a tsv table with information about assemblies (from identical protein database, ncbi) for each protein is saved to your output folder (output_dir_name/assemblies_list.tsv). There are cases with multiple assemblies for one protein accession numbers (up to thousands). In case to control assemblies included in the analysis this table can be filtered (simply by removing rows) and then used with this parameter as part of input to the next run.<br />
+In addition, config file (see config parameters section) has max_number_of_assemblies parameter. It can be used to limit max number of assemblies included in the analysis. In case number of assemblies is more than the cutoff, random sampling will be used to take only subset of them.</p>
+</li>
+<li>
+<p><code>-at</code> <em>aa|nt</em><br />
+Alignment type used by uorf4u for conserved ORFs searching [default: aa]. </p>
+</li>
+<li>
 <p><code>-sao</code><br />
 Save information about annotated ORFs as a set of tsv tables (one per each upstream sequence) [default: false].</p>
 </li>
