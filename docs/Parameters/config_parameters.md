@@ -12,14 +12,18 @@ min_orf_length = 9
 sd_energy_cutoff = -2  
 sd_window_length = 20  
 blastp_evalue_cutoff = 1e-5  
-upstream_region_length = 400  
+upstream_region_length = 1000  
+minimal_upstream_region_length = 50   
 orf_length_group_range = 15  
 paths_identity_cutoff = 0.5  
+max_number_of_assemblies = 30  
 
 **;[Paths]**  
 ref_energies = {internal}/energyRef-CCTCCT.json   
 muscle_binary = {internal}/bin/muscle5.1.macos_arm64  
 plot_msa_R_script = {internal}/msa_plot.R  
+palette_nt = {internal}/palette_nt.txt  
+palette_aa = {internal}/palette_aa.txt  
 
 **;[Output_dir_names]**  
 output_dir = uorf4u_{current_date}  

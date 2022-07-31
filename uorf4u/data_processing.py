@@ -11,13 +11,18 @@ from Bio.Data import IUPACData
 import Bio.Data.CodonTable
 from Bio import Entrez
 from Bio import Seq
-
+import logomaker
+import matplotlib.pyplot as plt
+import pandas
 import subprocess
 import tempfile
 import random
 import json
 import sys
+import random
 import os
+
+import uorf4u.manager as manager
 
 Entrez.email = "anonymous@mail.se"
 
@@ -79,33 +84,34 @@ class RefSeqProtein:
 
         """
         handle = Entrez.efetch(db="protein", rettype="ipg", retmode="xml", id=self.accession_number)
-        xml = (handle.read())  # .decode('utf-8')
+        xml = (handle.read()).decode('utf-8')  # .decode('utf-8')
         root = ElementTree.fromstring(xml)
+        list_of_kingdom_taxid = []
         assemblies_coordinates = []
         for protein in root.iter("Protein"):
             if protein.attrib["source"] == "RefSeq":
                 self.taxid = protein.attrib["taxid"]
                 self.kingdom_taxid = protein.attrib["kingdom_taxid"]
                 self.organism = protein.attrib["org"]
+                list_of_kingdom_taxid.append(self.kingdom_taxid)
                 for cds in protein.iter("CDS"):
                     if "assembly" not in cds.attrib.keys():
                         cds.attrib["assembly"] = "NA"
                     try:
-                        assemblies_coordinates.append(dict(locus_id=cds.attrib["accver"],
-                                                           start=(int(cds.attrib["start"]) - 1),
-                                                           stop=int(cds.attrib["stop"]), strand=cds.attrib['strand'],
-                                                           length=int(cds.attrib["stop"]) - (
-                                                                   int(cds.attrib["start"]) - 1),
-                                                           strain=cds.attrib["strain"], assembly=cds.attrib["assembly"],
-                                                           org=cds.attrib["org"], taxid=cds.attrib["taxid"]))
+                        dict_to_append = (dict(locus_id=cds.attrib["accver"],
+                                               start=(int(cds.attrib["start"]) - 1),
+                                               stop=int(cds.attrib["stop"]), strand=cds.attrib['strand'],
+                                               length=int(cds.attrib["stop"]) - (int(cds.attrib["start"]) - 1),
+                                               assembly=cds.attrib["assembly"],
+                                               org=cds.attrib["org"], taxid=cds.attrib["taxid"]))
+                        if "strain" in cds.attrib.keys():
+                            dict_to_append["strain"] = cds.attrib["strain"]
+                        else:
+                            dict_to_append["strain"] = "NA"
+                        assemblies_coordinates.append(dict_to_append)
                     except:
                         print(f"Attention: {cds.attrib} record is not completed and cannot be processed",
                               file=sys.stderr)
-
-        if len(assemblies_coordinates) > 1:
-            print(f"Warning message: {len(assemblies_coordinates)} assemblies were found for the protein "
-                  f"{self.accession_number}. All assemblies will be included in the analysis by default.",
-                  file=sys.stderr)
         if len(assemblies_coordinates) == 0:
             print(f"Warning message: {len(assemblies_coordinates)} assemblies were found for the protein "
                   f"{self.accession_number}. This protein record can be suppressed by ncbi.",
@@ -160,7 +166,7 @@ class Homologous:
     """A Homologous object holds list of proteins homologous and information about them.
 
     Attributes:
-        accession_numbers (str): RefSeq accession number.
+        accession_numbers (list): List of RefSeq accession numbers.
         parameters (Parameters): Parameters' class object.
         records (list): list of RefSeqProtein objects of the proteins.
         upstream_sequences (list): List of SeqRecords objects of the proteins' genes' upstream sequences.
@@ -203,11 +209,54 @@ class Homologous:
             list: List of SeqRecords objects of the proteins' genes' upstream sequences.
 
         """
-        upstream_sequences = []
         for record in self.records:
             record.get_assemblies_coordinates()
+        if self.parameters.arguments["assemblies_list"] == 'NA':
+            assemblies_table = [f"accession_number\tlocus_id\tassembly\torganism\tstrain\ttax_id"]
+            list_of_protein_with_multiple_assemblies = []
+            numbers_of_assemblies = []
+            for record in self.records:
+                if len(record.assemblies_coordinates) > 1:
+                    list_of_protein_with_multiple_assemblies.append(record.accession_number)
+                    numbers_of_assemblies.append(len(record.assemblies_coordinates))
+                for assembly in record.assemblies_coordinates:
+                    assemblies_table.append(f"{record.accession_number}\t{assembly['locus_id']}\t{assembly['assembly']}"
+                                            f"\t{assembly['org']}\t{assembly['strain']}\t{assembly['taxid']}")
+            if not os.path.exists(self.parameters.arguments["output_dir"]):
+                os.mkdir(self.parameters.arguments["output_dir"])
+            assemblies_table_path = os.path.join(self.parameters.arguments["output_dir"], "assemblies_list.tsv")
+            assemblies_table_file = open(assemblies_table_path, "w")
+            assemblies_table_file.write("\n".join(assemblies_table))
+            assemblies_table_file.close()
+            if len(list_of_protein_with_multiple_assemblies) > 0:
+                print(f"Warning message: For {len(list_of_protein_with_multiple_assemblies)} proteins "
+                      f"several assemblies were found in identical protein database "
+                      f"(with max number of assemblies per protein as {max(numbers_of_assemblies)}). "
+                      f"By default, all assemblies will be included in the analysis. A table with information "
+                      f"about the assemblies was saved as a tsv file: {assemblies_table_path}. You can edit it and "
+                      f"remove lines with assemblies you do not want to include in your analysis."
+                      f"After filtering, you can use -al cmd parameter with your table as an argument."
+                      f"In addition, config file has max_number_of_assemblies parameter "
+                      f" (set as {self.parameters.arguments['max_number_of_assemblies']}). It can be used to limit "
+                      f"max number of assemblies included in the analysis. In case number of assemblies is more than "
+                      f"the cutoff, random sampling will be used to take only subset of them.",
+                      file=sys.stderr)
+        else:
+            assemblies_table = pandas.read_table(self.parameters.arguments["assemblies_list"], sep="\t")
+            locus_ids = assemblies_table["locus_id"].to_list()
+        upstream_sequences = []
+        for record in self.records:
+            assemblies = record.assemblies_coordinates
+            if isinstance(self.parameters.arguments['max_number_of_assemblies'], int) and \
+                    self.parameters.arguments["assemblies_list"] == "NA":
+                if len(assemblies) >= self.parameters.arguments['max_number_of_assemblies']:
+                    assemblies = random.sample(assemblies, self.parameters.arguments['max_number_of_assemblies'])
+            if self.parameters.arguments["assemblies_list"] != "NA":
+                assemblies_filtered = [i for i in assemblies if i["locus_id"] in locus_ids]
+                assemblies = assemblies_filtered
+
             record_upstream_sequences = []
-            for assembly in record.assemblies_coordinates:
+            for assembly in assemblies:
                 handle = Entrez.efetch(db="nucleotide", rettype="fasta", retmode="txt", id=assembly["locus_id"])
                 locus_record = SeqIO.read(handle, "fasta")
                 if assembly["strand"] == "+":
@@ -218,23 +267,24 @@ class Homologous:
                     useq_stop = min(len(locus_record.seq),
                                     assembly["stop"] + self.parameters.arguments["upstream_region_length"])
                 useq_length = useq_stop - useq_start  # Add additional filtering by length!
-                useq = locus_record.seq[useq_start:useq_stop]
-                if assembly["strand"] == "-":
-                    useq = useq.reverse_complement()
-                if assembly["strain"] in assembly["org"]:
-                    useq_name = assembly["org"]
-                else:
-                    useq_name = f"{assembly['org']} {assembly['strain']}"
-                useq_record = SeqRecord(useq,
-                                        id=f"{assembly['locus_id']}:{useq_start}:{useq_stop}:{assembly['strand']}",
-                                        name=useq_name,
-                                        description=f"{record.accession_number}, {assembly['org']}, "
-                                                    f"strain: {assembly['strain']}, "
-                                                    f"assembly: {assembly['assembly']}, length: {useq_length}")
-                record_upstream_sequences.append(useq_record)
+                if useq_length >= self.parameters.arguments["minimal_upstream_region_length"]:
+                    useq = locus_record.seq[useq_start:useq_stop]
+                    if assembly["strand"] == "-":
+                        useq = useq.reverse_complement()
+                    if assembly["strain"] in assembly["org"] or assembly["strain"] == "NA":
+                        useq_name = assembly["org"]
+                    else:
+                        useq_name = f"{assembly['org']} {assembly['strain']}"
+                    useq_record = SeqRecord(useq,
+                                            id=f"{assembly['locus_id']}:{useq_start}:{useq_stop}:{assembly['strand']}",
+                                            name=useq_name,
+                                            description=f"{record.accession_number}, {assembly['org']}, "
+                                                        f"strain: {assembly['strain']}, "
+                                                        f"assembly: {assembly['assembly']}, length: {useq_length}")
+                    record_upstream_sequences.append(useq_record)
             upstream_sequences += record_upstream_sequences
             if len(record_upstream_sequences) == 0:
-                print(f"Warning message: upstream sequences of {record.accession_number} cannot be annotated",
+                print(f"Warning message: no upstream sequences for {record.accession_number} was annotated",
                       file=sys.stderr)
         self.upstream_sequences = upstream_sequences
         return self.upstream_sequences
@@ -319,7 +369,8 @@ class Homologous:
         if not os.path.exists(output_dir_path):
             os.mkdir(output_dir_path)
         for useq_id, orf_list in self.orfs.items():
-            useq_name = [i.name for i in self.upstream_sequences if i.id == useq_id][0].replace(" ", "_")
+            useq_name = [i.name for i in self.upstream_sequences if i.id == useq_id][0].replace(" ", "_").replace("/",
+                                                                                                                  "_")
             lines = [colnames]
             for orf in orf_list:
                 lines.append("\t".join(
@@ -376,7 +427,7 @@ class Homologous:
 
             # print('NUMBER OF ASSEMBLIES:', len(useqs))
             # print(length, len(useqs_with_filtered_orfs) / len(useqs))
-            if len(useqs_with_filtered_orfs) / len(useqs) > 0.3:  # add this cutoff to config
+            if len(useqs_with_filtered_orfs) / len(useqs) > 0.2:  # add this cutoff to config
                 conserved_paths[length] = []
                 for initial_useq in filtered_orfs.keys():
                     for initial_orf in filtered_orfs[initial_useq]:
@@ -388,10 +439,10 @@ class Homologous:
                                 for orf in filtered_orfs[useq]:
                                     score_sum = 0
                                     for path_orf in conserved_path.path:
-                                        if self.parameters.arguments['type_of_alignment'] == 'nt':
+                                        if self.parameters.arguments['alignment_type'] == 'nt':
                                             current_alignment = global_aligner.align(orf.nt_sequence,
                                                                                      path_orf.nt_sequence)
-                                        elif self.parameters.arguments['type_of_alignment'] == 'aa':
+                                        elif self.parameters.arguments['alignment_type'] == 'aa':
                                             current_alignment = global_aligner.align(orf.aa_sequence,
                                                                                      path_orf.aa_sequence)
                                         score_sum += current_alignment.score
@@ -424,7 +475,7 @@ class Homologous:
                                                 the_closest_by_length_orfs_lengths.index(max_length)]
                                     conserved_path.update(selected_orf, max_score)
 
-                        if len(conserved_path) / len(filtered_orfs) >= 0.3:  # cutoff!
+                        if len(conserved_path) / len(filtered_orfs) >= 0.2:  # cutoff!
                             to_save_this_path = 1
                             for old_path in conserved_paths[length]:
                                 fraction_of_identity = conserved_path.calculate_similarity(old_path)
@@ -434,6 +485,7 @@ class Homologous:
                                     elif conserved_path.score <= old_path.score:
                                         to_save_this_path = 0
                             if to_save_this_path == 1:
+                                conserved_path.sort()
                                 conserved_paths[length].append(conserved_path)
         self.conserved_paths = conserved_paths
         return conserved_paths
@@ -478,18 +530,66 @@ class Homologous:
                 for seq_type in types:
                     if seq_type == 'nt':
                         id = f"length-{length}.score–{round(path.score)}.{len(path.nt_msa)}_seqs.index_{i}.fa"
+                        path.nt_fasta = os.path.join(output_dirs[seq_type], id)
                         msa = path.nt_msa
                     elif seq_type == 'aa':
                         id = f"length-{round(length / 3)}.score–{round(path.score)}.{len(path.aa_msa)}-seqs.index_{i}.fa"
+                        path.aa_fasta = os.path.join(output_dirs[seq_type], id)
                         msa = path.aa_msa
                     elif seq_type == 'sd':
                         id = f"length-{round(length)}.score–{round(path.score)}.{len(path.aa_msa)}-seqs.index_{i}.fa"
+                        path.sd_fasta = os.path.join(output_dirs[seq_type], id)
                         msa = path.sd_msa
                     output = os.path.join(output_dirs[seq_type], id)
                     AlignIO.write(msa, output, "fasta")
         return None
 
-    def plot_msa(self) -> None:
+    def plot_ggmsa_figs(self) -> None:
+        """Plot MSA plots of conserved ORFs saved as fasta files.
+
+        Note:
+            R script based on ggmsa package [yulab-smu.top/ggmsa] used to produce MSA plots. R script (msa_plot.R)
+                can be found in output_dir. This method uses subprocess to run this R script in the following way:
+                `Rscript {output_dir}/msa_plot.R --msa_fasta path_to_fasta --output output_path --seq_type (nt/aa)
+                --width N(mm) --height M(mm)`.
+                Since during each run of uorf4u a local copy of this script is created
+                in your output_dir, you can change it without any consequences for next uorf4u runs.
+
+                This method based on _plot_ggmsa_ method of Path class and simply call it for each Path object.
+
+        Returns:
+            None
+
+        """
+        for length, paths in self.conserved_paths.items():
+            for i in range(len(paths)):
+                path = paths[i]
+                path.plot_ggmsa()
+
+        return None
+
+    def plot_logo_figs(self):
+        """Plot sequence Logo figures of conserved ORFs saved as fasta files.
+
+        Note:
+            This method uses logomaker package to produce images.
+
+            This method based on _plot_logo_ method of Path class and simply call it for each Path object.
+
+        Returns:
+            None
+
+        """
+        for length, paths in self.conserved_paths.items():
+            for i in range(len(paths)):
+                path = paths[i]
+                path.plot_logo()
+
+        return None
+
+
+'''
+    def plot_ggmsa(self) -> None:
         """Plot MSA of conserved ORFs saved as fasta files.
 
         Note:
@@ -511,6 +611,7 @@ class Homologous:
         sd_msa_path = os.path.join(self.parameters.arguments["output_dir"], "sd_msa")
         subprocess.run(
             ["Rscript", r_script_local, "--aa_msa", aa_msa_path, "--nt_msa", nt_msa_path, "--sd_msa", sd_msa_path])
+'''
 
 
 class ORF:
@@ -553,6 +654,8 @@ class ORF:
         self.parameters = parameters
         codon_table = Bio.Data.CodonTable.unambiguous_dna_by_name[  # ambiguous can be needed!
             parameters.arguments['ncbi_genetic_code_name']]
+        codon_table_ambiguous = Bio.Data.CodonTable.ambiguous_dna_by_name[  # ambiguous can be needed!
+            parameters.arguments['ncbi_genetic_code_name']]
 
         self.id = id
         self.sequence_id = id.split(':')[0]
@@ -560,7 +663,10 @@ class ORF:
         self.stop = stop
         self.length = len(nt_sequence)
         self.nt_sequence = nt_sequence
-        self.aa_sequence = self.nt_sequence.translate(table=codon_table)
+        try:
+            self.aa_sequence = self.nt_sequence.translate(table=codon_table)
+        except:
+            self.aa_sequence = self.nt_sequence.translate(table=codon_table_ambiguous)
         self.sd_window_seq = sd_window_seq
         self.extended_orfs = []
         self.min_energy = 0
@@ -581,8 +687,11 @@ class ORF:
         if len(self.sd_window_seq) >= min(ref_energy.values()):
             energies = []
             for position in range((len(self.sd_window_seq) - sd_seq_length) + 1):
-                energies.append(
-                    ref_energy[self.sd_window_seq[position:position + sd_seq_length]])
+                try:
+                    energies.append(
+                        ref_energy[self.sd_window_seq[position:position + sd_seq_length]])
+                except:
+                    energies.append(0)
             if energies:
                 self.min_energy = min(energies)
                 if self.min_energy < self.parameters.arguments['sd_energy_cutoff']:
@@ -631,6 +740,9 @@ class Path:
         self.nt_msa_consensus = None
         self.aa_msa_consensus = None
         self.sd_msa_consensus = None
+        self.nt_fasta = None
+        self.aa_fasta = None
+        self.sd_fasta = None
 
     def update(self, orf: ORF, score=0):
         """Update a Path with a new ORF.
@@ -645,6 +757,12 @@ class Path:
         """
         self.path.append(orf)
         self.score += score
+
+    def sort(self) -> None:
+        sorted_path = [x for _, x in sorted(zip([i.id for i in self.path], self.path), key=lambda pair: pair[0])]
+        self.path = sorted_path
+
+        return None
 
     def __len__(self):
         """__len__ magic method for a Path object.
@@ -698,6 +816,10 @@ class Path:
                            stderr=subprocess.DEVNULL)
             temp_input.close()
             msa = AlignIO.read(temp_output.name, "fasta")
+            print(msa)
+            msa.sort(key=lambda r: r.description)
+            print(msa)
+            print('---')
             msa_info = Align.AlignInfo.SummaryInfo(msa)
             msa_consensus = msa_info.gap_consensus(threshold=self.parameters.arguments['consensus_threshold'])
             print(msa_consensus)
@@ -708,5 +830,118 @@ class Path:
                 self.aa_msa, self.aa_msa_consensus = msa, msa_consensus
             elif seq_type == 'sd':
                 self.sd_msa, self.sd_msa_consensus = msa, msa_consensus
+
+        return None
+
+    def plot_ggmsa(self) -> None:
+        """Plot MSA of conserved ORFs saved as fasta files.
+
+        Note:
+            R script based on ggmsa package [yulab-smu.top/ggmsa] used to produce MSA plots. R script (msa_plot.R)
+                can be found in output_dir. This method uses subprocess to run this R script in the following way:
+                `Rscript {output_dir}/msa_plot.R --msa_fasta path_to_fasta --output output_path --seq_type (nt/aa)
+                --width N(mm) --height M(mm)`.
+                Since during each run of uorf4u a local copy of this script is created
+                in your output_dir, you can change it without any consequences for next uorf4u runs.
+
+        Returns:
+            None
+
+        """
+        output_dirs = dict(nt=os.path.join(self.parameters.arguments["output_dir"], "nucleotide_msa_visualisation"),
+                           aa=os.path.join(self.parameters.arguments["output_dir"], "amino_acid_msa_visualisation"),
+                           sd=os.path.join(self.parameters.arguments["output_dir"], "sd_msa_visualisation"))
+        for o_dir in output_dirs.values():
+            if not (os.path.exists(o_dir)):
+                os.mkdir(o_dir)
+        r_script_path = self.parameters.arguments["plot_msa_R_script"]
+        r_script_local = os.path.join(self.parameters.arguments["output_dir"], os.path.basename(r_script_path))
+        if not (os.path.exists(r_script_local)):
+            shutil.copy(r_script_path, r_script_local)
+        types = ["nt", "aa", "sd"]
+        for s_type in types:
+            if s_type == "nt":
+                current_msa = self.nt_msa
+                input_file = os.path.abspath(self.nt_fasta)
+            elif s_type == "aa":
+                current_msa = self.aa_msa
+                input_file = os.path.abspath(self.aa_fasta)
+            elif s_type == "sd":
+                current_msa = self.sd_msa
+                input_file = os.path.abspath(self.sd_fasta)
+            if s_type == "nt" or s_type == "sd":
+                seq_type = "nt"
+            else:
+                seq_type = "aa"
+
+            output_file = os.path.abspath(
+                os.path.join(output_dirs[s_type], os.path.basename(input_file).replace('.fa', '.pdf')))
+            num_sequences = len(current_msa)
+            length_of_alignment = current_msa.get_alignment_length()
+            page_width = (50 + length_of_alignment) * 5
+            page_height = max(17, (num_sequences + 5) * 3)
+            subprocess.run(["Rscript", r_script_local, "--msa_fasta", input_file, "--output", output_file,
+                            "--seq_type", seq_type, "--width", str(page_width), "--height", str(page_height)])
+
+    def plot_logo(self) -> None:
+        """Plot sequence Logo of conserved ORFs MSA saved as fasta files.
+
+        Note:
+            This method uses logomaker package to produce images.
+
+        Returns:
+            None
+
+        """
+        output_dirs = dict(
+            nt=os.path.join(self.parameters.arguments["output_dir"], "nucleotide_msa_logo_visualisation"),
+            aa=os.path.join(self.parameters.arguments["output_dir"], "amino_acid_msa_logo_visualisation"),
+            sd=os.path.join(self.parameters.arguments["output_dir"], "sd_msa_logo_visualisation"))
+        for o_dir in output_dirs.values():
+            if not (os.path.exists(o_dir)):
+                os.mkdir(o_dir)
+        codons = Bio.Data.CodonTable.ambiguous_dna_by_name[
+            self.parameters.arguments['ncbi_genetic_code_name']].protein_alphabet
+        nucleotides = Bio.Data.CodonTable.ambiguous_dna_by_name[
+            self.parameters.arguments['ncbi_genetic_code_name']].nucleotide_alphabet
+        alphabet = dict(nt=nucleotides, aa=codons)
+        types = ["nt", "aa", "sd"]
+        for s_type in types:
+            if s_type == "nt":
+                current_msa = self.nt_msa
+                input_file = os.path.abspath(self.nt_fasta)
+            elif s_type == "aa":
+                current_msa = self.aa_msa
+                input_file = os.path.abspath(self.aa_fasta)
+            elif s_type == "sd":
+                current_msa = self.sd_msa
+                input_file = os.path.abspath(self.sd_fasta)
+            if s_type == "nt" or s_type == "sd":
+                seq_type = "nt"
+            elif s_type == "aa":
+                seq_type = "aa"
+            output_file = os.path.abspath(
+                os.path.join(output_dirs[s_type], os.path.basename(input_file).replace('.fa', '.pdf')))
+            msa_length = current_msa.get_alignment_length()
+            num_of_sequences = len(current_msa)
+            current_msa_info = Bio.Align.AlignInfo.SummaryInfo(current_msa)
+            pos_specific_dict = dict()
+            pos_specific_score_matrix = current_msa_info.pos_specific_score_matrix()
+            for i in alphabet[seq_type]:
+                pos_specific_dict[i] = [0 for j in range(msa_length)]
+            for i in range(msa_length):
+                for element in pos_specific_score_matrix[i].keys():
+                    pos_specific_dict[element][i] = (pos_specific_score_matrix[i][element] / num_of_sequences)
+            pos = [i for i in range(msa_length)]
+            matrix_db = pandas.DataFrame(pos_specific_dict, index=pos)
+            colors = self.parameters.arguments[f"palette_{seq_type}"]
+            fig_size = (max(10, msa_length * 1.4), min(2.5,2.5*10/(msa_length)**(1/6)))
+            logo = logomaker.Logo(matrix_db, color_scheme=colors, figsize=fig_size)
+            logo.style_spines(visible=False)
+            logo.style_spines(spines=['left'], visible=True, linewidth=0.7)
+            logo.ax.set_xticks([])
+            logo.ax.set_yticks([0, 0.5, 1])
+            plt.savefig(output_file)
+            plt.close(logo.fig)
 
         return None

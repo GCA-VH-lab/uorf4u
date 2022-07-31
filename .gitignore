@@ -5,3 +5,4 @@ docs/material
 .*
 !/.gitignore
 __pycache__
+README_pypi.md

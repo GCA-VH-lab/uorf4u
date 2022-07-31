@@ -30,4 +30,5 @@ if parameters.arguments['save_annotated_orfs'] is True:
 homologous.conserved_orf_searching()
 homologous.get_msa_of_conseved_orfs()
 homologous.save_msa()
-homologous.plot_msa()
+homologous.plot_logo_figs()
+homologous.plot_ggmsa_figs()

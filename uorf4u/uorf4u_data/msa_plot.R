@@ -8,24 +8,38 @@ library("optparse", quietly = T)
 
 option_list = list(
   make_option(
-    c("--aa_msa"),
+    c("--msa_fasta"),
     type = "character",
     default = NA,
-    help = "Path to a dir with amino acid MSA fasta files.",
+    help = "Path to a MSA fasta file. (Relatively to the script!).",
     metavar = "character"
   ),
   make_option(
-    c("--nt_msa"),
+    c("--output"),
     type = "character",
     default = NA,
-    help = "Path to a dir with nucleotide MSA fasta files.",
+    help = "Path to the output dir.",
     metavar = "character"
   ),
   make_option(
-    c("--sd_msa"),
-    type = "character",
+    c("--height"),
+    type = "double",
     default = NA,
-    help = "Path to a dir with SD (nt) MSA fasta files.",
+    help = "Height of output figure (mm).",
+    metavar = "character"
+  ),
+  make_option(
+    c("--width"),
+    type = "double",
+    default = NA,
+    help = "Width of output figure (mm).",
+    metavar = "character"
+  ),
+  make_option(
+    c("--seq_type"),
+    type = "character",
+    default = "nt",
+    help = "Sequence type. Can be nt (nucleotides) or aa (aminoacids)",
     metavar = "character"
   )
 )
@@ -33,42 +47,40 @@ option_list = list(
 opt_parser = OptionParser(option_list = option_list)
 opt = parse_args(opt_parser)
 
-if (!requireNamespace("ggmsa", quietly = TRUE)) {
-  install.packages("ggmsa")
-}
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
+if (! suppressMessages(requireNamespace("ggplot2", quietly = TRUE))) {
   install.packages("ggplot2")
 }
-
-library("ggmsa", quietly = TRUE, verbose = FALSE)
-library("ggplot2", quietly = TRUE)
-
-current_dir = getwd()
-types = c('nt', 'aa', 'sd')
-for (type in types) {
-  input_dir <- ifelse(type == "nt", opt$nt_msa,
-                      ifelse(type == "aa", opt$aa_msa,
-                             opt$sd_msa))
-  if (!is.na(input_dir)) {
-    input_dir <- file.path(current_dir, input_dir)
-    output_dir = paste(input_dir, "figs", sep = '_')
-    dir.create(output_dir)
-    files <-
-      list.files(path = input_dir,
-                 pattern = "*fa",
-                 full.names = F)
-    color <- ifelse(type == "nt" | type == "sd", "Chemistry_NT",
-                    "Chemistry_AA")
-    for (file in files) {
-      file_path <-  file.path(input_dir, file)
-      fig <- ggmsa(file_path,
-                   seq_name = TRUE,
-                   char_width = 0.65,
-                   color = color,
-                   border = "#FFFFFF") +
-        geom_seqlogo(color = color)
-      fig_output <- file.path(output_dir, gsub(".fa$", '.pdf', file))
-      ggsave(fig_output, plot = fig, units = 'cm')
-    }
-  }
+if (! suppressMessages(requireNamespace("ggmsa", quietly = TRUE))) {
+  install.packages("ggmsa")
 }
+
+suppressPackageStartupMessages(library("ggmsa"))
+suppressPackageStartupMessages(library("ggplot2"))
+
+
+if (opt$seq_type != "nt" & opt$seq_type != "aa") {
+  print("--seq_type argument should be 'nt' or 'aa'")
+  exit()
+}
+
+file_path <- opt$msa_fasta
+output = paste(opt$output, gsub(".fa$", '.pdf', basename(file_path)))
+color <- ifelse(opt$seq_type == "nt", "Chemistry_NT",
+                "Chemistry_AA")
+fig <- ggmsa(
+  file_path,
+  seq_name = TRUE,
+  char_width = 0.65,
+  color = color,
+  border = "#FFFFFF"
+) + geom_seqlogo(color = color)
+suppressMessages(
+  ggsave(
+    output,
+    plot = fig,
+    units = 'mm',
+    limitsize = FALSE,
+    width = opt$width,
+    height = opt$height
+  )
+)

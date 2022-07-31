@@ -1,0 +1,6 @@
+;Format: Nucleotide(s) = color
+A = #769DCC
+C = #74CE98
+T = #F2BE3C
+G = #E78AC3
+RYWSMKHBVDN = #757575

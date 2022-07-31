@@ -35,10 +35,12 @@ class Parameters:
         mutually_exclusive_group.add_argument("-hlf", dest="homologous_list_file", type=str, default=None)
         # mutually_exclusive_group.add_argument('-useq', dest='upstream_sequences', type=str, default=None)
 
+        parser.add_argument("-al", dest="assemblies_list", type=str, default="NA")
+        parser.add_argument("-at", dest="alignment_type", choices=['nt', 'aa', None], type=str, default=None)
         parser.add_argument("-sao", dest="save_annotated_orfs", action="store_true")
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="internal")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.1')
+        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.1.5')
         parser.add_argument("-h", "--help", dest="help", action="store_true")
         args = parser.parse_args()
         args = vars(args)
@@ -63,11 +65,21 @@ class Parameters:
                 if type(config["root"][key]) is str and "{internal}" in config["root"][key]:
                     config["root"][key] = config["root"][key].replace("{internal}",
                                                                       os.path.join(internal_dir, "uorf4u_data"))
-
             self.arguments.update(config['root'])
+            self.load_palette()
         except Exception as error:
             raise Ant4suorfError(
                 "Unable to parse the specified config file. Please check your config file.") from error
+
+    def load_palette(self):
+        for seq_type in ["nt", "aa"]:
+            palette_path = self.arguments[f"palette_{seq_type}"]
+            palette_pre_dict = configs.load(palette_path).get_config()["root"]
+            palette_dict = dict()
+            for elements, color in palette_pre_dict.items():
+                for element in elements:
+                    palette_dict[element] = color
+            self.arguments[f"palette_{seq_type}"] = palette_dict
 
     def update(self, parameters):
         self.arguments.update(parameters)
