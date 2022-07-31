@@ -7,7 +7,7 @@
 
 uorf4u is a simple bioinformatics tool for retrieving protein's homologous, corresponding genes upstream sequences and annotation conserved short upstream ORFs.  
 
-**Programming languages:** python3 
+**Programming languages:** Python3  
 **OS:** MacOS, Linux;  
 **Python dependencies:** biopython, configs, argparse, statistics, logomaker, matplotlib, pandas;  
 **R dependencies:** ggmsa, ggplot2, optparse;  
