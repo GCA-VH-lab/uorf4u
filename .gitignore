@@ -5,4 +5,6 @@ docs/material
 .*
 !/.gitignore
 __pycache__
-README_pypi.md
+build/
+dist/
+uorf4u.egg-info/
