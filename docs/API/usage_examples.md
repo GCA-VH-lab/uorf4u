@@ -24,14 +24,18 @@ homologous = uorf4u.data_processing.Homologous(homologous_list, parameters)
 
 # Getting upstream sequences and annotating ORFs
 homologous.get_upstream_sequences()
+homologous.save_upstream_sequences()
 homologous.annotate_orfs()
 homologous.filter_orfs_by_sd_annotation()
+homologous.save_annotated_orfs()
 
 # Searching for conserved ORFs and saving the results
 homologous.conserved_orf_searching()
-homologous.get_msa_of_conseved_orfs()
+homologous.filter_out_similar_paths()
+homologous.run_msa()
 homologous.save_msa()
-homologous.plot_msa()
-
+homologous.plot_ggmsa_figs()
+homologous.plot_logo_figs()
+homologous.save_results_summary_table()
 
 ```

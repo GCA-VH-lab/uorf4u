@@ -6,7 +6,7 @@ import os
 import time
 
 
-class Ant4suorfError(Exception):
+class uORF4uError(Exception):
     """A helper for exceptions parsing inherited from the Exception class.
 
     """
@@ -16,8 +16,9 @@ class Ant4suorfError(Exception):
 class Parameters:
     """A Parameters object holds and parse cmd's and config's arguments for the tool.
 
-    A Parameters object have to be created in each script since it's used by each
-        class of the tool as a mandatory argument.
+    Note:
+        A Parameters object have to be created in each script since it's used by each
+            class of the tool as a mandatory argument.
 
     """
 
@@ -34,14 +35,15 @@ class Parameters:
         mutually_exclusive_group.add_argument("-hl", dest="homologous_list", nargs="*", default=None)
         mutually_exclusive_group.add_argument("-hlf", dest="homologous_list_file", type=str, default=None)
         # mutually_exclusive_group.add_argument('-useq', dest='upstream_sequences', type=str, default=None)
-
         parser.add_argument("-al", dest="assemblies_list", type=str, default="NA")
         parser.add_argument("-at", dest="alignment_type", choices=['nt', 'aa', None], type=str, default=None)
-        parser.add_argument("-sao", dest="save_annotated_orfs", action="store_true")
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="internal")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.1.5')
+        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.2.0')
+        parser.add_argument("--verbose", "-verbose", dest="verbose", action='store_true')
+        parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
+
         args = parser.parse_args()
         args = vars(args)
         if args["help"]:

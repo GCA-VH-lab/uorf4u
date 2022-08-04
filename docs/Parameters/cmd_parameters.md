@@ -33,9 +33,6 @@ In addition, config file (see config parameters section) has max_number_of_assem
 - `-at` *aa|nt*  
 Alignment type used by uorf4u for conserved ORFs searching [default: aa]. 
 
-- `-sao`  
-Save information about annotated ORFs as a set of tsv tables (one per each upstream sequence) [default: false].
-
 
 - `-o` *dirname*  
 Output dirname. It will be created if it's not exist. All output dirs will be then created in this folder [default: uorf4u_{current_date}; e.g. uorf4u_2022_07_25-20_41].
@@ -48,13 +45,13 @@ Path to a configuration file [default: internal].
 **MISCELLANEOUS ARGUMENTS**
 
 - `-h`, `--help`  
-Show this help message and exit.
+Show help message and exit.
 
 - `-v`, `--version`  
 Show program version.
 
-- `--debug`  #to be added  
+- `--debug`  
 Provide detailed stack trace for debugging purposes.
 
-- `--verbose`  # to be added  
+- `--verbose`  
 Show all progress messages [default: False]
