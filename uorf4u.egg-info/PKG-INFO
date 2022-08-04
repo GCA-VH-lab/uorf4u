@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: uorf4u
+Version: 0.2.0
+Summary: A tool for short uORF annotation.
+Home-page: https://art-egorov.github.io/uorf4u/
+Author: Artyom Egorov
+Author-email: artyom.egorov@med.lu.se
+License: WTFPL
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+## Description
+
+uorf4u is a bioinformatics tool for annotation conserved upstream ORFs.  
+
+**Programming languages:** Python3  
+**OS:** MacOS, Linux  
+**Python dependencies:** biopython, configs, argparse, statistics, logomaker, matplotlib, pandas  
+**R dependencies:** ggmsa, ggplot2, optparse  
+**OS-level dependencies:** muscle  
+**License:** [WTFPL](http://www.wtfpl.net)  
+**Version:** 0.2.0 (August 2022)
+
+**Detailed documentation available at [home page](https://art-egorov.github.io/uorf4u)**

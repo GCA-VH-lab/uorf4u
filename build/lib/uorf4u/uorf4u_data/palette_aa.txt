@@ -1,0 +1,8 @@
+; Format: Amino_acid(s) = color
+; Amino acids grouping and several colors based on Chemisrty_AA color scheme.
+ED = #F26C6E
+PAVMLIG = #769DCC
+HKR = #F2BE3C
+NTCQS = #74CE98
+FYW = #E78AC3
+BXZJUO = #757575

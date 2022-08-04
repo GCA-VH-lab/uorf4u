@@ -1,0 +1,7 @@
+biopython
+configs
+argparse
+statistics
+logomaker
+matplotlib
+pandas
