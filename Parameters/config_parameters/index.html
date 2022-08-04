@@ -496,7 +496,7 @@
 
 <h1 id="configuration-file-parameters">Configuration file parameters</h1>
 <p>uorf4u configuration file allows detailed customization of the tool's parameters. Below, comments (<em>placed after ; in each line</em>) are allowed in configuration files. Here they are used to provide short parameter descriptions.</p>
-<p><strong>;[General]</strong><br />
+<p>;[General]<br />
 ncbi_genetic_code_name = Bacterial<br />
 alternative_start_codons = False<br />
 main_start_codon = ATG<br />
@@ -504,29 +504,33 @@ min_orf_length = 9<br />
 sd_energy_cutoff = -2<br />
 sd_window_length = 20<br />
 blastp_evalue_cutoff = 1e-5<br />
-upstream_region_length = 1000<br />
-minimal_upstream_region_length = 50 <br />
+upstream_region_length = 600<br />
+minimal_upstream_region_length = 50<br />
 orf_length_group_range = 15<br />
+orfs_presence_cutoff = 0.3<br />
 paths_identity_cutoff = 0.5<br />
-max_number_of_assemblies = 30  </p>
-<p><strong>;[Paths]</strong><br />
-ref_energies = {internal}/energyRef-CCTCCT.json <br />
+max_number_of_assemblies = 30<br />
+check_assembly_annotation = 1  </p>
+<p>;[Output]<br />
+sequences_to_write = nt, aa  </p>
+<p>;[Paths]<br />
+ref_energies = {internal}/energyRef-CCTCCT.json<br />
 muscle_binary = {internal}/bin/muscle5.1.macos_arm64<br />
 plot_msa_R_script = {internal}/msa_plot.R<br />
 palette_nt = {internal}/palette_nt.txt<br />
 palette_aa = {internal}/palette_aa.txt  </p>
-<p><strong>;[Output_dir_names]</strong><br />
+<p>;[Output_dir_names]<br />
 output_dir = uorf4u_{current_date}  </p>
-<p><strong>;[Pairwise alignment]</strong><br />
-type_of_alignment = aa<br />
+<p>;[Pairwise alignment]<br />
+alignment_type = aa<br />
 global_match_score = 2<br />
 global_mismatch_score = -1<br />
 global_open_gap_score = -1<br />
 global_extend_gap_score = -1<br />
 global_target_end_gap_score = -1<br />
 global_query_end_gap_score = -1<br />
-alignment_score_cutoff = 0  </p>
-<p><strong>;[Multiple sequence Alignment]</strong><br />
+alignment_score_cutoff = 0. </p>
+<p>;[Multiple sequence Alignment]<br />
 consensus_threshold = 0.7  </p>
 
               

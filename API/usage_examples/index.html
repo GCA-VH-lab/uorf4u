@@ -514,14 +514,19 @@
 
 <span class="c1"># Getting upstream sequences and annotating ORFs</span>
 <span class="n">homologous</span><span class="o">.</span><span class="n">get_upstream_sequences</span><span class="p">()</span>
+<span class="n">homologous</span><span class="o">.</span><span class="n">save_upstream_sequences</span><span class="p">()</span>
 <span class="n">homologous</span><span class="o">.</span><span class="n">annotate_orfs</span><span class="p">()</span>
 <span class="n">homologous</span><span class="o">.</span><span class="n">filter_orfs_by_sd_annotation</span><span class="p">()</span>
+<span class="n">homologous</span><span class="o">.</span><span class="n">save_annotated_orfs</span><span class="p">()</span>
 
 <span class="c1"># Searching for conserved ORFs and saving the results</span>
 <span class="n">homologous</span><span class="o">.</span><span class="n">conserved_orf_searching</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">get_msa_of_conseved_orfs</span><span class="p">()</span>
+<span class="n">homologous</span><span class="o">.</span><span class="n">filter_out_similar_paths</span><span class="p">()</span>
+<span class="n">homologous</span><span class="o">.</span><span class="n">run_msa</span><span class="p">()</span>
 <span class="n">homologous</span><span class="o">.</span><span class="n">save_msa</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">plot_msa</span><span class="p">()</span>
+<span class="n">homologous</span><span class="o">.</span><span class="n">plot_ggmsa_figs</span><span class="p">()</span>
+<span class="n">homologous</span><span class="o">.</span><span class="n">plot_logo_figs</span><span class="p">()</span>
+<span class="n">homologous</span><span class="o">.</span><span class="n">save_results_summary_table</span><span class="p">()</span>
 </code></pre></div>
 
               
