@@ -908,7 +908,7 @@ class Homologous:
                          str(paths[rank].msa["aa"].get_alignment_length()),
                          str(paths[rank].msa["nt"].get_alignment_length()),
                          str(paths[rank].score), str(len(paths[rank])),
-                         str(round(len(paths[rank]) / len(self.upstream_sequences)), 3), str(rank),
+                         str(round(len(paths[rank]) / len(self.upstream_sequences), 3)), str(rank),
                          str(paths[rank].msa_consensus["aa"]),
                          str(paths[rank].msa_consensus["nt"]), ', '.join([i.id for i in paths[rank].path]),
                          ', '.join(annotations)])
