@@ -23,7 +23,7 @@ class Parameters:
     """
 
     def __init__(self):
-        self.arguments = dict()
+        self.arguments = dict(assemblies_list = "NA", debug = False, verbose = False)
 
     def parse_cmd_arguments(self) -> None:
         parser = argparse.ArgumentParser(prog="uorf4u", add_help=False,
@@ -39,7 +39,7 @@ class Parameters:
         parser.add_argument("-at", dest="alignment_type", choices=['nt', 'aa', None], type=str, default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="internal")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.2.0')
+        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.2.1')
         parser.add_argument("--verbose", "-verbose", dest="verbose", action='store_true')
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
@@ -70,7 +70,7 @@ class Parameters:
             self.arguments.update(config['root'])
             self.load_palette()
         except Exception as error:
-            raise Ant4suorfError(
+            raise uORF4uError(
                 "Unable to parse the specified config file. Please check your config file.") from error
 
     def load_palette(self):

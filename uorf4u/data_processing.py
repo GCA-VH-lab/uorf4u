@@ -256,46 +256,55 @@ class Locus:
             self.CDSs = []
             for gbfeature in root.iter("GBFeature"):
                 if gbfeature.find("GBFeature_key").text == "CDS":
-                    starts, stops = [], []
-                    for interval in gbfeature.iter("GBInterval"):
-                        start, stop = int(interval.find("GBInterval_from").text), int(
-                            interval.find("GBInterval_to").text)
-                        if start > stop:
-                            start, stop, strand = stop - 1, start, "-"
-                        else:
-                            start, stop, strand = start - 1, stop, "+"
-                        starts.append(start)
-                        stops.append(stop)
-                    coordinates = list(sorted(zip(starts, stops), key=lambda pair: pair[0]))
-                    main_start, main_stop = coordinates[0][0], coordinates[-1][-1]
-                    if strand == "+":
-                        main_stop = main_stop - 3
-                        relative_start, relative_stop = main_start - start_b, main_stop - start_b
-                    elif strand == "-":
-                        main_start = main_start + 3
-                        relative_start_r, relative_stop_r = main_start - start_b, main_stop - start_b
-                        useq_length = stop_b - start_b
-                        relative_start, relative_stop = useq_length - relative_stop_r, useq_length - relative_start_r
-                    if (start_b <= main_start < stop_b) or (start_b <= main_stop < stop_b):
-                        if strand_u == "NA" or strand_u == strand:
-                            cds_seq = self.locus_record.seq[main_start:main_stop]
-                            if strand == '-':
-                                cds_seq = cds_seq.reverse_complement()
-                            protein_id, product_name = 'NA', 'NA'
-                            for gbqualifier in gbfeature.iter("GBQualifier"):
-                                if gbqualifier.find("GBQualifier_name").text == "protein_id":
-                                    protein_id = gbqualifier.find("GBQualifier_value").text
-                                if gbqualifier.find("GBQualifier_name").text == "product":
-                                    product_name = gbqualifier.find("GBQualifier_value").text
-                            if protein_id != 'NA':
-                                if product_name != 'NA':
-                                    product_name = f"{protein_id} ({product_name})"
+                    try:
+                        starts, stops = [], []
+                        for interval in gbfeature.iter("GBInterval"):
+                            try:
+                                start, stop = int(interval.find("GBInterval_from").text), int(
+                                    interval.find("GBInterval_to").text)
+                                if start > stop:
+                                    start, stop, strand = stop - 1, start, "-"
                                 else:
-                                    product_name = f"{protein_id}"
-                                self.CDSs.append(dict(protein_id=protein_id, product_name=product_name,
-                                                      coordinates=coordinates, nt_seq=cds_seq,
-                                                      main_start=main_start, main_stop=main_stop, strand=strand,
-                                                      relative_start=relative_start, relative_stop=relative_stop))
+                                    start, stop, strand = start - 1, stop, "+"
+                                starts.append(start)
+                                stops.append(stop)
+                            except:
+                                pass
+                        if starts:
+                            coordinates = list(sorted(zip(starts, stops), key=lambda pair: pair[0]))
+                            main_start, main_stop = coordinates[0][0], coordinates[-1][-1]
+                            if strand == "+":
+                                main_stop = main_stop - 3
+                                relative_start, relative_stop = main_start - start_b, main_stop - start_b
+                            elif strand == "-":
+                                main_start = main_start + 3
+                                relative_start_r, relative_stop_r = main_start - start_b, main_stop - start_b
+                                useq_length = stop_b - start_b
+                                relative_start, relative_stop = useq_length - relative_stop_r, useq_length - relative_start_r
+                            if (start_b <= main_start < stop_b) or (start_b <= main_stop < stop_b):
+                                if strand_u == "NA" or strand_u == strand:
+                                    cds_seq = self.locus_record.seq[main_start:main_stop]
+                                    if strand == '-':
+                                        cds_seq = cds_seq.reverse_complement()
+                                    protein_id, product_name = 'NA', 'NA'
+                                    for gbqualifier in gbfeature.iter("GBQualifier"):
+                                        if gbqualifier.find("GBQualifier_name").text == "protein_id":
+                                            protein_id = gbqualifier.find("GBQualifier_value").text
+                                        if gbqualifier.find("GBQualifier_name").text == "product":
+                                            product_name = gbqualifier.find("GBQualifier_value").text
+                                    if protein_id != 'NA':
+                                        if product_name != 'NA':
+                                            product_name = f"{protein_id} ({product_name})"
+                                        else:
+                                            product_name = f"{protein_id}"
+                                        self.CDSs.append(dict(protein_id=protein_id, product_name=product_name,
+                                                              coordinates=coordinates, nt_seq=cds_seq,
+                                                              main_start=main_start, main_stop=main_stop, strand=strand,
+                                                              relative_start=relative_start,
+                                                              relative_stop=relative_stop))
+                    except:
+                        pass
+
         except Exception as error:
             raise manager.uORF4uError("Unable to create a Locus class' object.") from error
 
@@ -738,13 +747,13 @@ class Homologous:
                                     conserved_path.sort()
                                     conserved_paths[length].append(conserved_path)
             self.conserved_paths = conserved_paths
-            number_of_paths = sum(len(i) for i in self.conserved_paths)
+            number_of_paths = sum(len(i) for i in self.conserved_paths.values())
             if number_of_paths == 0:
                 print(f"⛔Termination:\n\tNo conserved ORFs set was found."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
                 sys.exit()
             if self.parameters.arguments["verbose"]:
-                num_of_paths = sum([len(self.conserved_paths[i]) for i in self.conserved_paths.keys()])
+                num_of_paths = sum([len(i) for i in self.conserved_paths.values()])
                 print(f"✅ {num_of_paths} sets of conserved ORFs were found.",
                       file=sys.stdout)
             return conserved_paths
@@ -883,8 +892,9 @@ class Homologous:
         """
         try:
             colnames = "\t".join(
-                ["id", "lengths", "aa_alignment_length", "nt_alignment_length", "score", "number_of_orfs", "rank",
-                 "consensus(aa)", "consensus(nt)", "uORFs", "uORFs_annotations"])
+                ["id", "lengths", "aa_alignment_length", "nt_alignment_length", "score", "number_of_orfs",
+                 "number_of_orfs/number_of_sequences", "rank", "consensus(aa)", "consensus(nt)", "uORFs",
+                 "uORFs_annotations"])
             rows = [colnames]
             for length, paths in self.conserved_paths.items():
                 for rank in range(len(paths)):
@@ -897,7 +907,9 @@ class Homologous:
                          f"{str(length + self.parameters.arguments['orf_length_group_range'])}",
                          str(paths[rank].msa["aa"].get_alignment_length()),
                          str(paths[rank].msa["nt"].get_alignment_length()),
-                         str(paths[rank].score), str(len(paths[rank])), str(rank), str(paths[rank].msa_consensus["aa"]),
+                         str(paths[rank].score), str(len(paths[rank])),
+                         str(round(len(paths[rank]) / len(self.upstream_sequences)), 3), str(rank),
+                         str(paths[rank].msa_consensus["aa"]),
                          str(paths[rank].msa_consensus["nt"]), ', '.join([i.id for i in paths[rank].path]),
                          ', '.join(annotations)])
                     rows.append(row)

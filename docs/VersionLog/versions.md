@@ -1,6 +1,7 @@
 # Version log
-
-* **Ver 0.2.0** - 5 August 2022  
+* **Ver 0.2.1** - 5 August 2022
+	* Annotation parsing bug was fixed.
+* Ver 0.2.0 - 5 August 2022  
 	* New cmd and configs parameters were added.
 	* New classes and methods were developed.
 * Ver 0.1.5 - 31 July 2022

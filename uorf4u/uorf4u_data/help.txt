@@ -1,4 +1,4 @@
-uorf4u (version 0.2.0): a bioinformatics tool for annotation conserved upstream ORFs. 
+uorf4u (version 0.2.1): a bioinformatics tool for annotation conserved upstream ORFs. 
 
 COMMAND-LINE PARAMETERS
 _____________________________

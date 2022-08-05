@@ -1,10 +1,10 @@
 from setuptools import setup
 
-with open("README_pypi.md", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='uorf4u',
-      version='0.2.0',
+      version='0.2.1',
       description='A tool for short uORF annotation.',
       url='https://art-egorov.github.io/uorf4u/',
       author='Artyom Egorov',
