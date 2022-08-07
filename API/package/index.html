@@ -1616,7 +1616,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a Homologous object.</span>
 
 <span class="sd">        Note:</span>
@@ -1625,7 +1625,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            accession_numbers (list): List of RefSeq accession numbers.</span>
-<span class="sd">            parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">            parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1638,7 +1638,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
             <span class="bp">self</span><span class="o">.</span><span class="n">orfs</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conserved_paths</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to create a Homologous class&#39; object.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to create a Homologous class&#39; object.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">get_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Get upstream sequences of proteins&#39; genes.</span>
@@ -1754,7 +1754,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                       <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upstream_sequences</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to retrieve upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to retrieve upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">save_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Save upstream sequences as a fasta file.</span>
@@ -1776,7 +1776,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                       <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save a fasta file with upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save a fasta file with upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">annotate_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Annotate ORFs of upstream sequences.</span>
@@ -1789,8 +1789,8 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">upstream_sequences</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">Ant4suorfError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: &#39;annotate_orfs()&#39; method can&#39;t be called.&quot;</span>
-                                         <span class="sa">f</span><span class="s2">&quot; The result of &#39;get_upstream_sequences()&#39; method not found.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Ant4suorfError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: &#39;annotate_orfs()&#39; method can&#39;t be called.&quot;</span>
+                                                <span class="sa">f</span><span class="s2">&quot; The result of &#39;get_upstream_sequences()&#39; method not found.&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🔎 ORFs annotating in the upstream sequences...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
@@ -1854,7 +1854,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="n">number_of_orfs</span><span class="si">}</span><span class="s2"> ORFs were annotated.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to annotate ORFs in upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to annotate ORFs in upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">filter_orfs_by_sd_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Filter annotated ORFs by presence the Shine-Dalgarno sequence.</span>
@@ -1885,7 +1885,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                     <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to filter uORFs by SD sequence presence.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to filter uORFs by SD sequence presence.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">save_annotated_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Save information about annotated ORFs as a set of tsv files.</span>
@@ -1926,7 +1926,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                       <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save annotated uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save annotated uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">conserved_orf_searching</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Search for sets of conserved ORFs in upstream sequences.</span>
@@ -2054,7 +2054,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                       <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">conserved_paths</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">filter_out_similar_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Filter out duplicates in sets of annotated conserved ORFs.</span>
@@ -2115,7 +2115,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                     <span class="sa">f</span><span class="s2">&quot;out duplicates.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to filter out duplicates in conserved uORFs sets.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to filter out duplicates in conserved uORFs sets.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">run_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Run msa tool (muscle) for each path object (set of conserved ORFs).</span>
@@ -2132,7 +2132,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                     <span class="n">path</span><span class="o">.</span><span class="n">muscle_msa</span><span class="p">()</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to get MSA of conserved uORFS.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to get MSA of conserved uORFS.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">save_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Save MSA of conserved ORFs as fasta files.</span>
@@ -2174,7 +2174,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                       <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2"> folders.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save MSA of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save MSA of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">save_results_summary_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Save results summary table.</span>
@@ -2216,7 +2216,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;💌 Results summary tsv table saved to: </span><span class="si">{</span><span class="n">output_file_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save results summary table.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save results summary table.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">plot_ggmsa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plot MSA plots of conserved ORFs saved as fasta files.</span>
@@ -2253,7 +2253,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                       <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to visualise MSA of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to visualise MSA of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">plot_logo_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plot sequence Logo figures of conserved ORFs saved as fasta files.</span>
@@ -2287,7 +2287,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                       <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to plot sequence logo of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to plot sequence logo of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -2334,7 +2334,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
       </li>
       <li class="field-body">
         <b>parameters</b>
-            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">manager</a>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
+            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">uorf4u</a>.<span title="uorf4u.manager.manager">manager</span>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
         – <p>Parameters' class object.</p>
       </li>
   </ul>
@@ -2363,7 +2363,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
 <span class="normal">352</span>
 <span class="normal">353</span>
 <span class="normal">354</span>
-<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a Homologous object.</span>
 
 <span class="sd">    Note:</span>
@@ -2372,7 +2372,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        accession_numbers (list): List of RefSeq accession numbers.</span>
-<span class="sd">        parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">        parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -2385,7 +2385,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
         <span class="bp">self</span><span class="o">.</span><span class="n">orfs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conserved_paths</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to create a Homologous class&#39; object.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to create a Homologous class&#39; object.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -2510,8 +2510,8 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">upstream_sequences</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">Ant4suorfError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: &#39;annotate_orfs()&#39; method can&#39;t be called.&quot;</span>
-                                     <span class="sa">f</span><span class="s2">&quot; The result of &#39;get_upstream_sequences()&#39; method not found.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Ant4suorfError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: &#39;annotate_orfs()&#39; method can&#39;t be called.&quot;</span>
+                                            <span class="sa">f</span><span class="s2">&quot; The result of &#39;get_upstream_sequences()&#39; method not found.&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🔎 ORFs annotating in the upstream sequences...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
@@ -2575,7 +2575,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="n">number_of_orfs</span><span class="si">}</span><span class="s2"> ORFs were annotated.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to annotate ORFs in upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to annotate ORFs in upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -2866,7 +2866,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                   <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">conserved_paths</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -2955,7 +2955,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                 <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to filter uORFs by SD sequence presence.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to filter uORFs by SD sequence presence.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -3113,7 +3113,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                 <span class="sa">f</span><span class="s2">&quot;out duplicates.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to filter out duplicates in conserved uORFs sets.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to filter out duplicates in conserved uORFs sets.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -3379,7 +3379,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                   <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upstream_sequences</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to retrieve upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to retrieve upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -3493,7 +3493,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                   <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to visualise MSA of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to visualise MSA of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -3596,7 +3596,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                   <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to plot sequence logo of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to plot sequence logo of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -3657,7 +3657,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                 <span class="n">path</span><span class="o">.</span><span class="n">muscle_msa</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to get MSA of conserved uORFS.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to get MSA of conserved uORFS.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -3773,7 +3773,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                   <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save annotated uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save annotated uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -3893,7 +3893,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                   <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2"> folders.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save MSA of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save MSA of conserved uORFs.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -4011,7 +4011,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;💌 Results summary tsv table saved to: </span><span class="si">{</span><span class="n">output_file_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save results summary table.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save results summary table.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -4082,7 +4082,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                   <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save a fasta file with upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to save a fasta file with upstream sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -4309,7 +4309,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                         <span class="k">pass</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to create a Locus class&#39; object.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to create a Locus class&#39; object.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -4524,7 +4524,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
                     <span class="k">pass</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to create a Locus class&#39; object.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to create a Locus class&#39; object.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -4567,7 +4567,7 @@ objects. (Path class holds list of ORFs from different upstream sequences and in
   <ul>
       <li class="field-body">
         <b>parameters</b>
-            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">manager</a>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
+            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">uorf4u</a>.<span title="uorf4u.manager.manager">manager</span>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
         – <p>Parameters' class object.</p>
       </li>
       <li class="field-body">
@@ -4734,7 +4734,7 @@ upstream sequences to the start codon.</p>
 <span class="sd">            it&#39;s only needed for other classes&#39; methods.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">        parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 <span class="sd">        id (str): identifier of the ORF. Format: locus_id|accession_number|distance_from_the_start_codon_to_the_main_orf</span>
 <span class="sd">        name (str): name of the ORF. Format: useq_name|distance_from_the_start_codon_to_the_main_orf</span>
 <span class="sd">        sequence_id (str): identifier of the ORF&#39;s sequence (locus id from the ncbi database).</span>
@@ -4751,12 +4751,12 @@ upstream sequences to the start codon.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nt_sequence</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nt_sequence</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span>
                  <span class="n">sd_window_seq</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create an ORF object.</span>
 
 <span class="sd">        Arguments:</span>
-<span class="sd">            parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">            parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 <span class="sd">            id (str): identifier of the ORF. Format: locus_id:distance_from_the_start_codon_to_the_proteins_orf:length.</span>
 <span class="sd">            nt_sequence (Bio.Seq.Seq): a Seq object of nucleotide sequence of the ORF.</span>
 <span class="sd">            sd_window_seq (Bio.Seq.Seq): a Seq object of upstream sequence to the start codon of the ORF.</span>
@@ -4850,7 +4850,7 @@ upstream sequences to the start codon.</p>
   <ul>
       <li class="field-body">
         <b>parameters</b>
-            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">manager</a>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
+            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">uorf4u</a>.<span title="uorf4u.manager.manager">manager</span>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
         – <p>Parameters' class object.</p>
       </li>
       <li class="field-body">
@@ -4916,12 +4916,12 @@ upstream sequences to the start codon.</p>
 <span class="normal">1089</span>
 <span class="normal">1090</span>
 <span class="normal">1091</span>
-<span class="normal">1092</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nt_sequence</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span>
+<span class="normal">1092</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nt_sequence</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span>
              <span class="n">sd_window_seq</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create an ORF object.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">        parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 <span class="sd">        id (str): identifier of the ORF. Format: locus_id:distance_from_the_start_codon_to_the_proteins_orf:length.</span>
 <span class="sd">        nt_sequence (Bio.Seq.Seq): a Seq object of nucleotide sequence of the ORF.</span>
 <span class="sd">        sd_window_seq (Bio.Seq.Seq): a Seq object of upstream sequence to the start codon of the ORF.</span>
@@ -5082,7 +5082,7 @@ upstream sequences to the start codon.</p>
   <ul>
       <li class="field-body">
         <b>parameters</b>
-            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">manager</a>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
+            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">uorf4u</a>.<span title="uorf4u.manager.manager">manager</span>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
         – <p>Parameters' class object.</p>
       </li>
       <li class="field-body">
@@ -5370,7 +5370,7 @@ upstream sequences to the start codon.</p>
 <span class="sd">            it&#39;s only needed for other classes&#39; methods.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">        parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 <span class="sd">        path (list): List of the ORF class objects.</span>
 <span class="sd">        score (float): Score of the Path (calculated as sum of pairwise alignments scores of ORFs).</span>
 <span class="sd">        aa_msa (Bio.Align.MultipleSeqAlignment): Multiple sequence alignment (MSA) for amino acid sequences.</span>
@@ -5382,11 +5382,11 @@ upstream sequences to the start codon.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a Path object.</span>
 
 <span class="sd">        Arguments:</span>
-<span class="sd">            parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">            parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
@@ -5628,7 +5628,7 @@ upstream sequences to the start codon.</p>
   <ul>
       <li class="field-body">
         <b>parameters</b>
-            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">manager</a>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
+            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">uorf4u</a>.<span title="uorf4u.manager.manager">manager</span>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
         – <p>Parameters' class object.</p>
       </li>
   </ul>
@@ -5647,11 +5647,11 @@ upstream sequences to the start codon.</p>
 <span class="normal">1155</span>
 <span class="normal">1156</span>
 <span class="normal">1157</span>
-<span class="normal">1158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+<span class="normal">1158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a Path object.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">        parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
@@ -6289,7 +6289,7 @@ upstream sequences to the start codon.</p>
       </li>
       <li class="field-body">
         <b>parameters</b>
-            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">manager</a>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
+            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">uorf4u</a>.<span title="uorf4u.manager.manager">manager</span>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
         – <p>Parameters' class object.</p>
       </li>
       <li class="field-body">
@@ -6532,7 +6532,7 @@ the protein obtained from ipg ncbi database.</p>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        accession_number (str): RefSeq accession number.</span>
-<span class="sd">        parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">        parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 <span class="sd">        record (Bio.SeqRecord.SeqRecord): SeqRecord of the ncbi protein db. Can be obtained by the get_record() method.</span>
 <span class="sd">        taxid (str): Taxid of the protein. Can be obtained with get_assemblies() method.</span>
 <span class="sd">        kingdom_taxid (str): Kingdom taxid of a protein. Can be obtained with get_assemblies() method.</span>
@@ -6544,12 +6544,12 @@ the protein obtained from ipg ncbi database.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a RefSeqProtein object.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            accession_number (str): RefSeq accession number.</span>
-<span class="sd">            parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">            parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span> <span class="o">=</span> <span class="n">accession_number</span>
@@ -6577,7 +6577,7 @@ the protein obtained from ipg ncbi database.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">record</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">record</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span>
                 <span class="s2">&quot;Unable to get a SeqRecord of the protein from the ncbi protein database.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="k">def</span> <span class="nf">get_assemblies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
@@ -6630,7 +6630,7 @@ the protein obtained from ipg ncbi database.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">assemblies_coordinates</span> <span class="o">=</span> <span class="n">assemblies_coordinates</span>
             <span class="k">return</span> <span class="n">assemblies_coordinates</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to get assemblies coordinates of a protein.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to get assemblies coordinates of a protein.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    def get_loci(self, start=-float(&quot;inf&quot;), end=float(&quot;inf&quot;), strand=&quot;NA&quot;) -&gt; dict:</span>
@@ -6721,7 +6721,7 @@ the protein obtained from ipg ncbi database.</p>
                       <span class="sa">f</span><span class="s2">&quot;💌 Summary table saved to: </span><span class="si">{</span><span class="n">output_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">hits_an_list</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for homologous with blastp.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for homologous with blastp.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -6760,7 +6760,7 @@ the protein obtained from ipg ncbi database.</p>
       </li>
       <li class="field-body">
         <b>parameters</b>
-            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">manager</a>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
+            (<code><a class="autorefs autorefs-internal" title="uorf4u.manager" href="#uorf4u.manager">uorf4u</a>.<span title="uorf4u.manager.manager">manager</span>.<a class="autorefs autorefs-internal" title="uorf4u.manager.Parameters" href="#uorf4u.manager.Parameters">Parameters</a></code>)
         – <p>Parameters' class object.</p>
       </li>
   </ul>
@@ -6783,12 +6783,12 @@ the protein obtained from ipg ncbi database.</p>
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
-<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a RefSeqProtein object.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        accession_number (str): RefSeq accession number.</span>
-<span class="sd">        parameters (manager.Parameters): Parameters&#39; class object.</span>
+<span class="sd">        parameters (uorf4u.manager.Parameters): Parameters&#39; class object.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span> <span class="o">=</span> <span class="n">accession_number</span>
@@ -6986,7 +6986,7 @@ protein's accession number.</p>
                   <span class="sa">f</span><span class="s2">&quot;💌 Summary table saved to: </span><span class="si">{</span><span class="n">output_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">hits_an_list</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for homologous with blastp.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for homologous with blastp.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -7125,7 +7125,7 @@ from the ipg ncbi database.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">assemblies_coordinates</span> <span class="o">=</span> <span class="n">assemblies_coordinates</span>
         <span class="k">return</span> <span class="n">assemblies_coordinates</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to get assemblies coordinates of a protein.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to get assemblies coordinates of a protein.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -7194,7 +7194,7 @@ from the ipg ncbi database.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">record</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">record</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span>
             <span class="s2">&quot;Unable to get a SeqRecord of the protein from the ncbi protein database.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 </code></pre></div></td></tr></table></div>
       </details>
