@@ -22,7 +22,7 @@ import sys
 import random
 import os
 
-import uorf4u.manager as manager
+import uorf4u.manager
 
 Bio.Entrez.email = "anonymous@mail.se"
 
@@ -32,7 +32,7 @@ class RefSeqProtein:
 
     Attributes:
         accession_number (str): RefSeq accession number.
-        parameters (manager.Parameters): Parameters' class object.
+        parameters (uorf4u.manager.Parameters): Parameters' class object.
         record (Bio.SeqRecord.SeqRecord): SeqRecord of the ncbi protein db. Can be obtained by the get_record() method.
         taxid (str): Taxid of the protein. Can be obtained with get_assemblies() method.
         kingdom_taxid (str): Kingdom taxid of a protein. Can be obtained with get_assemblies() method.
@@ -44,12 +44,12 @@ class RefSeqProtein:
 
     """
 
-    def __init__(self, accession_number: str, parameters: manager.Parameters):
+    def __init__(self, accession_number: str, parameters: uorf4u.manager.Parameters):
         """Create a RefSeqProtein object.
 
         Arguments:
             accession_number (str): RefSeq accession number.
-            parameters (manager.Parameters): Parameters' class object.
+            parameters (uorf4u.manager.Parameters): Parameters' class object.
 
         """
         self.accession_number = accession_number
@@ -77,7 +77,7 @@ class RefSeqProtein:
             self.record = Bio.SeqIO.read(handle, "gb")
             return self.record
         except Exception as error:
-            raise manager.uORF4uError(
+            raise uorf4u.manager.uORF4uError(
                 "Unable to get a SeqRecord of the protein from the ncbi protein database.") from error
 
     def get_assemblies(self) -> list:
@@ -130,7 +130,7 @@ class RefSeqProtein:
             self.assemblies_coordinates = assemblies_coordinates
             return assemblies_coordinates
         except Exception as error:
-            raise manager.uORF4uError("Unable to get assemblies coordinates of a protein.") from error
+            raise uorf4u.manager.uORF4uError("Unable to get assemblies coordinates of a protein.") from error
 
     '''
     def get_loci(self, start=-float("inf"), end=float("inf"), strand="NA") -> dict:
@@ -221,7 +221,7 @@ class RefSeqProtein:
                       f"💌 Summary table saved to: {output_filename}", file=sys.stdout)
             return hits_an_list
         except Exception as error:
-            raise manager.uORF4uError("Unable to perform searching for homologous with blastp.") from error
+            raise uorf4u.manager.uORF4uError("Unable to perform searching for homologous with blastp.") from error
 
 
 class Locus:
@@ -311,7 +311,7 @@ class Locus:
                         pass
 
         except Exception as error:
-            raise manager.uORF4uError("Unable to create a Locus class' object.") from error
+            raise uorf4u.manager.uORF4uError("Unable to create a Locus class' object.") from error
 
 
 class Homologous:
@@ -330,7 +330,7 @@ class Homologous:
 
     """
 
-    def __init__(self, accession_numbers: list, parameters: manager.Parameters):
+    def __init__(self, accession_numbers: list, parameters: uorf4u.manager.Parameters):
         """Create a Homologous object.
 
         Note:
@@ -339,7 +339,7 @@ class Homologous:
 
         Arguments:
             accession_numbers (list): List of RefSeq accession numbers.
-            parameters (manager.Parameters): Parameters' class object.
+            parameters (uorf4u.manager.Parameters): Parameters' class object.
 
         """
         try:
@@ -352,7 +352,7 @@ class Homologous:
             self.orfs = None
             self.conserved_paths = None
         except Exception as error:
-            raise manager.uORF4uError("Unable to create a Homologous class' object.") from error
+            raise uorf4u.manager.uORF4uError("Unable to create a Homologous class' object.") from error
 
     def get_upstream_sequences(self) -> list:
         """Get upstream sequences of proteins' genes.
@@ -468,7 +468,7 @@ class Homologous:
                       file=sys.stdout)
             return self.upstream_sequences
         except Exception as error:
-            raise manager.uORF4uError("Unable to retrieve upstream sequences.") from error
+            raise uorf4u.manager.uORF4uError("Unable to retrieve upstream sequences.") from error
 
     def save_upstream_sequences(self) -> None:
         """Save upstream sequences as a fasta file.
@@ -490,7 +490,7 @@ class Homologous:
                       file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to save a fasta file with upstream sequences.") from error
+            raise uorf4u.manager.uORF4uError("Unable to save a fasta file with upstream sequences.") from error
 
     def annotate_orfs(self) -> None:
         """Annotate ORFs of upstream sequences.
@@ -503,8 +503,8 @@ class Homologous:
 
         """
         if self.upstream_sequences is None:
-            raise manager.Ant4suorfError(f"Error: 'annotate_orfs()' method can't be called."
-                                         f" The result of 'get_upstream_sequences()' method not found.")
+            raise uorf4u.manager.Ant4suorfError(f"Error: 'annotate_orfs()' method can't be called."
+                                                f" The result of 'get_upstream_sequences()' method not found.")
         try:
             if self.parameters.arguments["verbose"]:
                 print(f"🔎 ORFs annotating in the upstream sequences...", file=sys.stdout)
@@ -568,7 +568,7 @@ class Homologous:
                 print(f"✅ {number_of_orfs} ORFs were annotated.", file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to annotate ORFs in upstream sequences.") from error
+            raise uorf4u.manager.uORF4uError("Unable to annotate ORFs in upstream sequences.") from error
 
     def filter_orfs_by_sd_annotation(self) -> None:
         """Filter annotated ORFs by presence the Shine-Dalgarno sequence.
@@ -599,7 +599,7 @@ class Homologous:
                     , file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to filter uORFs by SD sequence presence.") from error
+            raise uorf4u.manager.uORF4uError("Unable to filter uORFs by SD sequence presence.") from error
 
     def save_annotated_orfs(self) -> None:
         """Save information about annotated ORFs as a set of tsv files.
@@ -640,7 +640,7 @@ class Homologous:
                       file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to save annotated uORFs.") from error
+            raise uorf4u.manager.uORF4uError("Unable to save annotated uORFs.") from error
 
     def conserved_orf_searching(self) -> dict:
         """Search for sets of conserved ORFs in upstream sequences.
@@ -768,7 +768,7 @@ class Homologous:
                       file=sys.stdout)
             return conserved_paths
         except Exception as error:
-            raise manager.uORF4uError("Unable to perform searching for conserved uORFs.") from error
+            raise uorf4u.manager.uORF4uError("Unable to perform searching for conserved uORFs.") from error
 
     def filter_out_similar_paths(self) -> None:
         """Filter out duplicates in sets of annotated conserved ORFs.
@@ -829,7 +829,7 @@ class Homologous:
                     f"out duplicates.", file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to filter out duplicates in conserved uORFs sets.") from error
+            raise uorf4u.manager.uORF4uError("Unable to filter out duplicates in conserved uORFs sets.") from error
 
     def run_msa(self) -> None:
         """Run msa tool (muscle) for each path object (set of conserved ORFs).
@@ -846,7 +846,7 @@ class Homologous:
                     path.muscle_msa()
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to get MSA of conserved uORFS.") from error
+            raise uorf4u.manager.uORF4uError("Unable to get MSA of conserved uORFS.") from error
 
     def save_msa(self) -> None:
         """Save MSA of conserved ORFs as fasta files.
@@ -888,7 +888,7 @@ class Homologous:
                       f"\t{', '.join(output_dirs.values())} folders.", file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to save MSA of conserved uORFs.") from error
+            raise uorf4u.manager.uORF4uError("Unable to save MSA of conserved uORFs.") from error
 
     def save_results_summary_table(self) -> None:
         """Save results summary table.
@@ -930,7 +930,7 @@ class Homologous:
                 print(f"💌 Results summary tsv table saved to: {output_file_path}.", file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to save results summary table.") from error
+            raise uorf4u.manager.uORF4uError("Unable to save results summary table.") from error
 
     def plot_ggmsa_figs(self) -> None:
         """Plot MSA plots of conserved ORFs saved as fasta files.
@@ -967,7 +967,7 @@ class Homologous:
                       file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to visualise MSA of conserved uORFs.") from error
+            raise uorf4u.manager.uORF4uError("Unable to visualise MSA of conserved uORFs.") from error
 
     def plot_logo_figs(self) -> None:
         """Plot sequence Logo figures of conserved ORFs saved as fasta files.
@@ -1001,7 +1001,7 @@ class Homologous:
                       file=sys.stdout)
             return None
         except Exception as error:
-            raise manager.uORF4uError("Unable to plot sequence logo of conserved uORFs.") from error
+            raise uorf4u.manager.uORF4uError("Unable to plot sequence logo of conserved uORFs.") from error
 
 
 '''
@@ -1038,7 +1038,7 @@ class ORF:
             it's only needed for other classes' methods.
 
     Attributes:
-        parameters (manager.Parameters): Parameters' class object.
+        parameters (uorf4u.manager.Parameters): Parameters' class object.
         id (str): identifier of the ORF. Format: locus_id|accession_number|distance_from_the_start_codon_to_the_main_orf
         name (str): name of the ORF. Format: useq_name|distance_from_the_start_codon_to_the_main_orf
         sequence_id (str): identifier of the ORF's sequence (locus id from the ncbi database).
@@ -1055,12 +1055,12 @@ class ORF:
 
     """
 
-    def __init__(self, parameters: manager.Parameters, id: str, name: str, nt_sequence: Bio.Seq.Seq,
+    def __init__(self, parameters: uorf4u.manager.Parameters, id: str, name: str, nt_sequence: Bio.Seq.Seq,
                  sd_window_seq: Bio.Seq.Seq, start: int, stop: int, annotation: str = "NA"):
         """Create an ORF object.
 
         Arguments:
-            parameters (manager.Parameters): Parameters' class object.
+            parameters (uorf4u.manager.Parameters): Parameters' class object.
             id (str): identifier of the ORF. Format: locus_id:distance_from_the_start_codon_to_the_proteins_orf:length.
             nt_sequence (Bio.Seq.Seq): a Seq object of nucleotide sequence of the ORF.
             sd_window_seq (Bio.Seq.Seq): a Seq object of upstream sequence to the start codon of the ORF.
@@ -1131,7 +1131,7 @@ class Path:
             it's only needed for other classes' methods.
 
     Attributes:
-        parameters (manager.Parameters): Parameters' class object.
+        parameters (uorf4u.manager.Parameters): Parameters' class object.
         path (list): List of the ORF class objects.
         score (float): Score of the Path (calculated as sum of pairwise alignments scores of ORFs).
         aa_msa (Bio.Align.MultipleSeqAlignment): Multiple sequence alignment (MSA) for amino acid sequences.
@@ -1143,11 +1143,11 @@ class Path:
 
     """
 
-    def __init__(self, parameters: manager.Parameters):
+    def __init__(self, parameters: uorf4u.manager.Parameters):
         """Create a Path object.
 
         Arguments:
-            parameters (manager.Parameters): Parameters' class object.
+            parameters (uorf4u.manager.Parameters): Parameters' class object.
 
         """
         self.parameters = parameters
