@@ -498,29 +498,36 @@
 <p>uorf4u configuration file allows detailed customization of the tool's parameters. Below, comments (<em>placed after ; in each line</em>) are allowed in configuration files. Here they are used to provide short parameter descriptions.</p>
 <p>;[General]<br />
 ncbi_genetic_code_name = Bacterial<br />
+upstream_region_length = 700<br />
+minimal_upstream_region_length = 100  </p>
+<p>;[conserved ORFs searching]<br />
+orf_length_group_range = 9 <br />
+orfs_presence_cutoff = 0.5<br />
+paths_identity_cutoff = 0.5<br />
+max_number_of_assemblies = 20<br />
+num_of_initial_genome_iteration = 200  </p>
+<p>;[blastp homologous searching]<br />
+blastp_evalue_cutoff = 1e-5<br />
+blastp_hit_list_size = 200<br />
+blastp_max_number_of_alignments = 500<br />
+blastp_pident_to_query_length_cutoff = 0.3  </p>
+<p>;[ORF annotation]<br />
 alternative_start_codons = False<br />
 main_start_codon = ATG<br />
 min_orf_length = 9<br />
-sd_energy_cutoff = -2<br />
+sd_energy_cutoff = -3<br />
 sd_window_length = 20<br />
-blastp_evalue_cutoff = 1e-5<br />
-upstream_region_length = 600<br />
-minimal_upstream_region_length = 50<br />
-orf_length_group_range = 15<br />
-orfs_presence_cutoff = 0.3<br />
-paths_identity_cutoff = 0.5<br />
-max_number_of_assemblies = 30<br />
-check_assembly_annotation = 1  </p>
+check_assembly_annotation = 0  </p>
 <p>;[Output]<br />
-sequences_to_write = nt, aa  </p>
+sequences_to_write = nt, aa, sd<br />
+logo_type = probability<br />
+output_dir = uorf4u_{current_date}  </p>
 <p>;[Paths]<br />
 ref_energies = {internal}/energyRef-CCTCCT.json<br />
 muscle_binary = {internal}/bin/muscle5.1.macos_arm64<br />
 plot_msa_R_script = {internal}/msa_plot.R<br />
 palette_nt = {internal}/palette_nt.txt<br />
 palette_aa = {internal}/palette_aa.txt  </p>
-<p>;[Output_dir_names]<br />
-output_dir = uorf4u_{current_date}  </p>
 <p>;[Pairwise alignment]<br />
 alignment_type = aa<br />
 global_match_score = 2<br />
@@ -529,8 +536,8 @@ global_open_gap_score = -1<br />
 global_extend_gap_score = -1<br />
 global_target_end_gap_score = -1<br />
 global_query_end_gap_score = -1<br />
-alignment_score_cutoff = 0. </p>
-<p>;[Multiple sequence Alignment]<br />
+alignment_score_cutoff = 0  </p>
+<p>;[Multiple Sequence Alignment]<br />
 consensus_threshold = 0.7  </p>
 
               
