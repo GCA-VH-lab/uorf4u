@@ -34,8 +34,9 @@ try:
     homologous.run_msa()
     homologous.save_msa()
     homologous.save_results_summary_table()
-    homologous.plot_ggmsa_figs()
     homologous.plot_logo_figs()
+    homologous.plot_ggmsa_figs()
+
 
 except Exception as e:
     if parameters.arguments['debug']:

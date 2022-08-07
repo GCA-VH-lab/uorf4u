@@ -1,4 +1,4 @@
-# Usage: Rscript msa_plot.R [--aa_msa path, --nt_msa path, --sd_msa path].
+# Usage: Rscript msa_plot.R --msa_fasta file.fa --output output_dir --seq_type nt|aa [--height x --width y].
 # Use -h option to show help message.
 
 if (!requireNamespace("optparse", quietly = TRUE)) {
@@ -50,8 +50,12 @@ opt = parse_args(opt_parser)
 if (! suppressMessages(requireNamespace("ggplot2", quietly = TRUE))) {
   install.packages("ggplot2")
 }
+if (!suppressMessages(requireNamespace("devtools", quietly=TRUE)))
+{
+  install.packages("devtools")
+}
 if (! suppressMessages(requireNamespace("ggmsa", quietly = TRUE))) {
-  install.packages("ggmsa")
+  devtools::install_github("YuLab-SMU/ggmsa")
 }
 
 suppressPackageStartupMessages(library("ggmsa"))

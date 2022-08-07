@@ -1,12 +1,11 @@
 # Сommand-line parameters
 
 	
-**POST-INSTALL EXAMPLE DATA**
+**POST-INSTALL DATA**
 
-- `--sampledata`  
+- `--data`  
 Creates the *uorf4u_data* folder in the current working directory.
-The folder will contain an adjustable configuration file template, SD-aSD energies table and helper scripts.
-
+The folder will contain an adjustable configuration file template, palettes, tables as well as the necessary sample data.
 
 **MANDATORY ARGUMENTS**
 

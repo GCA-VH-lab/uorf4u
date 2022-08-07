@@ -16,6 +16,7 @@ import pandas
 import subprocess
 import tempfile
 import random
+import math
 import json
 import sys
 import random
@@ -124,7 +125,7 @@ class RefSeqProtein:
                                   f" cannot be processed", file=sys.stderr)
             if len(assemblies_coordinates) == 0:
                 print(f"❗Warning message:\n\tNo assembly was found for the protein "
-                      f"{self.accession_number}.\n\t This protein record can be suppressed by the ncbi.",
+                      f"{self.accession_number}.\n\tThis protein record can be suppressed by the ncbi.",
                       file=sys.stderr)
             self.assemblies_coordinates = assemblies_coordinates
             return assemblies_coordinates
@@ -163,7 +164,9 @@ class RefSeqProtein:
                     f"👀 Searching for homologous of {self.accession_number} with blastp against the RefSeq database...",
                     file=sys.stdout)
             handle = Bio.Blast.NCBIWWW.qblast("blastp", "refseq_protein", self.accession_number,
-                                              expect=self.parameters.arguments["blastp_evalue_cutoff"])
+                                              expect=self.parameters.arguments["blastp_evalue_cutoff"],
+                                              hitlist_size=self.parameters.arguments["blastp_hit_list_size"],
+                                              alignments=self.parameters.arguments["blastp_max_number_of_alignments"])
             xml_output = handle.read()
             hits_an_list = [self.accession_number]
             blastp_stat_dict = dict()
@@ -187,14 +190,15 @@ class RefSeqProtein:
                     pident_to_query_length = hsp_identity_sum / query_length
                     pident_to_seq_length = hsp_identity_sum / subject_length
                     pident_to_alignment_length = hsp_identity_sum / hsp_align_length
-                    blastp_stat_dict[hit_id] = dict(pident_to_query_length=str(round(pident_to_query_length, 2)),
-                                                    pident_to_sequence_length=str(round(pident_to_seq_length, 2)),
-                                                    pident_to_alignment_length=str(
-                                                        round(pident_to_alignment_length, 2)),
-                                                    evalue=",".join(evalue))
-                    # ! pident values could be used for additional filters
-                    if hit_id not in hits_an_list:
-                        hits_an_list.append(hit_id)
+                    if pident_to_query_length >= self.parameters.arguments["blastp_pident_to_query_length_cutoff"]:
+                        blastp_stat_dict[hit_id] = dict(pident_to_query_length=str(round(pident_to_query_length, 2)),
+                                                        pident_to_sequence_length=str(round(pident_to_seq_length, 2)),
+                                                        pident_to_alignment_length=str(
+                                                            round(pident_to_alignment_length, 2)),
+                                                        evalue=",".join(evalue))
+                        # ! pident values could be used for additional filters
+                        if hit_id not in hits_an_list:
+                            hits_an_list.append(hit_id)
 
             columns = "\t".join(["accession_number", "name", "pident_to_query_length", "pident_to_sequence_length",
                                  "pident_to_alignment_length", "e-value"])
@@ -252,6 +256,7 @@ class Locus:
                 stop_b = len(self.locus_record.seq)
             handle = Bio.Entrez.efetch(db="nucleotide", rettype="gbwithparts", retmode="xml", id=locus_id)
             xml_output = (handle.read()).decode("utf-8")
+            print(xml_output)
             root = xml.etree.ElementTree.fromstring(xml_output)
             self.CDSs = []
             for gbfeature in root.iter("GBFeature"):
@@ -687,7 +692,12 @@ class Homologous:
                         useqs_with_filtered_orfs.append(useq)
                 if len(useqs_with_filtered_orfs) / number_of_useqs >= self.parameters.arguments["orfs_presence_cutoff"]:
                     conserved_paths[length] = []
-                    for initial_useq in filtered_orfs.keys():
+                    if len(filtered_orfs.keys()) > self.parameters.arguments["num_of_initial_genome_iteration"]:
+                        genome_iterator = random.sample(filtered_orfs.keys(),
+                                                        self.parameters.arguments["num_of_initial_genome_iteration"])
+                    else:
+                        genome_iterator = filtered_orfs.keys()
+                    for initial_useq in genome_iterator:
                         for initial_orf in filtered_orfs[initial_useq]:
                             conserved_path = Path(self.parameters)
                             conserved_path.update(initial_orf)
@@ -815,8 +825,8 @@ class Homologous:
             if self.parameters.arguments["verbose"]:
                 num_of_paths = sum([len(self.conserved_paths[i]) for i in self.conserved_paths.keys()])
                 print(
-                    f"🧹 {num_of_paths} sets of conserved ORFs remained in the analysis after filtering out duplicates.",
-                    file=sys.stdout)
+                    f"🧹 {num_of_paths} set(s) of conserved ORFs remained in the analysis after filtering "
+                    f"out duplicates.", file=sys.stdout)
             return None
         except Exception as error:
             raise manager.uORF4uError("Unable to filter out duplicates in conserved uORFs sets.") from error
@@ -1328,13 +1338,20 @@ class Path:
                     pos_specific_dict[element][i] = (pos_specific_score_matrix[i][element] / num_of_sequences)
             pos = [i for i in range(msa_length)]
             matrix_db = pandas.DataFrame(pos_specific_dict, index=pos)
+            used_alphabet = [k for k, v in pos_specific_dict.items() if sum(v) > 0]
+            max_value = 1
+            if self.parameters.arguments["logo_type"] == 'information':
+                info_mat = logomaker.transform_matrix(matrix_db, from_type="probability", to_type="information")
+                matrix_db = info_mat
+                # max_value = math.log2(len(used_alphabet)) # to update
+                max_value = math.log2(len(alphabet[seq_type]))
             colors = self.parameters.arguments[f"palette_{seq_type}"]
             fig_size = (max(10, msa_length * 1.4), min(2.5, 2.5 * 10 / (msa_length ** (1 / 6))))
             logo = logomaker.Logo(matrix_db, color_scheme=colors, figsize=fig_size)
             logo.style_spines(visible=False)
             logo.style_spines(spines=["left"], visible=True, linewidth=0.7)
             logo.ax.set_xticks([])
-            logo.ax.set_yticks([0, 0.5, 1])
+            logo.ax.set_yticks([0, max_value])
             plt.savefig(output_file)
             plt.close(logo.fig)
 

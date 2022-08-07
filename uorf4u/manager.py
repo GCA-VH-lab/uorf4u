@@ -4,7 +4,7 @@ import argparse
 import sys
 import os
 import time
-
+import uorf4u.methods
 
 class uORF4uError(Exception):
     """A helper for exceptions parsing inherited from the Exception class.
@@ -23,7 +23,7 @@ class Parameters:
     """
 
     def __init__(self):
-        self.arguments = dict(assemblies_list = "NA", debug = False, verbose = False)
+        self.arguments = dict(assemblies_list="NA", debug=False, verbose=False)
 
     def parse_cmd_arguments(self) -> None:
         parser = argparse.ArgumentParser(prog="uorf4u", add_help=False,
@@ -35,22 +35,33 @@ class Parameters:
         mutually_exclusive_group.add_argument("-hl", dest="homologous_list", nargs="*", default=None)
         mutually_exclusive_group.add_argument("-hlf", dest="homologous_list_file", type=str, default=None)
         # mutually_exclusive_group.add_argument('-useq', dest='upstream_sequences', type=str, default=None)
+        parser.add_argument("--data", dest="uorf4u_data", action="store_true")
         parser.add_argument("-al", dest="assemblies_list", type=str, default="NA")
         parser.add_argument("-at", dest="alignment_type", choices=['nt', 'aa', None], type=str, default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="internal")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.2.1')
+        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.3.0')
         parser.add_argument("--verbose", "-verbose", dest="verbose", action='store_true')
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
 
         args = parser.parse_args()
         args = vars(args)
+
+        if len(sys.argv[1:]) == 0:
+            args["help"] = True
+
+        if args["uorf4u_data"]:
+            print("a")
+            uorf4u.methods.copy_package_data()
+            sys.exit()
+
         if args["help"]:
             help_message_path = os.path.join(os.path.dirname(__file__), 'uorf4u_data', "help.txt")
             with open(help_message_path, "r") as help_message:
                 print(help_message.read(), file=sys.stdout)
                 sys.exit()
+
         filtered_args = {k: v for k, v in args.items() if v is not None}
         self.arguments.update(filtered_args)
 

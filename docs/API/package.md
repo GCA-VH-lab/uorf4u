@@ -8,3 +8,9 @@
 ## manager submodule
 
 ::: uorf4u.manager
+
+---
+
+## manager methods
+
+::: uorf4u.methods

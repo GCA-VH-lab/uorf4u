@@ -8,6 +8,7 @@ def copy_package_data() -> None:
     Returns:
         None
     """
-    users_dir = os.path.join({os.getcwd()}, 'uorf4u_data')
+    users_dir = os.path.join(os.getcwd(), 'uorf4u_data')
     internal_dir = os.path.join(os.path.dirname(__file__), 'uorf4u_data')
-    shutil.copytree(internal_dir, users_dir, ignore = shutil.ignore_patterns('help*'))
+    shutil.copytree(internal_dir, users_dir, ignore = shutil.ignore_patterns("help*", ".*", "msa_plot_dir.R"))
+    return None

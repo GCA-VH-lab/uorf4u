@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='uorf4u',
-      version='0.2.1',
+      version='0.3.0',
       description='A tool for short uORF annotation.',
       url='https://art-egorov.github.io/uorf4u/',
       author='Artyom Egorov',
