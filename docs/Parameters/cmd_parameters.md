@@ -9,35 +9,43 @@ The folder will contain an adjustable configuration file template, palettes, tab
 
 **MANDATORY ARGUMENTS**
 
-- `-an` *accession_number*  
+- `-an` *<accession_number>*  
 Protein's RefSeq accession number.
 
 	OR
 
-- `-hl` *accession_number1 [accession_number2, ...]*  
+- `-hl` *<accession_number1 [accession_number2, ...]>*  
 Space separated list of proteins accession numbers which will be used as list of homologous.
 
 	OR
 
-- `-hlf` *file.txt*
+- `-hlf` *<file.txt>*
 Path to a file with list of accession numbers. File format: one accession number per line, no header.
 
 
 **OPTIONAL ARGUMENTS**
 
-- `-al` *path_to/assemblies_list.tsv*  
+- `-ul` *<length>*  
+Length of upstream sequences to retrieve for homologous.
+
+- `-bh` *<number_of_hits>*  
+Max number of blastp hits in homologous searching.
+
+- `-al` *<path_to/assemblies_list.tsv>*  
 Path to an assemblies list file. During each run of uorf4u, a tsv table with information about assemblies (from identical protein database, ncbi) for each protein is saved to your output folder (output_dir_name/assemblies_list.tsv). There are cases with multiple assemblies for one protein accession numbers (up to thousands). In case to control assemblies included in the analysis this table can be filtered (simply by removing rows) and then used with this parameter as part of input to the next run.  
 In addition, config file (see config parameters section) has max_number_of_assemblies parameter. It can be used to limit max number of assemblies included in the analysis. In case number of assemblies is more than the cutoff, random sampling will be used to take only subset of them.
 
-- `-at` *aa|nt*  
+- `-at` *<aa|nt>*  
 Alignment type used by uorf4u for conserved ORFs searching [default: aa]. 
 
+- `-asc`  
+Include alternative start codons in uORF annotation step. List of alternative start codons are taken from the ncbi genetic code.
 
-- `-o` *dirname*  
+- `-o` *<dirname>*  
 Output dirname. It will be created if it's not exist. All output dirs will be then created in this folder [default: uorf4u_{current_date}; e.g. uorf4u_2022_07_25-20_41].
 
 
-- `-c` *file.cfg*  
+- `-c` *<file.cfg>*  
 Path to a configuration file [default: internal].
 
 

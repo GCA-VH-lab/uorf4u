@@ -6,6 +6,7 @@ import os
 import time
 import uorf4u.methods
 
+
 class uORF4uError(Exception):
     """A helper for exceptions parsing inherited from the Exception class.
 
@@ -38,10 +39,13 @@ class Parameters:
         parser.add_argument("--data", dest="uorf4u_data", action="store_true")
         parser.add_argument("-al", dest="assemblies_list", type=str, default="NA")
         parser.add_argument("-at", dest="alignment_type", choices=['nt', 'aa', None], type=str, default=None)
+        parser.add_argument("-ul", dest="upstream_region_length", type=int, default=None)
+        parser.add_argument("-bh", dest="blastp_hit_list_size", type=int, default=None)
+        parser.add_argument("-asc", dest="alternative_start_codons", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="internal")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.3.0')
-        parser.add_argument("--verbose", "-verbose", dest="verbose", action='store_true')
+        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.3.1')
+        parser.add_argument("--verbose", "-verbose", dest="verbose", action="store_true")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
 

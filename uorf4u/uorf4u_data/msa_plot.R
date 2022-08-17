@@ -77,7 +77,7 @@ fig <- ggmsa(
   char_width = 0.65,
   color = color,
   border = "#FFFFFF"
-) + geom_seqlogo(color = color)
+) + geom_seqlogo(color = color, adaptive = FALSE)
 suppressMessages(
   ggsave(
     output,

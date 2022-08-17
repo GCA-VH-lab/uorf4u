@@ -4,17 +4,18 @@ import Bio.Seq
 import Bio.Align.AlignInfo
 import Bio.Blast.NCBIWWW
 import Bio.SeqRecord
+import Bio.Entrez
 import Bio.SeqIO
 import Bio.Align
 import Bio.AlignIO
 import Bio.Data.IUPACData
 import Bio.Data.CodonTable
-import Bio.Entrez
 import logomaker
 import matplotlib.pyplot as plt
 import pandas
 import subprocess
 import tempfile
+import statistics
 import random
 import math
 import json
@@ -256,7 +257,6 @@ class Locus:
                 stop_b = len(self.locus_record.seq)
             handle = Bio.Entrez.efetch(db="nucleotide", rettype="gbwithparts", retmode="xml", id=locus_id)
             xml_output = (handle.read()).decode("utf-8")
-            print(xml_output)
             root = xml.etree.ElementTree.fromstring(xml_output)
             self.CDSs = []
             for gbfeature in root.iter("GBFeature"):
@@ -423,9 +423,10 @@ class Homologous:
                     locus_record = Bio.SeqIO.read(handle, "fasta")
                     if assembly["strand"] == "+":
                         useq_start = max(0, assembly["start"] - self.parameters.arguments["upstream_region_length"])
-                        useq_stop = assembly["start"]
+                        useq_stop = min(assembly["start"] + self.parameters.arguments["downstream_region_length"],
+                                        len(locus_record.seq))
                     elif assembly["strand"] == "-":
-                        useq_start = assembly["stop"]
+                        useq_start = max(0, assembly["stop"] - self.parameters.arguments["downstream_region_length"])
                         useq_stop = min(len(locus_record.seq),
                                         assembly["stop"] + self.parameters.arguments["upstream_region_length"])
                     useq_length = abs(useq_stop - useq_start)  # Add additional filtering by length!
@@ -528,14 +529,16 @@ class Homologous:
                             if second_codon.upper() in self.codon_table.stop_codons:
                                 stop_codon_position = second_position
                                 length = stop_codon_position - start_codon_position
+                                distance = (len(useq['record'].seq) - self.parameters.arguments[
+                                    "downstream_region_length"]) - (stop_codon_position)
                                 id = f"{useq['locus_id']}|{useq['accession_number']}|" \
-                                     f"{len(useq['record'].seq) - (start_codon_position + 1)}"
+                                     f"{distance}"
                                 # id: locus_id|accession_number|distance_from_the_start_codon_to_the_main_orf
                                 name = f"{useq['name']}|{len(useq['record'].seq) - (start_codon_position + 1)}"
                                 # name: useq_name|distance_from_the_start_codon_to_the_main_orf
                                 sd_window_start = max(
                                     [0, (start_codon_position - self.parameters.arguments["sd_window_length"])])
-                                current_orf = ORF(parameters=self.parameters, id=id, name=name,
+                                current_orf = ORF(parameters=self.parameters, id=id, name=name, distance=distance,
                                                   start=start_codon_position, stop=stop_codon_position,
                                                   nt_sequence=useq["record"].seq[
                                                               start_codon_position:stop_codon_position],
@@ -548,10 +551,12 @@ class Homologous:
                                             if current_orf.stop == cds["relative_stop"] and (
                                                     (current_orf.start - cds["relative_start"]) % 3 == 0):
                                                 the_same_stop = 1
-                                                current_orf.annotation = cds["product_name"].replace(cds["protein_id"],
-                                                                                                     "").strip(" ")
+                                                current_orf.annotation = cds["product_name"]
                                                 if current_orf.start != cds["relative_start"]:
-                                                    current_orf.annotation += " (overlapping)"
+                                                    if current_orf.start < cds["relative_start"]:
+                                                        current_orf.annotation += " (extension)"
+                                                    else:
+                                                        current_orf.annotation += " (truncation)"
                                     for annotated_orfs in orfs[useq["id"]]:
                                         if current_orf.stop == annotated_orfs.stop and \
                                                 current_orf.id != annotated_orfs.id:
@@ -890,6 +895,55 @@ class Homologous:
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to save MSA of conserved uORFs.") from error
 
+    def save_orfs_sequences(self) -> None:
+        """Save sequences of conserved ORFs as fasta files.
+
+        Note:
+            Fasta files will be saved to the subdirs: ['nucleotide_orfs' - for MSA of nucleotide sequences of ORFs,
+                'amino_acid_msa' - MSA of amino acid sequences of ORFs, and 'sd_msa' - MSA of SD sequence regions
+                of ORFS). All of them located in your 'output_dir'.
+
+        Returns:
+             None
+
+        """
+        try:
+            if not os.path.exists(self.parameters.arguments["output_dir"]):
+                os.mkdir(self.parameters.arguments["output_dir"])
+            rename_dict = dict(nt="nucleotide", aa="amino_acid")
+            sequence_to_write = [i for i in self.parameters.arguments["sequences_to_write"] if i != "sd"]
+            output_dirs = dict(zip(sequence_to_write, [os.path.join(self.parameters.arguments["output_dir"],
+                                                                    f"{rename_dict[i]}_orfs_fasta_files") for i in
+                                                       sequence_to_write]))
+            for key in output_dirs:
+                if not (os.path.exists(output_dirs[key])):
+                    os.mkdir(output_dirs[key])
+
+            for seq_type in sequence_to_write:
+                for length, paths in self.conserved_paths.items():
+                    for i in range(len(paths)):
+                        records = []
+                        path = paths[i]
+                        id = f"length-[{(max(0, length - self.parameters.arguments['orf_length_group_range']))}" \
+                             f"-{(length + self.parameters.arguments['orf_length_group_range'])}]|score–{round(path.score)}|" \
+                             f"num_of_orfs-{len(path)}|rank-{i}"
+                        for orf in path.path:
+                            if seq_type == "nt":
+                                record = Bio.SeqRecord.SeqRecord(orf.nt_sequence, orf.id, "", orf.name)
+                            if seq_type == "aa":
+                                record = Bio.SeqRecord.SeqRecord(orf.aa_sequence, orf.id, "", orf.name)
+                            records.append(record)
+
+                        output = os.path.join(output_dirs[seq_type], f"{id}.fa")
+                        Bio.SeqIO.write(records, output, "fasta")
+
+            if self.parameters.arguments["verbose"]:
+                print(f"💌 Sequences fasta files of conserved ORFs were saved to\n"
+                      f"\t{', '.join(output_dirs.values())} folders.", file=sys.stdout)
+            return None
+        except Exception as error:
+            raise uorf4u.manager.uORF4uError("Unable to save sequences of conserved uORFs.") from error
+
     def save_results_summary_table(self) -> None:
         """Save results summary table.
 
@@ -902,19 +956,21 @@ class Homologous:
         """
         try:
             colnames = "\t".join(
-                ["id", "lengths", "aa_alignment_length", "nt_alignment_length", "score", "number_of_orfs",
-                 "number_of_orfs/number_of_sequences", "rank", "consensus(aa)", "consensus(nt)", "uORFs",
-                 "uORFs_annotations"])
+                ["id", "lengths", "average_distance_to_the_ORF", "aa_alignment_length", "nt_alignment_length", "score",
+                 "number_of_orfs", "number_of_orfs/number_of_sequences", "rank", "consensus(aa)", "consensus(nt)",
+                 "uORFs", "uORFs_annotations"])
             rows = [colnames]
             for length, paths in self.conserved_paths.items():
                 for rank in range(len(paths)):
                     annotations = sorted(set([i.annotation for i in paths[rank].path]))
                     if len(annotations) > 1 and "NA" in annotations:
-                        annotations.remove("NA")
+                        pass
+                        # annotations.remove("NA") # To check then
                     row = "\t".join(
                         [paths[rank].name,
                          f"{str(max(0, length - self.parameters.arguments['orf_length_group_range']))}-"
                          f"{str(length + self.parameters.arguments['orf_length_group_range'])}",
+                         str(statistics.mean([i.distance for i in paths[rank].path])),
                          str(paths[rank].msa["aa"].get_alignment_length()),
                          str(paths[rank].msa["nt"].get_alignment_length()),
                          str(paths[rank].score), str(len(paths[rank])),
@@ -1056,7 +1112,7 @@ class ORF:
     """
 
     def __init__(self, parameters: uorf4u.manager.Parameters, id: str, name: str, nt_sequence: Bio.Seq.Seq,
-                 sd_window_seq: Bio.Seq.Seq, start: int, stop: int, annotation: str = "NA"):
+                 sd_window_seq: Bio.Seq.Seq, start: int, stop: int, distance: int, annotation: str = "NA"):
         """Create an ORF object.
 
         Arguments:
@@ -1066,6 +1122,7 @@ class ORF:
             sd_window_seq (Bio.Seq.Seq): a Seq object of upstream sequence to the start codon of the ORF.
             start (int): start position of the ORF on the locus (0-based).
             stop (int): stop position of the ORF on the locus (0-based).
+            distance (int): distance to the main ORF.
 
         """
 
@@ -1075,6 +1132,7 @@ class ORF:
         codon_table_ambiguous = Bio.Data.CodonTable.ambiguous_dna_by_name[  # ambiguous can be needed!
             parameters.arguments["ncbi_genetic_code_name"]]
         self.name = name
+        self.distance = distance
         self.id = id
         self.sequence_id = id.split(":")[0]
         self.start = start
@@ -1090,6 +1148,7 @@ class ORF:
         self.extended_orfs = []
         self.min_energy = 0
         self.putative_sd_sequence = "NA"
+        self.sd_window_seq_str = "NA"
 
     def calculate_energies(self) -> None:
         """Calculate energies of putative SD sequences of the upstream sequence.
@@ -1197,11 +1256,6 @@ class Path:
 
         """
         num_of_identical_elements = len(set(self.path) & set(other.path))
-        orf_ids_first = [i.id for i in self.path]
-        orf_ids_second = [i.id for i in other.path]
-        num_of_identical_elements2 = len(set(orf_ids_first) & set(orf_ids_second))
-        if num_of_identical_elements2 != num_of_identical_elements:
-            print("PIZDEZ", num_of_identical_elements, num_of_identical_elements2)
         fraction_of_identical_orfs = num_of_identical_elements / min(len(self), len(other))
         return fraction_of_identical_orfs
 
@@ -1346,7 +1400,7 @@ class Path:
                 # max_value = math.log2(len(used_alphabet)) # to update
                 max_value = math.log2(len(alphabet[seq_type]))
             colors = self.parameters.arguments[f"palette_{seq_type}"]
-            fig_size = (max(10, msa_length * 1.4), min(2.5, 2.5 * 10 / (msa_length ** (1 / 6))))
+            fig_size = (max(10, msa_length * 1.3), min(2.5, 2.5 * 10 / (msa_length ** (1 / 6))))
             logo = logomaker.Logo(matrix_db, color_scheme=colors, figsize=fig_size)
             logo.style_spines(visible=False)
             logo.style_spines(spines=["left"], visible=True, linewidth=0.7)

@@ -31,6 +31,7 @@ try:
     homologous.save_annotated_orfs()
     homologous.conserved_orf_searching()
     homologous.filter_out_similar_paths()
+    homologous.save_orfs_sequences()
     homologous.run_msa()
     homologous.save_msa()
     homologous.save_results_summary_table()
