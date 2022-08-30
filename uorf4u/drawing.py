@@ -5,7 +5,6 @@ import reportlab.pdfgen
 import reportlab.pdfgen.canvas
 from reportlab.lib.units import cm, mm
 import reportlab.rl_config
-import PIL.ImageColor
 import reportlab.pdfbase.ttfonts
 import reportlab.pdfbase.pdfmetrics
 

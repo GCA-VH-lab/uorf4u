@@ -18,11 +18,11 @@ To test whether uorf4u will be able to find this ORF we can use only accession n
 
 The results will be saved to the ErmC folder with the following structure:
 
-<img  src="img/output.svg" width="750"/>
+<img  src="img/output.svg" width="400"/>
 
 Searching with default parameters returns us only one set of conserved ORFs. Let's have a look at the respective amino acid sequence logo and annotation plot (only header of the output figure is shown below for the annotation plot). Fortunately, we can see that one of the most conserved region of the sequence is expected IFVI arrest-essential amino acids. 🥳
 
-<img  src="img/ermcl_output.svg" width="700"/>
+<img  src="img/ermcl_output.svg" width="500"/>
 
 
 

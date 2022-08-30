@@ -4,7 +4,7 @@ uorf4u is a bioinformatics tool for annotation conserved upstream ORFs.
 
 **Programming languages:** Python3   
 **OS:** MacOS, Linux  
-**Python dependencies:** biopython, configs, argparse, statistics, logomaker, matplotlib, pandas  
+**Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
 **R dependencies:** ggmsa, ggplot2, optparse  
 **OS-level dependencies:** muscle  
 **License:** [WTFPL](http://www.wtfpl.net)  
