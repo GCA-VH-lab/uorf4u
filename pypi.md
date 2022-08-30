@@ -8,13 +8,10 @@ uorf4u is a bioinformatics tool for annotation conserved upstream ORFs.
 **R dependencies:** ggmsa, ggplot2, optparse  
 **OS-level dependencies:** muscle  
 **License:** [WTFPL](http://www.wtfpl.net)  
-**Version:** 0.3.1 (August 2022)
+**Version:** 0.4.0 (August 2022)
 
 [**Detailed documentation**](https://art-egorov.github.io/uorf4u)
 
-### Data analysis pipeline:
-
-<img  src="docs/img/pipeline.svg" width="550"/>
 
 
 ## Installation
@@ -53,5 +50,5 @@ Please contact us by e-mail _artem**dot**egorov**AT**med**dot**lu**dot**se_ or u
 
 ## Authors
 
-uorf4u is developed by Artyom Egorov at the [Atkinson Lab](https://atkinson-lab.com), Department of Experimental Medical Science, Lund University, Sweden. We are open for suggestions to extend and improve svist4get functionality. Please don't hesitate to share your ideas or feature requests.
+uorf4u is developed by Artyom Egorov at [The Atkinson Lab](https://atkinson-lab.com), Department of Experimental Medical Science, Lund University, Sweden. We are open for suggestions to extend and improve uorf4u functionality. Please don't hesitate to share your ideas or feature requests.
 

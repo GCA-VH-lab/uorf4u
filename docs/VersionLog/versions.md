@@ -1,6 +1,9 @@
 # Version log
 
-* **Ver 0.3.1.** - 17 August 2022
+* **Ver 0.4.0** - 30 August 2022
+	* Visualisation of loci annotation was added.
+	* Minor bugs were fixed.
+* Ver 0.3.1. - 17 August 2022
 	* New cmd and configs parameters were added.
 	* Annotation of uORFs overlapped with the main CDSs was added.
 * Ver 0.3.0 - 7 August 2022

@@ -13,7 +13,7 @@ uorf4u is a bioinformatics tool for annotation conserved upstream ORFs.
 **R dependencies:** ggmsa, ggplot2, optparse  
 **OS-level dependencies:** muscle  
 **License:** [WTFPL](http://www.wtfpl.net)  
-**Version:** 0.3.1 (August 2022)
+**Version:** 0.4.0 (August 2022)
 
 ### Data analysis pipeline:
 

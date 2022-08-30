@@ -1,3 +1,6 @@
+"""
+This module provides data processing including uORFs annotation and conserved subset searching.
+"""
 import shutil
 import xml.etree.ElementTree
 import Bio.Seq
@@ -24,6 +27,7 @@ import random
 import os
 
 import uorf4u.manager
+import uorf4u.drawing
 
 Bio.Entrez.email = "anonymous@mail.se"
 
@@ -126,7 +130,7 @@ class RefSeqProtein:
                                   f" cannot be processed", file=sys.stderr)
             if len(assemblies_coordinates) == 0:
                 print(f"❗Warning message:\n\tNo assembly was found for the protein "
-                      f"{self.accession_number}.\n\tThis protein record can be suppressed by the ncbi.",
+                      f"'{self.accession_number}'.\n\tThis protein record can be suppressed by the ncbi.",
                       file=sys.stderr)
             self.assemblies_coordinates = assemblies_coordinates
             return assemblies_coordinates
@@ -148,8 +152,8 @@ class RefSeqProtein:
         return self.loci
     '''
 
-    def blastp_searching_for_homologous(self) -> list:
-        """Search for a protein's homologous with blastp against the 'refseq_protein' database.
+    def blastp_searching_for_homologues(self) -> list:
+        """Search for a protein's homologues with blastp against the 'refseq_protein' database.
 
         Note:
             This function does not create a new object's attribute; It only returns a list of accession numbers.
@@ -162,7 +166,7 @@ class RefSeqProtein:
         try:
             if self.parameters.arguments["verbose"]:
                 print(
-                    f"👀 Searching for homologous of {self.accession_number} with blastp against the RefSeq database...",
+                    f"👀 Searching for homologues of {self.accession_number} with blastp against the RefSeq database...",
                     file=sys.stdout)
             handle = Bio.Blast.NCBIWWW.qblast("blastp", "refseq_protein", self.accession_number,
                                               expect=self.parameters.arguments["blastp_evalue_cutoff"],
@@ -197,7 +201,6 @@ class RefSeqProtein:
                                                         pident_to_alignment_length=str(
                                                             round(pident_to_alignment_length, 2)),
                                                         evalue=",".join(evalue))
-                        # ! pident values could be used for additional filters
                         if hit_id not in hits_an_list:
                             hits_an_list.append(hit_id)
 
@@ -214,15 +217,15 @@ class RefSeqProtein:
                                         blastp_stat_dict[rec.accession_number]["evalue"]]))
             if not os.path.exists(self.parameters.arguments["output_dir"]):
                 os.mkdir(self.parameters.arguments["output_dir"])
-            output_filename = os.path.join(self.parameters.arguments["output_dir"], "found_homologous.tsv")
+            output_filename = os.path.join(self.parameters.arguments["output_dir"], "found_homologues.tsv")
             f = open(output_filename, "w")
             f.write("\n".join(table))
             if self.parameters.arguments["verbose"]:
-                print(f"✅ {len(hits_records_list) - 1} homologous were found. "
+                print(f"✅ {len(hits_records_list) - 1} homologues were found. "
                       f"💌 Summary table saved to: {output_filename}", file=sys.stdout)
             return hits_an_list
         except Exception as error:
-            raise uorf4u.manager.uORF4uError("Unable to perform searching for homologous with blastp.") from error
+            raise uorf4u.manager.uORF4uError("Unable to perform searching for homologues with blastp.") from error
 
 
 class Locus:
@@ -233,10 +236,12 @@ class Locus:
         locus_id (str): a NCBI locus id from the Nucleotide database.
         locus_record (Bio.SeqRecord.SeqRecord): a biopython record object of the sequence.
         CDSs (list): list of dicts with information about annotated CDS in the locus' sequence.
+        start_b (int): start of region within annotation should be retrieved.
+        stop_b (int): stop of region within annotation should be retrieved.
 
     """
 
-    def __init__(self, locus_id: str, start_b: int = 0, stop_b: int = None, strand_u: str = "NA"):
+    def __init__(self, locus_id: str, start_b: int = 0, stop_b: int = None, target_strand: str = "NA"):
         """Create a Locus object.
 
         Note:
@@ -246,7 +251,7 @@ class Locus:
             locus_id (str): locus id from the ncbi nucleotide database.
             start_b (int): start of region within annotation should be retrieved (optional).
             stop_b (int): stop of region within annotation should be retrieved (optional).
-            strand_u (str): strand of the sequence om which annotation should be retrieved (optional).
+            target_strand (str): strand of the target object (optional).
 
         """
         try:
@@ -286,52 +291,53 @@ class Locus:
                                 relative_start_r, relative_stop_r = main_start - start_b, main_stop - start_b
                                 useq_length = stop_b - start_b
                                 relative_start, relative_stop = useq_length - relative_stop_r, useq_length - relative_start_r
+                            if strand == target_strand:
+                                relative_strand = "+"
+                            else:
+                                relative_strand = "-"
                             if (start_b <= main_start < stop_b) or (start_b <= main_stop < stop_b):
-                                if strand_u == "NA" or strand_u == strand:
-                                    cds_seq = self.locus_record.seq[main_start:main_stop]
-                                    if strand == '-':
-                                        cds_seq = cds_seq.reverse_complement()
-                                    protein_id, product_name = 'NA', 'NA'
-                                    for gbqualifier in gbfeature.iter("GBQualifier"):
-                                        if gbqualifier.find("GBQualifier_name").text == "protein_id":
-                                            protein_id = gbqualifier.find("GBQualifier_value").text
-                                        if gbqualifier.find("GBQualifier_name").text == "product":
-                                            product_name = gbqualifier.find("GBQualifier_value").text
-                                    if protein_id != 'NA':
-                                        if product_name != 'NA':
-                                            product_name = f"{protein_id} ({product_name})"
-                                        else:
-                                            product_name = f"{protein_id}"
-                                        self.CDSs.append(dict(protein_id=protein_id, product_name=product_name,
-                                                              coordinates=coordinates, nt_seq=cds_seq,
-                                                              main_start=main_start, main_stop=main_stop, strand=strand,
-                                                              relative_start=relative_start,
-                                                              relative_stop=relative_stop))
+                                cds_seq = self.locus_record.seq[main_start:main_stop]
+                                if strand == '-':
+                                    cds_seq = cds_seq.reverse_complement()
+                                protein_id, product_name = 'NA', 'NA'
+                                for gbqualifier in gbfeature.iter("GBQualifier"):
+                                    if gbqualifier.find("GBQualifier_name").text == "protein_id":
+                                        protein_id = gbqualifier.find("GBQualifier_value").text
+                                    if gbqualifier.find("GBQualifier_name").text == "product":
+                                        product_name = gbqualifier.find("GBQualifier_value").text
+                                if protein_id != 'NA':
+                                    if product_name != 'NA':
+                                        product_name = f"{protein_id} ({product_name})"
+                                    else:
+                                        product_name = f"{protein_id}"
+                                    self.CDSs.append(dict(protein_id=protein_id, product_name=product_name,
+                                                          coordinates=coordinates, nt_seq=cds_seq,
+                                                          main_start=main_start, main_stop=main_stop, strand=strand,
+                                                          relative_start=relative_start, relative_stop=relative_stop,
+                                                          relative_strand=relative_strand))
                     except:
                         pass
-
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to create a Locus class' object.") from error
 
 
-class Homologous:
-    """A Homologous object holds list of proteins homologous and information about them.
+class Homologues:
+    """A Homologues object holds list of proteins homologues and information about them.
 
     Attributes:
         accession_numbers (list): List of RefSeq accession numbers.
-        parameters (Parameters): Parameters' class object.
+        parameters (uorf4u.manager.Parameters): Parameters' class object.
         records (list): list of RefSeqProtein objects of the proteins.
-        upstream_sequences (list): List of dicts with SeqRecords objects and other information about the proteins'
-            genes' upstream sequences.
+        upstream_sequences (list): List of dicts with SeqRecords objects and other information
+        (including annotated ORFs saved under the 'ORFs' key) about the upstream sequences.
         codon_table (Bio.Data.CodonTable.CodonTable): Codon table (genetic code).
-        orfs (dict): Dict with keys as upstream sequences' IDs and values as corresponding lists of ORF's objects.
-        conserved_paths (dict): Dict with keys as cluster lengths of ORFs and values as corresponding lists of Path's
-            objects. (Path class holds list of ORFs from different upstream sequences and information about them).
+        conserved_paths (list): list  of Path's objects (Path class holds list of ORFs from different upstream
+            sequences and information about them).
 
     """
 
     def __init__(self, accession_numbers: list, parameters: uorf4u.manager.Parameters):
-        """Create a Homologous object.
+        """Create a Homologues object.
 
         Note:
             With initialisation it also creates a 'records' attribute - a list of RefSeqProtein objects of proteins
@@ -349,10 +355,9 @@ class Homologous:
             self.upstream_sequences = None
             self.codon_table = Bio.Data.CodonTable.unambiguous_dna_by_name[
                 parameters.arguments["ncbi_genetic_code_name"]]
-            self.orfs = None
             self.conserved_paths = None
         except Exception as error:
-            raise uorf4u.manager.uORF4uError("Unable to create a Homologous class' object.") from error
+            raise uorf4u.manager.uORF4uError("Unable to create a Homologues class' object.") from error
 
     def get_upstream_sequences(self) -> list:
         """Get upstream sequences of proteins' genes.
@@ -421,15 +426,25 @@ class Homologous:
                 for assembly in assemblies:
                     handle = Bio.Entrez.efetch(db="nucleotide", rettype="fasta", retmode="txt", id=assembly["locus_id"])
                     locus_record = Bio.SeqIO.read(handle, "fasta")
+                    useq_downstream_region_length = self.parameters.arguments["downstream_region_length"]
+                    useq_upstream_region_length = self.parameters.arguments["upstream_region_length"]
                     if assembly["strand"] == "+":
                         useq_start = max(0, assembly["start"] - self.parameters.arguments["upstream_region_length"])
+                        if useq_start == 0:
+                            useq_upstream_region_length = assembly["start"]
                         useq_stop = min(assembly["start"] + self.parameters.arguments["downstream_region_length"],
                                         len(locus_record.seq))
+                        if useq_stop == len(locus_record.seq):
+                            useq_downstream_region_length = len(locus_record.seq) - assembly["start"]
                     elif assembly["strand"] == "-":
                         useq_start = max(0, assembly["stop"] - self.parameters.arguments["downstream_region_length"])
+                        if useq_start == 0:
+                            useq_downstream_region_length = assembly["stop"]
                         useq_stop = min(len(locus_record.seq),
                                         assembly["stop"] + self.parameters.arguments["upstream_region_length"])
-                    useq_length = abs(useq_stop - useq_start)  # Add additional filtering by length!
+                        if useq_stop == len(locus_record.seq):
+                            useq_upstream_region_length = len(locus_record.seq) - assembly["stop"]
+                    useq_length = abs(useq_stop - useq_start)
                     if useq_length >= self.parameters.arguments["minimal_upstream_region_length"]:
                         useq = locus_record.seq[useq_start:useq_stop]
                         if assembly["strand"] == "-":
@@ -452,14 +467,16 @@ class Homologous:
                         useq_dict = dict(record=useq_record, id=useq_id, locus_id=assembly['locus_id'], name=useq_name,
                                          length=useq_length, start=useq_start, stop=useq_stop,
                                          strand=assembly["strand"],
-                                         accession_number=record.accession_number, organism={assembly['org']})
+                                         accession_number=record.accession_number, organism={assembly['org']},
+                                         useq_upstream_region_length=useq_upstream_region_length,
+                                         useq_downstream_region_length=useq_downstream_region_length)
                         record_upstream_sequences.append(useq_dict)
                 upstream_sequences += record_upstream_sequences
                 if len(record_upstream_sequences) == 0:
                     an_with_no_annotated_useq.append(record.accession_number)
             if an_with_no_annotated_useq:
-                print(f"❗Warning message:\n\tNo upstream sequences for {', '.join(an_with_no_annotated_useq)}"
-                      f" was annotated.\n\tCorresponding loci in the nucleotide ncbi database can be too short 📏.\n"
+                print(f"❗Warning message:\n\tNo upstream sequences for {len(an_with_no_annotated_useq)} protein(s)"
+                      f" were annotated.\n\tCorresponding loci in the nucleotide ncbi database can be too short 📏.\n"
                       f"\tSee 'minimal_upstream_region_length' config parameter description in the documentation.",
                       file=sys.stderr)
             self.upstream_sequences = upstream_sequences
@@ -504,8 +521,8 @@ class Homologous:
 
         """
         if self.upstream_sequences is None:
-            raise uorf4u.manager.Ant4suorfError(f"Error: 'annotate_orfs()' method can't be called."
-                                                f" The result of 'get_upstream_sequences()' method not found.")
+            raise uorf4u.manager.uORF4uError(f"Error: 'annotate_orfs()' method can't be called."
+                                             f" Upstream sequences were not found.")
         try:
             if self.parameters.arguments["verbose"]:
                 print(f"🔎 ORFs annotating in the upstream sequences...", file=sys.stdout)
@@ -514,12 +531,12 @@ class Homologous:
             else:
                 start_codons_list = [self.parameters.arguments["main_start_codon"]]
 
-            orfs = dict()
             for useq in self.upstream_sequences:
+                useq_index = self.upstream_sequences.index(useq)
                 if self.parameters.arguments["check_assembly_annotation"]:
-                    locus_id = useq["locus_id"]
-                    useq_locus = Locus(locus_id, start_b=useq["start"], stop_b=useq["stop"])
-                orfs[useq["id"]] = []
+                    useq["locus_annotation"] = Locus(useq["locus_id"], start_b=useq["start"], stop_b=useq["stop"],
+                                                     target_strand=useq["strand"])
+                useq["ORFs"] = []
                 for first_position in range((useq["length"] - 3) + 1):
                     first_codon = useq["record"].seq[first_position:first_position + 3]
                     if first_codon.upper() in start_codons_list:
@@ -543,11 +560,12 @@ class Homologous:
                                                   nt_sequence=useq["record"].seq[
                                                               start_codon_position:stop_codon_position],
                                                   sd_window_seq=useq["record"].seq[
-                                                                sd_window_start:start_codon_position])
+                                                                sd_window_start:start_codon_position],
+                                                  useq_index=useq_index)
                                 if current_orf.length >= self.parameters.arguments["min_orf_length"]:
-                                    orfs[useq["id"]].append(current_orf)
+                                    useq["ORFs"].append(current_orf)
                                     if self.parameters.arguments["check_assembly_annotation"]:
-                                        for cds in useq_locus.CDSs:
+                                        for cds in useq["locus_annotation"].CDSs:
                                             if current_orf.stop == cds["relative_stop"] and (
                                                     (current_orf.start - cds["relative_start"]) % 3 == 0):
                                                 the_same_stop = 1
@@ -557,19 +575,18 @@ class Homologous:
                                                         current_orf.annotation += " (extension)"
                                                     else:
                                                         current_orf.annotation += " (truncation)"
-                                    for annotated_orfs in orfs[useq["id"]]:
+                                    for annotated_orfs in useq["ORFs"]:
                                         if current_orf.stop == annotated_orfs.stop and \
                                                 current_orf.id != annotated_orfs.id:
                                             current_orf.extended_orfs.append(annotated_orfs.id)
                                 break
-            self.orfs = orfs
-            number_of_orfs = sum(len(i) for i in orfs.values())
+
+            number_of_orfs = sum(len(i["ORFs"]) for i in self.upstream_sequences)
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF was annotated in upstream sequences."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
                 sys.exit()
             if self.parameters.arguments["verbose"]:
-                number_of_orfs = sum([len(self.orfs[i]) for i in self.orfs.keys()])
                 print(f"✅ {number_of_orfs} ORFs were annotated.", file=sys.stdout)
             return None
         except Exception as error:
@@ -583,22 +600,21 @@ class Homologous:
 
         """
         try:
-            for useq_id, orf_list in self.orfs.items():
+            for useq in self.upstream_sequences:
+                orf_list = useq["ORFs"]
                 filtered_orf_list = []
                 for orf in orf_list:
                     orf.calculate_energies()
                     if orf.min_energy < self.parameters.arguments["sd_energy_cutoff"]:
                         filtered_orf_list.append(orf)
-                self.orfs[useq_id] = filtered_orf_list
+                useq["ORFs"] = filtered_orf_list
 
-            number_of_orfs = sum(len(i) for i in self.orfs.values())
+            number_of_orfs = sum(len(i["ORFs"]) for i in self.upstream_sequences)
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF left after filtering by SD annotation."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
                 sys.exit()
             if self.parameters.arguments["verbose"]:
-                number_of_orfs = sum([len(self.orfs[i]) for i in self.orfs.keys()])
-                output_file_with_useq = os.path.join(self.parameters.arguments["output_dir"], "upstream_sequences.fa")
                 print(
                     f"🧹 {number_of_orfs} ORFs remained in the analysis after filtering by presence of the SD sequence."
                     , file=sys.stdout)
@@ -625,10 +641,10 @@ class Homologous:
             output_dir_path = os.path.join(self.parameters.arguments["output_dir"], "annotated_ORFs")
             if not os.path.exists(output_dir_path):
                 os.mkdir(output_dir_path)
-            for useq_id, orf_list in self.orfs.items():
-                useq_dict = [i for i in self.upstream_sequences if i["id"] == useq_id][0]
-                file_name = f"{useq_dict['locus_id']}|{useq_dict['accession_number']}" \
-                            f"_{useq_dict['name'].replace(' ', '_').replace('/', '_')}"
+            for useq in self.upstream_sequences:
+                orf_list = useq["ORFs"]
+                file_name = f"{useq['locus_id']}|{useq['accession_number']}" \
+                            f"_{useq['name'].replace(' ', '_').replace('/', '_')}"
                 lines = [colnames]
                 for orf in orf_list:
                     if not orf.extended_orfs:
@@ -663,8 +679,8 @@ class Homologous:
                 print(f"🔎 Searching for conserved ORFs in upstream sequences...",
                       file=sys.stdout)
             lengths = []
-            for useq_id, orfs in self.orfs.items():
-                for orf in orfs:
+            for useq in self.upstream_sequences:
+                for orf in useq["ORFs"]:
                     lengths.append(orf.length)
             lengths = sorted(list(set(lengths)))
 
@@ -678,25 +694,25 @@ class Homologous:
             global_aligner.query_end_gap_score = self.parameters.arguments["global_query_end_gap_score"]
             length_variance = self.parameters.arguments["orf_length_group_range"]
 
-            useqs = self.orfs.keys()
-            number_of_useqs = len(useqs)
-            conserved_paths = dict()
+            number_of_useqs = len(self.upstream_sequences)
+            conserved_paths = []
             for length in lengths:
-                useqs_with_filtered_orfs = []
+                useq_indexes_with_filtered_orfs = []
                 filtered_orfs = dict()
-                for useq in self.orfs.keys():
-                    filtered_orfs[useq] = []
-                    for orf in self.orfs[useq]:
+                for useq_index in range(number_of_useqs):
+                    useq = self.upstream_sequences[useq_index]
+                    filtered_orfs[useq_index] = []
+                    for orf in useq["ORFs"]:
                         if abs(length - orf.length) <= length_variance:
-                            filtered_orfs[useq].append(orf)
-                    orfs_ids = [i.id for i in filtered_orfs[useq]]
-                    for orf in filtered_orfs[useq]:
+                            filtered_orfs[useq_index].append(orf)
+                    orfs_ids = [i.id for i in filtered_orfs[useq_index]]
+                    for orf in filtered_orfs[useq_index]:
                         if any(i in orf.extended_orfs for i in orfs_ids):
-                            filtered_orfs[useq].remove(orf)
-                    if len(filtered_orfs[useq]) > 0:
-                        useqs_with_filtered_orfs.append(useq)
-                if len(useqs_with_filtered_orfs) / number_of_useqs >= self.parameters.arguments["orfs_presence_cutoff"]:
-                    conserved_paths[length] = []
+                            filtered_orfs[useq_index].remove(orf)
+                    if len(filtered_orfs[useq_index]) > 0:
+                        useq_indexes_with_filtered_orfs.append(useq_index)
+                if len(useq_indexes_with_filtered_orfs) / number_of_useqs >= self.parameters.arguments[
+                    "orfs_presence_cutoff"]:
                     if len(filtered_orfs.keys()) > self.parameters.arguments["num_of_initial_genome_iteration"]:
                         genome_iterator = random.sample(filtered_orfs.keys(),
                                                         self.parameters.arguments["num_of_initial_genome_iteration"])
@@ -751,25 +767,24 @@ class Homologous:
                             if len(conserved_path) / number_of_useqs >= self.parameters.arguments[
                                 "orfs_presence_cutoff"]:
                                 to_save_this_path = 1
-                                for old_path in conserved_paths[length]:
+                                for old_path in conserved_paths:
                                     fraction_of_identity = conserved_path.calculate_similarity(old_path)
                                     if fraction_of_identity >= self.parameters.arguments["paths_identity_cutoff"]:
                                         if conserved_path.score > old_path.score:
-                                            conserved_paths[length].remove(old_path)
+                                            conserved_paths.remove(old_path)
                                         elif conserved_path.score <= old_path.score:
                                             to_save_this_path = 0
                                 if to_save_this_path == 1:
                                     conserved_path.sort()
-                                    conserved_paths[length].append(conserved_path)
+                                    conserved_paths.append(conserved_path)
             self.conserved_paths = conserved_paths
-            number_of_paths = sum(len(i) for i in self.conserved_paths.values())
+            number_of_paths = len(conserved_paths)
             if number_of_paths == 0:
                 print(f"⛔Termination:\n\tNo conserved ORFs set was found."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
                 sys.exit()
             if self.parameters.arguments["verbose"]:
-                num_of_paths = sum([len(i) for i in self.conserved_paths.values()])
-                print(f"✅ {num_of_paths} sets of conserved ORFs were found.",
+                print(f"✅ {number_of_paths} sets of conserved ORFs were found.",
                       file=sys.stdout)
             return conserved_paths
         except Exception as error:
@@ -788,50 +803,25 @@ class Homologous:
 
         """
         try:
-            filtered_paths = dict()
-            for length, paths in self.conserved_paths.items():
-                for path in paths:
-                    to_add = 1
-                    for length_filtered, paths_filtered in filtered_paths.items():
-                        for path_filtered in paths_filtered:
-                            if path.calculate_similarity(path_filtered) > self.parameters.arguments[
-                                "paths_identity_cutoff"]:
-                                if path.score < path_filtered.score:
-                                    to_add = 0
-                                elif path.score == path_filtered.score and (
-                                        length < length_filtered or len(path) < len(path_filtered)):
-                                    to_add = 0
-                                else:
-                                    filtered_paths[length_filtered].remove(path_filtered)
-                    if to_add == 1:
-                        if length not in filtered_paths.keys():
-                            filtered_paths[length] = []
-                        filtered_paths[length].append(path)
+            filtered_paths = []
+            for path in self.conserved_paths:
+                to_add = 1
+                for path_filtered in filtered_paths:
+                    if path.calculate_similarity(path_filtered) > self.parameters.arguments["paths_identity_cutoff"]:
+                        if path.score < path_filtered.score:
+                            to_add = 0
+                        elif path.score == path_filtered.score and (len(path) < len(path_filtered)):
+                            to_add = 0
+                        else:
+                            filtered_paths.remove(path_filtered)
+                if to_add == 1:
+                    filtered_paths.append(path)
             self.conserved_paths = filtered_paths
-            '''
-            for length, paths in self.conserved_paths.items():
-                for path in paths:
-                    to_save = 1
-                    for length_c, paths_c in self.conserved_paths.items():
-                        for path_c in paths_c:
-                            if path.calculate_similarity(path_c) >= self.parameters.arguments["paths_identity_cutoff"]:
-                                print(path.score, path_c.score)
-                                if path.score < path_c.score:
-                                    to_save = 0
-                                    break
-                                elif path.score == path_c.score:
-                                    if length < length_c or len(path) < len(path_c):  # To set
-                                        to_save = 0
-                                        break
-                        if to_save == 0:
-                            self.conserved_paths[length].remove(path)
-                            break
-            '''
+
             if self.parameters.arguments["verbose"]:
-                num_of_paths = sum([len(self.conserved_paths[i]) for i in self.conserved_paths.keys()])
-                print(
-                    f"🧹 {num_of_paths} set(s) of conserved ORFs remained in the analysis after filtering "
-                    f"out duplicates.", file=sys.stdout)
+                num_of_paths = len(self.conserved_paths)
+                print(f"🧹 {num_of_paths} set(s) of conserved ORFs remained in the analysis after filtering "
+                      f"out duplicates.", file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to filter out duplicates in conserved uORFs sets.") from error
@@ -846,9 +836,8 @@ class Homologous:
         try:
             if self.parameters.arguments["verbose"]:
                 print(f"🧮 Running MSA tool for conserved ORFs.", file=sys.stdout)
-            for length, paths in self.conserved_paths.items():
-                for path in paths:
-                    path.muscle_msa()
+            for path in self.conserved_paths:
+                path.muscle_msa()
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to get MSA of conserved uORFS.") from error
@@ -876,21 +865,16 @@ class Homologous:
             for key in output_dirs:
                 if not (os.path.exists(output_dirs[key])):
                     os.mkdir(output_dirs[key])
-            for length, paths in self.conserved_paths.items():
-                for i in range(len(paths)):
-                    path = paths[i]
-                    id = f"length-[{(max(0, length - self.parameters.arguments['orf_length_group_range']))}" \
-                         f"-{(length + self.parameters.arguments['orf_length_group_range'])}]|score–{round(path.score)}|" \
-                         f"num_of_orfs-{len(path)}|rank-{i}"
-                    path.name = id
-                    for seq_type in self.parameters.arguments["sequences_to_write"]:
-                        msa = path.msa[seq_type]
-                        output = os.path.join(output_dirs[seq_type], f"{id}.fa")
-                        Bio.AlignIO.write(msa, output, "fasta")
+            for path in self.conserved_paths:
+                for seq_type in self.parameters.arguments["sequences_to_write"]:
+                    msa = path.msa[seq_type]
+                    output = os.path.join(output_dirs[seq_type], f"{path.id}.fa")
+                    Bio.AlignIO.write(msa, output, "fasta")
 
             if self.parameters.arguments["verbose"]:
-                print(f"💌 MSA fasta files of conserved ORFs were saved to\n"
-                      f"\t{', '.join(output_dirs.values())} folders.", file=sys.stdout)
+                delimiter = ",\n\t"
+                print(f"💌 MSA fasta files of conserved ORFs were saved to the folders:\n"
+                      f"\t{delimiter.join(output_dirs.values())} folders.", file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to save MSA of conserved uORFs.") from error
@@ -918,28 +902,21 @@ class Homologous:
             for key in output_dirs:
                 if not (os.path.exists(output_dirs[key])):
                     os.mkdir(output_dirs[key])
-
             for seq_type in sequence_to_write:
-                for length, paths in self.conserved_paths.items():
-                    for i in range(len(paths)):
-                        records = []
-                        path = paths[i]
-                        id = f"length-[{(max(0, length - self.parameters.arguments['orf_length_group_range']))}" \
-                             f"-{(length + self.parameters.arguments['orf_length_group_range'])}]|score–{round(path.score)}|" \
-                             f"num_of_orfs-{len(path)}|rank-{i}"
-                        for orf in path.path:
-                            if seq_type == "nt":
-                                record = Bio.SeqRecord.SeqRecord(orf.nt_sequence, orf.id, "", orf.name)
-                            if seq_type == "aa":
-                                record = Bio.SeqRecord.SeqRecord(orf.aa_sequence, orf.id, "", orf.name)
-                            records.append(record)
-
-                        output = os.path.join(output_dirs[seq_type], f"{id}.fa")
-                        Bio.SeqIO.write(records, output, "fasta")
-
+                for path in self.conserved_paths:
+                    records = []
+                    for orf in path.path:
+                        if seq_type == "nt":
+                            record = Bio.SeqRecord.SeqRecord(orf.nt_sequence, orf.id, "", orf.name)
+                        if seq_type == "aa":
+                            record = Bio.SeqRecord.SeqRecord(orf.aa_sequence, orf.id, "", orf.name)
+                        records.append(record)
+                    output = os.path.join(output_dirs[seq_type], f"{path.id}.fa")
+                    Bio.SeqIO.write(records, output, "fasta")
             if self.parameters.arguments["verbose"]:
-                print(f"💌 Sequences fasta files of conserved ORFs were saved to\n"
-                      f"\t{', '.join(output_dirs.values())} folders.", file=sys.stdout)
+                delimiter = ",\n\t"
+                print(f"💌 Sequences fasta files of conserved ORFs were saved to the folders: \n"
+                      f"\t{delimiter.join(output_dirs.values())}.", file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to save sequences of conserved uORFs.") from error
@@ -956,29 +933,22 @@ class Homologous:
         """
         try:
             colnames = "\t".join(
-                ["id", "lengths", "average_distance_to_the_ORF", "aa_alignment_length", "nt_alignment_length", "score",
-                 "number_of_orfs", "number_of_orfs/number_of_sequences", "rank", "consensus(aa)", "consensus(nt)",
+                ["id", "length", "average_distance_to_the_ORF", "aa_alignment_length", "nt_alignment_length", "score",
+                 "number_of_orfs", "number_of_orfs/number_of_sequences", "consensus(aa)", "consensus(nt)",
                  "uORFs", "uORFs_annotations"])
             rows = [colnames]
-            for length, paths in self.conserved_paths.items():
-                for rank in range(len(paths)):
-                    annotations = sorted(set([i.annotation for i in paths[rank].path]))
-                    if len(annotations) > 1 and "NA" in annotations:
-                        pass
-                        # annotations.remove("NA") # To check then
-                    row = "\t".join(
-                        [paths[rank].name,
-                         f"{str(max(0, length - self.parameters.arguments['orf_length_group_range']))}-"
-                         f"{str(length + self.parameters.arguments['orf_length_group_range'])}",
-                         str(statistics.mean([i.distance for i in paths[rank].path])),
-                         str(paths[rank].msa["aa"].get_alignment_length()),
-                         str(paths[rank].msa["nt"].get_alignment_length()),
-                         str(paths[rank].score), str(len(paths[rank])),
-                         str(round(len(paths[rank]) / len(self.upstream_sequences), 3)), str(rank),
-                         str(paths[rank].msa_consensus["aa"]),
-                         str(paths[rank].msa_consensus["nt"]), ', '.join([i.id for i in paths[rank].path]),
-                         ', '.join(annotations)])
-                    rows.append(row)
+            for path in self.conserved_paths:
+                annotations = sorted(set([i.annotation for i in path.path]))
+                if len(annotations) > 1 and "NA" in annotations:
+                    pass
+                    # annotations.remove("NA") # To check then
+                row = "\t".join(
+                    [path.id, str(path.length), str(statistics.mean([i.distance for i in path.path])),
+                     str(path.msa["aa"].get_alignment_length()), str(path.msa["nt"].get_alignment_length()),
+                     str(path.score), str(len(path)), str(round(len(path) / len(self.upstream_sequences), 3)),
+                     str(path.msa_consensus["aa"]), str(path.msa_consensus["nt"]), ', '.join([i.id for i in path.path]),
+                     ', '.join(annotations)])
+                rows.append(row)
             output_file_path = os.path.join(self.parameters.arguments["output_dir"], "results_summary.tsv")
             f = open(output_file_path, "w")
             f.write("\n".join(rows))
@@ -1008,10 +978,8 @@ class Homologous:
             if self.parameters.arguments["verbose"]:
                 print(f"🎨 MSA figures plotting...",
                       file=sys.stdout)
-            for length, paths in self.conserved_paths.items():
-                for i in range(len(paths)):
-                    path = paths[i]
-                    path.plot_ggmsa()
+            for path in self.conserved_paths:
+                path.plot_ggmsa()
 
             if self.parameters.arguments["verbose"]:
                 rename_dict = dict(nt="nucleotide", aa="amino_acid", sd="sd")
@@ -1019,7 +987,8 @@ class Homologous:
                                        [os.path.join(self.parameters.arguments["output_dir"],
                                                      f"{rename_dict[i]}_msa_visualisation") for i in
                                         self.parameters.arguments['sequences_to_write']]))
-                print(f"💌 MSA figures were saved to\n\t{', '.join(output_dirs.values())} folders.",
+                delimiter = ",\n\t"
+                print(f"💌 MSA figures were saved to the folders:\n\t{delimiter.join(output_dirs.values())}.",
                       file=sys.stdout)
             return None
         except Exception as error:
@@ -1042,10 +1011,8 @@ class Homologous:
                 print(f"🎨 Sequence logo figures plotting...",
                       file=sys.stdout)
 
-            for length, paths in self.conserved_paths.items():
-                for i in range(len(paths)):
-                    path = paths[i]
-                    path.plot_logo()
+            for path in self.conserved_paths:
+                path.plot_logo()
 
             if self.parameters.arguments["verbose"]:
                 rename_dict = dict(nt="nucleotide", aa="amino_acid", sd="sd")
@@ -1053,11 +1020,41 @@ class Homologous:
                                        [os.path.join(self.parameters.arguments["output_dir"],
                                                      f"{rename_dict[i]}_seqlogo_visualisation") for i in
                                         self.parameters.arguments['sequences_to_write']]))
-                print(f"💌 Sequence logo figures were saved to \n\t{', '.join(output_dirs.values())} folders.",
+                delimiter = ",\n\t"
+                print(f"💌 Sequence logo figures were saved to the folders: \n\t{delimiter.join(output_dirs.values())}",
                       file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to plot sequence logo of conserved uORFs.") from error
+
+    def plot_annotation(self) -> None:
+        """Plot loci' annotations figures with conserved ORFs highlighting.
+
+        Returns:
+            None
+
+        """
+        try:
+            if self.parameters.arguments["verbose"]:
+                print(f"🎨 Loci annotations figures plotting...",
+                      file=sys.stdout)
+            if not os.path.exists(self.parameters.arguments["output_dir"]):
+                os.mkdir(self.parameters.arguments["output_dir"])
+            output_dir = os.path.join(self.parameters.arguments["output_dir"], "annotation_visualisation")
+            if not os.path.exists(output_dir):
+                os.mkdir(output_dir)
+            for path in self.conserved_paths:
+                output_file_name = f"{os.path.join(output_dir, path.id)}.pdf"
+                annotation_plot_manager = uorf4u.drawing.AnnotationPlotManager(path, self.upstream_sequences,
+                                                                               self.parameters)
+                annotation_plot_manager.define_x_axis_coordinate_system()
+                annotation_plot_manager.create_tracks()
+                annotation_plot_manager.plot(output_file_name)
+            if self.parameters.arguments["verbose"]:
+                print(f"💌 Annotation figures were saved to the {output_dir} folder",
+                      file=sys.stdout)
+        except Exception as error:
+            raise uorf4u.manager.uORF4uError("Unable to plot loci' annotations figures.") from error
 
 
 '''
@@ -1112,7 +1109,8 @@ class ORF:
     """
 
     def __init__(self, parameters: uorf4u.manager.Parameters, id: str, name: str, nt_sequence: Bio.Seq.Seq,
-                 sd_window_seq: Bio.Seq.Seq, start: int, stop: int, distance: int, annotation: str = "NA"):
+                 sd_window_seq: Bio.Seq.Seq, start: int, stop: int, distance: int, useq_index: int,
+                 annotation: str = "NA"):
         """Create an ORF object.
 
         Arguments:
@@ -1140,6 +1138,7 @@ class ORF:
         self.length = len(nt_sequence)
         self.nt_sequence = nt_sequence
         self.annotation = annotation
+        self.useq_index = useq_index
         try:
             self.aa_sequence = self.nt_sequence.translate(table=codon_table)
         except:
@@ -1193,12 +1192,12 @@ class Path:
         parameters (uorf4u.manager.Parameters): Parameters' class object.
         path (list): List of the ORF class objects.
         score (float): Score of the Path (calculated as sum of pairwise alignments scores of ORFs).
-        aa_msa (Bio.Align.MultipleSeqAlignment): Multiple sequence alignment (MSA) for amino acid sequences.
-        aa_msa (Bio.Align.MultipleSeqAlignment): Multiple sequence alignment (MSA) for nucleotide sequences.
-        sd_msa (Bio.Align.MultipleSeqAlignment): Multiple sequence alignment (MSA) for SD sequences (nt).
-        aa_msa_consensus (Bio.Seq.Seq): Amino acid consensus sequence of the MSA.
-        nt_msa_consensus (Bio.Seq.Seq): Nucleotide consensus sequence of the MSA.
-        sd_msa_consensus (Bio.Seq.Seq): SD (nt) consensus sequence of the MSA.
+        msa (dict): Dict with Multiple sequence alignment (MSA, Bio.Align.MultipleSeqAlignment object) as values
+            for different sequences (nt, aa, sd) as keys.
+        msa_consensus (dict): Dict with consensus sequence (Bio.Seq.Seq object) as values
+            for different sequences (nt, aa, sd) as keys.
+        length: length of the nucleotide sequence alignment.
+        id (str): Path's id (format: length|score|num_of_orfs|average_distance_to_the_main_ORF
 
     """
 
@@ -1214,7 +1213,8 @@ class Path:
         self.score = 0
         self.msa = dict()
         self.msa_consensus = dict()
-        self.name = None
+        self.id = None
+        self.length = None
 
     def update(self, orf: ORF, score=0):
         """Update a Path with a new ORF.
@@ -1231,6 +1231,12 @@ class Path:
         self.score += score
 
     def sort(self) -> None:
+        """Sort list of ORFs by their names.
+
+        Returns:
+            None
+
+        """
         sorted_path = [x for _, x in sorted(zip([i.name for i in self.path], self.path), key=lambda pair: pair[0])]
         self.path = sorted_path
 
@@ -1296,8 +1302,13 @@ class Path:
             msa_info = Bio.Align.AlignInfo.SummaryInfo(msa)
             msa_consensus = msa_info.gap_consensus(threshold=self.parameters.arguments["consensus_threshold"])
             temp_output.close()
+            if seq_type == "nt":
+                self.length = msa.get_alignment_length()
             self.msa[seq_type], self.msa_consensus[seq_type] = msa, msa_consensus
 
+            avr_distance = str(round(statistics.mean([i.distance for i in self.path])))
+            self.id = f"length-{self.msa['nt'].get_alignment_length()}|score–{round(self.score)}|" \
+                      f"num_of_orfs-{len(self.path)}|avr_dist-{avr_distance}"
         return None
 
     def plot_ggmsa(self) -> None:
@@ -1339,8 +1350,8 @@ class Path:
             else:
                 seq_type = "aa"
 
-            output_file = os.path.abspath(os.path.join(output_dirs[s_type], f"{self.name}.pdf"))
-            input_file = os.path.abspath(os.path.join(fasta_files_dirs[s_type], f"{self.name}.fa"))
+            output_file = os.path.abspath(os.path.join(output_dirs[s_type], f"{self.id}.pdf"))
+            input_file = os.path.abspath(os.path.join(fasta_files_dirs[s_type], f"{self.id}.fa"))
             num_sequences = len(current_msa)
             length_of_alignment = current_msa.get_alignment_length()
             page_width = (50 + length_of_alignment) * 5
@@ -1379,7 +1390,7 @@ class Path:
             elif s_type == "aa":
                 seq_type = "aa"
             output_file = os.path.abspath(
-                os.path.join(output_dirs[s_type], f"{os.path.basename(self.name)}.pdf"))
+                os.path.join(output_dirs[s_type], f"{os.path.basename(self.id)}.pdf"))
             msa_length = current_msa.get_alignment_length()
             num_of_sequences = len(current_msa)
             current_msa_info = Bio.Align.AlignInfo.SummaryInfo(current_msa)

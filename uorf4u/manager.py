@@ -1,4 +1,6 @@
-import traceback
+"""
+This module provides managing classes and methods for the tool.
+"""
 import configs
 import argparse
 import sys
@@ -33,8 +35,8 @@ class Parameters:
 
         mutually_exclusive_group = parser.add_mutually_exclusive_group()
         mutually_exclusive_group.add_argument("-an", dest="accession_number", type=str, default=None)
-        mutually_exclusive_group.add_argument("-hl", dest="homologous_list", nargs="*", default=None)
-        mutually_exclusive_group.add_argument("-hlf", dest="homologous_list_file", type=str, default=None)
+        mutually_exclusive_group.add_argument("-hl", dest="homologues_list", nargs="*", default=None)
+        mutually_exclusive_group.add_argument("-hlf", dest="homologues_list_file", type=str, default=None)
         # mutually_exclusive_group.add_argument('-useq', dest='upstream_sequences', type=str, default=None)
         parser.add_argument("--data", dest="uorf4u_data", action="store_true")
         parser.add_argument("-al", dest="assemblies_list", type=str, default="NA")
@@ -44,7 +46,7 @@ class Parameters:
         parser.add_argument("-asc", dest="alternative_start_codons", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="internal")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.3.1')
+        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.4.0')
         parser.add_argument("--verbose", "-verbose", dest="verbose", action="store_true")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
@@ -56,7 +58,6 @@ class Parameters:
             args["help"] = True
 
         if args["uorf4u_data"]:
-            print("a")
             uorf4u.methods.copy_package_data()
             sys.exit()
 

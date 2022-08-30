@@ -11,6 +11,13 @@
 
 ---
 
-## manager methods
+## drawing submodule
+
+::: uorf4u.drawing
+
+---
+
+## Methods
 
 ::: uorf4u.methods
+

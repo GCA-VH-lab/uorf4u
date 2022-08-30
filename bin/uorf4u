@@ -11,33 +11,33 @@ try:
         refseq_protein = uorf4u.data_processing.RefSeqProtein(
             accession_number=parameters.arguments['accession_number'],
             parameters=parameters)
-        homologous_list = refseq_protein.blastp_searching_for_homologous()
-    if "homologous_list_file" in parameters.arguments.keys():
+        homologues_list = refseq_protein.blastp_searching_for_homologues()
+    if "homologues_list_file" in parameters.arguments.keys():
         try:
-            with open(parameters.arguments["homologous_list_file"]) as hlf:
-                homologous_list = hlf.read().split('\n')
+            with open(parameters.arguments["homologues_list_file"]) as hlf:
+                homologues_list = hlf.read().split('\n')
         except:
             raise uorf4u.manager.Ant4suorfError(f"Unable to parse the file with a list of homologous. Please, "
                                                 f"check your file: {parameters.arguments['homologous_list_file']}")
 
-    if "homologous_list" in parameters.arguments.keys():
-        homologous_list = parameters.arguments["homologous_list"]
+    if "homologues_list" in parameters.arguments.keys():
+        homologues_list = parameters.arguments["homologues_list"]
 
-    homologous = uorf4u.data_processing.Homologous(homologous_list, parameters)
-    homologous.get_upstream_sequences()
-    homologous.save_upstream_sequences()
-    homologous.annotate_orfs()
-    homologous.filter_orfs_by_sd_annotation()  # add an argument to control
-    homologous.save_annotated_orfs()
-    homologous.conserved_orf_searching()
-    homologous.filter_out_similar_paths()
-    homologous.save_orfs_sequences()
-    homologous.run_msa()
-    homologous.save_msa()
-    homologous.save_results_summary_table()
-    homologous.plot_logo_figs()
-    homologous.plot_ggmsa_figs()
-
+    homologues = uorf4u.data_processing.Homologues(homologues_list, parameters)
+    homologues.get_upstream_sequences()
+    homologues.save_upstream_sequences()
+    homologues.annotate_orfs()
+    homologues.filter_orfs_by_sd_annotation()  # add an argument to control
+    homologues.save_annotated_orfs()
+    homologues.conserved_orf_searching()
+    homologues.filter_out_similar_paths()
+    homologues.run_msa()
+    homologues.save_orfs_sequences()
+    homologues.save_msa()
+    homologues.save_results_summary_table()
+    homologues.plot_annotation()
+    homologues.plot_logo_figs()
+    homologues.plot_ggmsa_figs()
 
 except Exception as e:
     if parameters.arguments['debug']:
