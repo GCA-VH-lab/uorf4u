@@ -529,15 +529,15 @@ This chapter based on the considering of well-known uORFs that can be cis-acting
 <p>Before start, the necessary sample data as well as adjustable tool' configuration files are priveded by uorf4u at the post-install step:  <br />
 <code>uorf4u --data</code>   </p>
 <h2 id="ermcl">ErmCL</h2>
-<p>One of the well-known bacterial upstream ORFs that regulates its downstream frame is ErmCL. Inducible expression of the downstream Erm resistance gene relies on ribosome stalling on the uORF (ErmCL). Molecular mechanism of ribosome stalling based on presence so-called ribosome arrest peptide (RAP) in ErmCL amino acid sequence. RAPs act in nascent states through interaction with ribosome that leads to translation arrest.<br />
+<p>One of the well-known bacterial upstream ORFs that regulates its downstream frame is ErmCL. Inducible expression of the downstream Erm resistance gene relies on ribosome stalling on the uORF (ErmCL). Molecular mechanism of ribosome stalling based on the presence of so-called ribosome arrest peptide (RAP) in the ErmCL amino acid sequence. RAPs act in nascent states through interaction with ribosome that leads to translation arrest.<br />
 RAP-mediated regulations based on presence a particular amino acid sequence (also known as arrest-essential amino acids). For ErmCL (19 codons length) this sequence is <strong>IFVI</strong> (see the <a href="https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026">review</a> for more detailed introduction). </p>
 <p>To test whether uorf4u will be able to find this ORF we can use only accession number of ErmC protein as input! The searching result for "ErmC" in ncbi protein database gives us the RefSeq id: <em>WP_001003263.1</em>, which can be directly used for our searching:<br />
 <code>uorf4u -an WP_001003263.1 -verbose -o ErmC</code><br />
 <em>Note:</em> <code>-verbose</code> and <code>-o</code> parameters are optional. <code>-verbose</code> used to show all progress messages, <code>-o</code> - to specify output folder name (by default it's uorf4u_{current_data} e.g. uorf4u_2022_08_09-15_00).  </p>
 <p>The results will be saved to the ErmC folder with the following structure:</p>
-<p><img  src="img/output.svg" width="750"/></p>
-<p>Searching with default parameters returns us only one set of conserved ORFs. Let's have a look at the respective amino acid sequence logo. Fortunately, we can see that the most conserved region of the sequence is expected IFVI arrest-essential amino acids. 🥳</p>
-<p><img  src="img/ermcl_logo.svg" width="700"/></p>
+<p><img  src="img/output.svg" width="400"/></p>
+<p>Searching with default parameters returns us only one set of conserved ORFs. Let's have a look at the respective amino acid sequence logo and annotation plot (only header of the output figure is shown below for the annotation plot). Fortunately, we can see that one of the most conserved region of the sequence is expected IFVI arrest-essential amino acids. 🥳</p>
+<p><img  src="img/ermcl_output.svg" width="500"/></p>
 <hr />
 
               

@@ -503,30 +503,32 @@
 <span class="n">parameters</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
 
 <span class="c1"># Creating RefseqProtein class&#39; object</span>
-<span class="n">refseq_protein</span> <span class="o">=</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">data_processing</span><span class="o">.</span><span class="n">RefSeqProtein</span><span class="p">(</span><span class="n">accession_number</span><span class="o">=</span><span class="s2">&quot;#accession number&quot;</span><span class="p">,</span> 
+<span class="n">refseq_protein</span> <span class="o">=</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">data_processing</span><span class="o">.</span><span class="n">RefSeqProtein</span><span class="p">(</span><span class="n">accession_number</span><span class="o">=</span><span class="s2">&quot;#accession number&quot;</span><span class="p">,</span>
                                                       <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
 
-<span class="c1"># Searching for protein&#39;s homologous with blastp</span>
-<span class="n">homologous_list</span> <span class="o">=</span> <span class="n">refseq_protein</span><span class="o">.</span><span class="n">blastp_searching_for_homologous</span><span class="p">()</span>
+<span class="c1"># Searching for protein&#39;s homologues with blastp</span>
+<span class="n">homologues_list</span> <span class="o">=</span> <span class="n">refseq_protein</span><span class="o">.</span><span class="n">blastp_searching_for_homologues</span><span class="p">()</span>
 
-<span class="c1"># Creating a Homologous class&#39; object</span>
-<span class="n">homologous</span> <span class="o">=</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">data_processing</span><span class="o">.</span><span class="n">Homologous</span><span class="p">(</span><span class="n">homologous_list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="c1"># Creating a Homologues class&#39; object</span>
+   <span class="n">homologues</span> <span class="o">=</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">data_processing</span><span class="o">.</span><span class="n">Homologues</span><span class="p">(</span><span class="n">homologues_list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
 
 <span class="c1"># Getting upstream sequences and annotating ORFs</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">get_upstream_sequences</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">save_upstream_sequences</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">annotate_orfs</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">filter_orfs_by_sd_annotation</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">save_annotated_orfs</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">get_upstream_sequences</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">save_upstream_sequences</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">annotate_orfs</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">filter_orfs_by_sd_annotation</span><span class="p">()</span>  
+<span class="n">homologues</span><span class="o">.</span><span class="n">save_annotated_orfs</span><span class="p">()</span>
 
 <span class="c1"># Searching for conserved ORFs and saving the results</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">conserved_orf_searching</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">filter_out_similar_paths</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">run_msa</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">save_msa</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">plot_ggmsa_figs</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">plot_logo_figs</span><span class="p">()</span>
-<span class="n">homologous</span><span class="o">.</span><span class="n">save_results_summary_table</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">conserved_orf_searching</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">filter_out_similar_paths</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">run_msa</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">save_orfs_sequences</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">save_msa</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">save_results_summary_table</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">plot_annotation</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">plot_logo_figs</span><span class="p">()</span>
+<span class="n">homologues</span><span class="o">.</span><span class="n">plot_ggmsa_figs</span><span class="p">()</span>
 </code></pre></div>
 
               
