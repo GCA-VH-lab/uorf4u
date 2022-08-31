@@ -20,4 +20,3 @@
 ## Methods
 
 ::: uorf4u.methods
-
