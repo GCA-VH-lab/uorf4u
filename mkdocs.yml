@@ -14,7 +14,7 @@ theme:
         primary: blue grey
         accent: teal
     icon:
-      logo: circle-16
+      logo: uorf4u_logo
 
     features:
         - content.code.annotate

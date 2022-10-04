@@ -4,7 +4,7 @@
 uorf4u configuration file allows detailed customization of the tool's parameters. Below, comments (*placed after ; in each line*) are allowed in configuration files. Here they are used to provide short parameter descriptions.  
 
 ***Note:***   
-uorf4u has two premade configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u_prokaryotes* located in: ./uorftu/uorf4u_data/ folder (internal). By default, 'prokaryotes' config file is used if no path or name of premade file is specified by a cmd parameter: `-c  prokaryotes|eukaryotes|<file.cfg>`.
+uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u_prokaryotes* located in: ./uorftu/uorf4u_data/ folder (internal). By default, 'prokaryotes' config file is used if no path or name of premade file is specified by a cmd parameter: `-c  prokaryotes|eukaryotes|<file.cfg>`.
 
 
 ***;[General]***  
