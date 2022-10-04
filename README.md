@@ -1,5 +1,5 @@
 
-<img  src="img/uorf4u_logo.png" width="300"/>
+<img  src="docs/img/uorf4u_logo.png" width="300"/>
 
 ## Description
 
@@ -16,7 +16,7 @@ uorf4u is a bioinformatics tool for conserved upstream ORFs annotation.
 
 ### Data analysis pipeline:
 
-<img  src="img/uorf4u_pipeline.png" width="400"/>
+<img  src="docs/img/uorf4u_pipeline.png" width="400"/>
 
 
 ## Installation
