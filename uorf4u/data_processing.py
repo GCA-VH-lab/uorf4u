@@ -23,7 +23,7 @@ import random
 import math
 import json
 import sys
-import random
+import re
 import os
 
 import uorf4u.manager
@@ -111,23 +111,29 @@ class RefSeqProtein:
                     self.organism = protein.attrib["org"]
                     list_of_kingdom_taxid.append(self.kingdom_taxid)
                     for cds in protein.iter("CDS"):
-                        if "assembly" not in cds.attrib.keys():
-                            cds.attrib["assembly"] = "NA"
-                        if "strain" not in cds.attrib.keys():
-                            cds.attrib["strain"] = "NA"
-                        try:
-                            assemblies_coordinates.append(dict(locus_id=cds.attrib["accver"],
-                                                               start=(int(cds.attrib["start"]) - 1),
-                                                               stop=int(cds.attrib["stop"]),
-                                                               strand=cds.attrib['strand'],
-                                                               length=int(cds.attrib["stop"]) - (
-                                                                       int(cds.attrib["start"]) - 1),
-                                                               assembly=cds.attrib["assembly"],
-                                                               strain=cds.attrib["strain"], org=cds.attrib["org"],
-                                                               taxid=cds.attrib["taxid"]))
-                        except:
-                            print(f"❕Attention: {cds.attrib['accver']} record is not completed and"
-                                  f" cannot be processed", file=sys.stderr)
+                        to_add = 1
+                        if self.parameters.arguments["filter_refseq_sequences_by_regex"]:
+                            if not re.search(rf"{self.parameters.arguments['refseq_sequences_regex']}",
+                                             cds.attrib["accver"]):
+                                to_add = 0
+                        if to_add == 1:
+                            if "assembly" not in cds.attrib.keys():
+                                cds.attrib["assembly"] = "NA"
+                            if "strain" not in cds.attrib.keys():
+                                cds.attrib["strain"] = "NA"
+                            try:
+                                assemblies_coordinates.append(dict(locus_id=cds.attrib["accver"],
+                                                                   start=(int(cds.attrib["start"]) - 1),
+                                                                   stop=int(cds.attrib["stop"]),
+                                                                   strand=cds.attrib['strand'],
+                                                                   length=int(cds.attrib["stop"]) - (
+                                                                           int(cds.attrib["start"]) - 1),
+                                                                   assembly=cds.attrib["assembly"],
+                                                                   strain=cds.attrib["strain"], org=cds.attrib["org"],
+                                                                   taxid=cds.attrib["taxid"]))
+                            except:
+                                print(f"❕Attention: {cds.attrib['accver']} record is not completed and"
+                                      f" cannot be processed", file=sys.stderr)
             if len(assemblies_coordinates) == 0:
                 print(f"❗Warning message:\n\tNo assembly was found for the protein "
                       f"'{self.accession_number}'.\n\tThis protein record can be suppressed by the ncbi.",
@@ -328,11 +334,6 @@ class Homologues:
         accession_numbers (list): List of RefSeq accession numbers.
         parameters (uorf4u.manager.Parameters): Parameters' class object.
         records (list): list of RefSeqProtein objects of the proteins.
-        upstream_sequences (list): List of dicts with SeqRecords objects and other information
-        (including annotated ORFs saved under the 'ORFs' key) about the upstream sequences.
-        codon_table (Bio.Data.CodonTable.CodonTable): Codon table (genetic code).
-        conserved_paths (list): list  of Path's objects (Path class holds list of ORFs from different upstream
-            sequences and information about them).
 
     """
 
@@ -352,10 +353,6 @@ class Homologues:
             self.accession_numbers = accession_numbers
             self.parameters = parameters
             self.records = [RefSeqProtein(i, parameters) for i in accession_numbers]
-            self.upstream_sequences = None
-            self.codon_table = Bio.Data.CodonTable.unambiguous_dna_by_name[
-                parameters.arguments["ncbi_genetic_code_name"]]
-            self.conserved_paths = None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to create a Homologues class' object.") from error
 
@@ -366,7 +363,7 @@ class Homologues:
             A protein may be found in several assemblies (for example in different strains).
 
         Returns:
-            list: List of dicts with SeqRecords objects and other information about upstream sequences.
+            list: List of Bio.SeqRecord.SeqRecord objects of upstream sequences.
 
         """
         try:
@@ -421,7 +418,6 @@ class Homologues:
                 if self.parameters.arguments["assemblies_list"] != "NA":
                     assemblies_filtered = [i for i in assemblies if i["locus_id"] in locus_ids]
                     assemblies = assemblies_filtered
-
                 record_upstream_sequences = []
                 for assembly in assemblies:
                     handle = Bio.Entrez.efetch(db="nucleotide", rettype="fasta", retmode="txt", id=assembly["locus_id"])
@@ -429,7 +425,10 @@ class Homologues:
                     useq_downstream_region_length = self.parameters.arguments["downstream_region_length"]
                     useq_upstream_region_length = self.parameters.arguments["upstream_region_length"]
                     if assembly["strand"] == "+":
-                        useq_start = max(0, assembly["start"] - self.parameters.arguments["upstream_region_length"])
+                        if self.parameters.arguments["upstream_region_length"] == "all":
+                            useq_start = 0
+                        else:
+                            useq_start = max(0, assembly["start"] - self.parameters.arguments["upstream_region_length"])
                         if useq_start == 0:
                             useq_upstream_region_length = assembly["start"]
                         useq_stop = min(assembly["start"] + self.parameters.arguments["downstream_region_length"],
@@ -440,12 +439,16 @@ class Homologues:
                         useq_start = max(0, assembly["stop"] - self.parameters.arguments["downstream_region_length"])
                         if useq_start == 0:
                             useq_downstream_region_length = assembly["stop"]
-                        useq_stop = min(len(locus_record.seq),
-                                        assembly["stop"] + self.parameters.arguments["upstream_region_length"])
+                        if self.parameters.arguments["upstream_region_length"] == "all":
+                            useq_stop = len(locus_record.seq)
+                        else:
+                            useq_stop = min(len(locus_record.seq),
+                                            assembly["stop"] + self.parameters.arguments["upstream_region_length"])
                         if useq_stop == len(locus_record.seq):
                             useq_upstream_region_length = len(locus_record.seq) - assembly["stop"]
                     useq_length = abs(useq_stop - useq_start)
-                    if useq_length >= self.parameters.arguments["minimal_upstream_region_length"]:
+                    if useq_length >= self.parameters.arguments["minimal_upstream_region_length"] or \
+                            self.parameters.arguments["upstream_region_length"] == "all":
                         useq = locus_record.seq[useq_start:useq_stop]
                         if assembly["strand"] == "-":
                             useq = useq.reverse_complement()
@@ -454,23 +457,18 @@ class Homologues:
                         elif assembly["strain"] in assembly["org"]:
                             useq_name = f"{assembly['org'].replace(assembly['strain'], '')}[{assembly['strain']}]"
                         else:
-                            useq_name = f"{assembly['org']}[{assembly['strain']}]"
+                            useq_name = f"{assembly['org']} [{assembly['strain']}]"
                         useq_id = f"{assembly['locus_id']}|{useq_start}-{useq_stop}({assembly['strand']})"
-                        # useq_id format: locus_id|start-stop|strand (coordinates in 0-based)
-                        useq_record = Bio.SeqRecord.SeqRecord(useq,
-                                                              id=useq_id, name=useq_name,
-                                                              description=f"ac:{record.accession_number}|"
-                                                                          f"org:{assembly['org']}|"
-                                                                          f"strain:{assembly['strain']}|"
-                                                                          f"assembly:{assembly['assembly']}|"
-                                                                          f"length:{useq_length}")
-                        useq_dict = dict(record=useq_record, id=useq_id, locus_id=assembly['locus_id'], name=useq_name,
-                                         length=useq_length, start=useq_start, stop=useq_stop,
-                                         strand=assembly["strand"],
-                                         accession_number=record.accession_number, organism={assembly['org']},
-                                         useq_upstream_region_length=useq_upstream_region_length,
-                                         useq_downstream_region_length=useq_downstream_region_length)
-                        record_upstream_sequences.append(useq_dict)
+                        useq_label = f"{useq_name}|{assembly['locus_id']}"
+                        useq_annotations = dict(RefSeq=True, locus_id=assembly['locus_id'], length=useq_length,
+                                                start=useq_start, stop=useq_stop, strand=assembly["strand"],
+                                                accession_number=record.accession_number,
+                                                organism=assembly['org'], label=useq_label,
+                                                upstream_region_length=useq_upstream_region_length,
+                                                downstream_region_length=useq_downstream_region_length)
+                        useq_record = Bio.SeqRecord.SeqRecord(useq, id=useq_id, description=useq_name,
+                                                              annotations=useq_annotations)
+                        record_upstream_sequences.append(useq_record)
                 upstream_sequences += record_upstream_sequences
                 if len(record_upstream_sequences) == 0:
                     an_with_no_annotated_useq.append(record.accession_number)
@@ -479,14 +477,39 @@ class Homologues:
                       f" were annotated.\n\tCorresponding loci in the nucleotide ncbi database can be too short 📏.\n"
                       f"\tSee 'minimal_upstream_region_length' config parameter description in the documentation.",
                       file=sys.stderr)
-            self.upstream_sequences = upstream_sequences
-
             if self.parameters.arguments["verbose"]:
-                print(f"✅ {len(self.upstream_sequences)} upstream sequences were obtained.",
+                print(f"✅ {len(upstream_sequences)} upstream sequences were obtained.",
                       file=sys.stdout)
-            return self.upstream_sequences
+            return upstream_sequences
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to retrieve upstream sequences.") from error
+
+
+class UpstreamSequences:
+    """An UpstreamSequences object holds list of upstream sequences records and information about them.
+
+    Attributes:
+        records (list): List of Bio.SeqRecord.SeqRecord objects with upstream sequences.
+            (attribute 'annotations' (dict) is used for holding additional information, (e.g. downstream protein_id)).
+        codon_table (Bio.Data.CodonTable.CodonTable): Codon table (genetic code).
+        conserved_paths (list): list  of Path's objects (Path class holds list of ORFs from different upstream
+            sequences and information about them).
+
+    """
+
+    def __init__(self, records: list, parameters: uorf4u.manager.Parameters):
+        """Create an UpstreamSequences object.
+
+        Arguments:
+            records (list): List of Bio.SeqRecord.SeqRecord objects with upstream sequences.
+            parameters (uorf4u.manager.Parameters): Parameters' class object.
+
+        """
+        self.records = records
+        self.parameters = parameters
+        self.codon_table = Bio.Data.CodonTable.unambiguous_dna_by_name[
+            parameters.arguments["ncbi_genetic_code_name"]]
+        self.conserved_paths = None
 
     def save_upstream_sequences(self) -> None:
         """Save upstream sequences as a fasta file.
@@ -496,13 +519,10 @@ class Homologues:
 
         """
         try:
-            records = []
             output_file = os.path.join(self.parameters.arguments["output_dir"], "upstream_sequences.fa")
             if not os.path.exists(self.parameters.arguments["output_dir"]):
                 os.mkdir(self.parameters.arguments["output_dir"])
-            for useq in self.upstream_sequences:
-                records.append(useq["record"])
-            Bio.SeqIO.write(records, output_file, "fasta")
+            Bio.SeqIO.write(self.records, output_file, "fasta")
             if self.parameters.arguments["verbose"]:
                 print(f"💌 Fasta file with upstream sequences was saved to {output_file}.",
                       file=sys.stdout)
@@ -511,18 +531,15 @@ class Homologues:
             raise uorf4u.manager.uORF4uError("Unable to save a fasta file with upstream sequences.") from error
 
     def annotate_orfs(self) -> None:
-        """Annotate ORFs of upstream sequences.
+        """Annotate ORFs in upstream sequences.
 
         Note:
-            This function updates 'upstream_sequences' attribute.
+            This function updates 'records' attribute.
 
         Returns:
             None
 
         """
-        if self.upstream_sequences is None:
-            raise uorf4u.manager.uORF4uError(f"Error: 'annotate_orfs()' method can't be called."
-                                             f" Upstream sequences were not found.")
         try:
             if self.parameters.arguments["verbose"]:
                 print(f"🔎 ORFs annotating in the upstream sequences...", file=sys.stdout)
@@ -531,41 +548,51 @@ class Homologues:
             else:
                 start_codons_list = [self.parameters.arguments["main_start_codon"]]
 
-            for useq in self.upstream_sequences:
-                useq_index = self.upstream_sequences.index(useq)
-                if self.parameters.arguments["check_assembly_annotation"]:
-                    useq["locus_annotation"] = Locus(useq["locus_id"], start_b=useq["start"], stop_b=useq["stop"],
-                                                     target_strand=useq["strand"])
-                useq["ORFs"] = []
-                for first_position in range((useq["length"] - 3) + 1):
-                    first_codon = useq["record"].seq[first_position:first_position + 3]
+            for useq_index in range(len(self.records)):
+                useq_record = self.records[useq_index]
+                if self.parameters.arguments["check_assembly_annotation"] and useq_record.annotations["RefSeq"]:
+                    useq_record.annotations["locus_annotation"] = Locus(useq_record.annotations["locus_id"],
+                                                                        start_b=useq_record.annotations["start"],
+                                                                        stop_b=useq_record.annotations["stop"],
+                                                                        target_strand=useq_record.annotations["strand"])
+                useq_record.annotations["ORFs"] = []
+                for first_position in range((useq_record.annotations["length"] - self.parameters.arguments[
+                    "downstream_region_length"] - 3) + 1):
+                    first_codon = useq_record.seq[first_position:first_position + 3]
                     if first_codon.upper() in start_codons_list:
                         start_codon_position = first_position
-                        for second_position in range(start_codon_position + 3, (useq["length"] - 3) + 1, 3):
-                            second_codon = useq["record"].seq[second_position:second_position + 3]
+                        for second_position in range(start_codon_position + 3,
+                                                     (useq_record.annotations["length"] - 3) + 1, 3):
+                            second_codon = useq_record.seq[second_position:second_position + 3]
                             if second_codon.upper() in self.codon_table.stop_codons:
                                 stop_codon_position = second_position
-                                length = stop_codon_position - start_codon_position
-                                distance = (len(useq['record'].seq) - self.parameters.arguments[
-                                    "downstream_region_length"]) - (stop_codon_position)
-                                id = f"{useq['locus_id']}|{useq['accession_number']}|" \
-                                     f"{distance}"
-                                # id: locus_id|accession_number|distance_from_the_start_codon_to_the_main_orf
-                                name = f"{useq['name']}|{len(useq['record'].seq) - (start_codon_position + 1)}"
-                                # name: useq_name|distance_from_the_start_codon_to_the_main_orf
+                                orf_length = stop_codon_position - start_codon_position
+                                distance = (useq_record.annotations["length"] - self.parameters.arguments[
+                                    "downstream_region_length"]) - stop_codon_position
+                                if useq_record.annotations["RefSeq"]:
+                                    orf_id = f"{useq_record.annotations['locus_id']}|" \
+                                             f"{useq_record.annotations['accession_number']}|" \
+                                             f"{distance}"
+                                    orf_name = f"{useq_record.description}|{orf_id}"
+                                else:
+                                    distance = useq_record.annotations["length"] - stop_codon_position
+                                    orf_id = f"{useq_record.id}|{distance}"
+                                    if useq_record.description:
+                                        orf_name = f"{useq_record.description}|{orf_id}"
+                                    else:
+                                        orf_name = orf_id
                                 sd_window_start = max(
                                     [0, (start_codon_position - self.parameters.arguments["sd_window_length"])])
-                                current_orf = ORF(parameters=self.parameters, id=id, name=name, distance=distance,
-                                                  start=start_codon_position, stop=stop_codon_position,
-                                                  nt_sequence=useq["record"].seq[
-                                                              start_codon_position:stop_codon_position],
-                                                  sd_window_seq=useq["record"].seq[
-                                                                sd_window_start:start_codon_position],
-                                                  useq_index=useq_index)
+                                current_orf = ORF(parameters=self.parameters, id=orf_id, name=orf_name,
+                                                  distance=distance, start=start_codon_position,
+                                                  stop=stop_codon_position, useq_index=useq_index,
+                                                  nt_sequence=useq_record.seq[start_codon_position:stop_codon_position],
+                                                  sd_window_seq=useq_record.seq[sd_window_start:start_codon_position])
                                 if current_orf.length >= self.parameters.arguments["min_orf_length"]:
-                                    useq["ORFs"].append(current_orf)
-                                    if self.parameters.arguments["check_assembly_annotation"]:
-                                        for cds in useq["locus_annotation"].CDSs:
+                                    useq_record.annotations["ORFs"].append(current_orf)
+                                    if self.parameters.arguments["check_assembly_annotation"] and \
+                                            useq_record.annotations["RefSeq"]:
+                                        for cds in useq_record.annotations["locus_annotation"].CDSs:
                                             if current_orf.stop == cds["relative_stop"] and (
                                                     (current_orf.start - cds["relative_start"]) % 3 == 0):
                                                 the_same_stop = 1
@@ -575,13 +602,12 @@ class Homologues:
                                                         current_orf.annotation += " (extension)"
                                                     else:
                                                         current_orf.annotation += " (truncation)"
-                                    for annotated_orfs in useq["ORFs"]:
+                                    for annotated_orfs in useq_record.annotations["ORFs"]:
                                         if current_orf.stop == annotated_orfs.stop and \
                                                 current_orf.id != annotated_orfs.id:
                                             current_orf.extended_orfs.append(annotated_orfs.id)
                                 break
-
-            number_of_orfs = sum(len(i["ORFs"]) for i in self.upstream_sequences)
+            number_of_orfs = sum(len(i.annotations["ORFs"]) for i in self.records)
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF was annotated in upstream sequences."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
@@ -600,16 +626,16 @@ class Homologues:
 
         """
         try:
-            for useq in self.upstream_sequences:
-                orf_list = useq["ORFs"]
+            for useq_record in self.records:
+                orf_list = useq_record.annotations["ORFs"]
                 filtered_orf_list = []
                 for orf in orf_list:
                     orf.calculate_energies()
                     if orf.min_energy < self.parameters.arguments["sd_energy_cutoff"]:
                         filtered_orf_list.append(orf)
-                useq["ORFs"] = filtered_orf_list
+                useq_record.annotations["ORFs"] = filtered_orf_list
 
-            number_of_orfs = sum(len(i["ORFs"]) for i in self.upstream_sequences)
+            number_of_orfs = sum(len(i.annotations["ORFs"]) for i in self.records)
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF left after filtering by SD annotation."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
@@ -641,12 +667,10 @@ class Homologues:
             output_dir_path = os.path.join(self.parameters.arguments["output_dir"], "annotated_ORFs")
             if not os.path.exists(output_dir_path):
                 os.mkdir(output_dir_path)
-            for useq in self.upstream_sequences:
-                orf_list = useq["ORFs"]
-                file_name = f"{useq['locus_id']}|{useq['accession_number']}" \
-                            f"_{useq['name'].replace(' ', '_').replace('/', '_')}"
+            for useq_record in self.records:
+                file_name = f"{useq_record.description}|{useq_record.id}".replace(' ', '_').replace('/', '_')
                 lines = [colnames]
-                for orf in orf_list:
+                for orf in useq_record.annotations["ORFs"]:
                     if not orf.extended_orfs:
                         extented_orfs_value = "NA"
                     else:
@@ -663,15 +687,14 @@ class Homologues:
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to save annotated uORFs.") from error
 
-    def conserved_orf_searching(self) -> dict:
+    def conserved_orf_searching(self) -> None:
         """Search for sets of conserved ORFs in upstream sequences.
 
         Note:
-            It returns a dict with conserved ORFs and updates the self.conserved_paths attribute.
+            This method updates the self.conserved_paths attribute.
 
         Returns:
-            dict: Dict with keys as lengths of ORFs' cluster and values as corresponding lists Path's objects.
-                (Path class holds list of ORFs from different upstream sequences and information about them).
+            None
 
         """
         try:
@@ -679,11 +702,10 @@ class Homologues:
                 print(f"🔎 Searching for conserved ORFs in upstream sequences...",
                       file=sys.stdout)
             lengths = []
-            for useq in self.upstream_sequences:
-                for orf in useq["ORFs"]:
+            for record in self.records:
+                for orf in record.annotations["ORFs"]:
                     lengths.append(orf.length)
             lengths = sorted(list(set(lengths)))
-
             global_aligner = Bio.Align.PairwiseAligner()
             global_aligner.mode = "global"
             global_aligner.match_score = self.parameters.arguments["global_match_score"]
@@ -693,16 +715,50 @@ class Homologues:
             global_aligner.target_end_gap_score = self.parameters.arguments["global_target_end_gap_score"]
             global_aligner.query_end_gap_score = self.parameters.arguments["global_query_end_gap_score"]
             length_variance = self.parameters.arguments["orf_length_group_range"]
+            number_of_useqs = len(self.records)
 
-            number_of_useqs = len(self.upstream_sequences)
+            if self.parameters.arguments["fast_searching"]:
+                filtered_orfs_dict = dict()
+                for length in lengths:
+                    if isinstance(self.parameters.arguments["orf_length_group_range"], float):
+                        length_variance = length * self.parameters.arguments["orf_length_group_range"]
+                    filtered_orfs = []
+                    useq_with_filtered_orfs = []
+                    for useq_index in range(number_of_useqs):
+                        useq_record = self.records[useq_index]
+                        for orf in useq_record.annotations["ORFs"]:
+                            if abs(length - orf.length) <= length_variance:
+                                filtered_orfs.append(orf)
+                                if useq_index not in useq_with_filtered_orfs:
+                                    useq_with_filtered_orfs.append(useq_index)
+                    if len(useq_with_filtered_orfs) / number_of_useqs >= self.parameters.arguments[
+                        "orfs_presence_cutoff"]:
+                        to_add = 1
+                        keys_to_remove = []
+                        for added_length in filtered_orfs_dict.keys():
+                            num_of_identical_elements = len(set(filtered_orfs) & set(filtered_orfs_dict[added_length]))
+                            fraction = num_of_identical_elements / min(len(filtered_orfs),
+                                                                       len(filtered_orfs_dict[added_length]))
+                            if fraction > 0.8:
+                                if len(filtered_orfs) >= len(filtered_orfs_dict[added_length]):
+                                    keys_to_remove.append(added_length)
+                                else:
+                                    to_add = 0
+                        for key_to_remove in keys_to_remove:
+                            filtered_orfs_dict.pop(key_to_remove)
+                        if to_add:
+                            filtered_orfs_dict[length] = filtered_orfs
+                lengths = list(filtered_orfs_dict.keys())
             conserved_paths = []
             for length in lengths:
+                if isinstance(self.parameters.arguments["orf_length_group_range"], float):
+                    length_variance = length * self.parameters.arguments["orf_length_group_range"]
                 useq_indexes_with_filtered_orfs = []
                 filtered_orfs = dict()
                 for useq_index in range(number_of_useqs):
-                    useq = self.upstream_sequences[useq_index]
+                    useq_record = self.records[useq_index]
                     filtered_orfs[useq_index] = []
-                    for orf in useq["ORFs"]:
+                    for orf in useq_record.annotations["ORFs"]:
                         if abs(length - orf.length) <= length_variance:
                             filtered_orfs[useq_index].append(orf)
                     orfs_ids = [i.id for i in filtered_orfs[useq_index]]
@@ -713,9 +769,15 @@ class Homologues:
                         useq_indexes_with_filtered_orfs.append(useq_index)
                 if len(useq_indexes_with_filtered_orfs) / number_of_useqs >= self.parameters.arguments[
                     "orfs_presence_cutoff"]:
-                    if len(filtered_orfs.keys()) > self.parameters.arguments["num_of_initial_genome_iteration"]:
+                    if self.parameters.arguments["fast_searching"]:
                         genome_iterator = random.sample(filtered_orfs.keys(),
-                                                        self.parameters.arguments["num_of_initial_genome_iteration"])
+                                                        max(1, round(self.parameters.arguments[
+                                                                         "fast_searching_fraction_of_initial_genomes"] *
+                                                                     len(useq_indexes_with_filtered_orfs))))
+                    elif len(filtered_orfs.keys()) > self.parameters.arguments["max_num_of_initial_genome_iteration"]:
+                        genome_iterator = random.sample(filtered_orfs.keys(),
+                                                        self.parameters.arguments[
+                                                            "max_num_of_initial_genome_iteration"])
                     else:
                         genome_iterator = filtered_orfs.keys()
                     for initial_useq in genome_iterator:
@@ -786,7 +848,7 @@ class Homologues:
             if self.parameters.arguments["verbose"]:
                 print(f"✅ {number_of_paths} sets of conserved ORFs were found.",
                       file=sys.stdout)
-            return conserved_paths
+            return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to perform searching for conserved uORFs.") from error
 
@@ -835,9 +897,15 @@ class Homologues:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🧮 Running MSA tool for conserved ORFs.", file=sys.stdout)
+                print(f"🧮 Running MSA tool ({self.parameters.arguments['msa_tool']}) for conserved ORFs.",
+                      file=sys.stdout)
             for path in self.conserved_paths:
-                path.muscle_msa()
+                if self.parameters.arguments["msa_tool"] == "muscle":
+                    path.muscle_msa()
+                elif self.parameters.arguments["msa_tool"] == "maft":
+                    path.maft_msa()
+                else:
+                    raise uorf4u.manager.uORF4uError("Invalid name of a msa tool. Check 'msa_tool' config parameter.")
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to get MSA of conserved uORFS.") from error
@@ -945,7 +1013,7 @@ class Homologues:
                 row = "\t".join(
                     [path.id, str(path.length), str(statistics.mean([i.distance for i in path.path])),
                      str(path.msa["aa"].get_alignment_length()), str(path.msa["nt"].get_alignment_length()),
-                     str(path.score), str(len(path)), str(round(len(path) / len(self.upstream_sequences), 3)),
+                     str(path.score), str(len(path)), str(round(len(path) / len(self.records), 3)),
                      str(path.msa_consensus["aa"]), str(path.msa_consensus["nt"]), ', '.join([i.id for i in path.path]),
                      ', '.join(annotations)])
                 rows.append(row)
@@ -1045,7 +1113,7 @@ class Homologues:
                 os.mkdir(output_dir)
             for path in self.conserved_paths:
                 output_file_name = f"{os.path.join(output_dir, path.id)}.pdf"
-                annotation_plot_manager = uorf4u.drawing.AnnotationPlotManager(path, self.upstream_sequences,
+                annotation_plot_manager = uorf4u.drawing.AnnotationPlotManager(path, self.records,
                                                                                self.parameters)
                 annotation_plot_manager.define_x_axis_coordinate_system()
                 annotation_plot_manager.create_tracks()
@@ -1281,8 +1349,8 @@ class Path:
             for orf in self.path:
                 # record_id = f"{orf.id}"
                 # record_description = f"{(orf.name.split('|')[0])}"
-                record_id = f"{(orf.name.split('|')[0]).replace(' ', '_')}"
-                record_description = f"{orf.id}"
+                record_id = f"{orf.name}"
+                record_description = ""
                 if seq_type == "nt":
                     record = Bio.SeqRecord.SeqRecord(orf.nt_sequence, record_id, "", record_description)
                 elif seq_type == "aa":
@@ -1306,6 +1374,50 @@ class Path:
                 self.length = msa.get_alignment_length()
             self.msa[seq_type], self.msa_consensus[seq_type] = msa, msa_consensus
 
+            avr_distance = str(round(statistics.mean([i.distance for i in self.path])))
+            self.id = f"length-{self.msa['nt'].get_alignment_length()}|score–{round(self.score)}|" \
+                      f"num_of_orfs-{len(self.path)}|avr_dist-{avr_distance}"
+        return None
+
+    def maft_msa(self) -> None:
+        """Run a multiple sequence alignment tool (MAFT) for the ORFs nucleotide and amino acid sequences.
+
+        Note:
+            This method updates nt_msa and aa_msa attributes.
+
+        Returns:
+            None
+
+        """
+        self.msa = dict()
+        for seq_type in self.parameters.arguments["sequences_to_write"]:
+            records = []
+            for orf in self.path:
+                # record_id = f"{orf.id}"
+                # record_description = f"{(orf.name.split('|')[0])}"
+                record_id = f"{orf.name}"
+                record_description = ""
+                if seq_type == "nt":
+                    record = Bio.SeqRecord.SeqRecord(orf.nt_sequence, record_id, "", record_description)
+                elif seq_type == "aa":
+                    record = Bio.SeqRecord.SeqRecord(orf.aa_sequence, record_id, "", record_description)
+                elif seq_type == "sd":
+                    record = Bio.SeqRecord.SeqRecord(orf.sd_window_seq, record_id, "", record_description)
+                records.append(record)
+            temp_input = tempfile.NamedTemporaryFile()
+            Bio.SeqIO.write(records, temp_input.name, "fasta")
+            temp_output = tempfile.NamedTemporaryFile()
+            maft = self.parameters.arguments["maft_binary"]
+            subprocess.run([maft, "--auto", temp_input.name], stdout=temp_output, stderr=subprocess.DEVNULL)
+            temp_input.close()
+            msa = Bio.AlignIO.read(temp_output.name, "fasta")
+            msa.sort(key=lambda r: r.description)
+            msa_info = Bio.Align.AlignInfo.SummaryInfo(msa)
+            msa_consensus = msa_info.gap_consensus(threshold=self.parameters.arguments["consensus_threshold"])
+            temp_output.close()
+            if seq_type == "nt":
+                self.length = msa.get_alignment_length()
+            self.msa[seq_type], self.msa_consensus[seq_type] = msa, msa_consensus
             avr_distance = str(round(statistics.mean([i.distance for i in self.path])))
             self.id = f"length-{self.msa['nt'].get_alignment_length()}|score–{round(self.score)}|" \
                       f"num_of_orfs-{len(self.path)}|avr_dist-{avr_distance}"
@@ -1400,10 +1512,10 @@ class Path:
                 pos_specific_dict[i] = [0 for j in range(msa_length)]
             for i in range(msa_length):
                 for element in pos_specific_score_matrix[i].keys():
-                    pos_specific_dict[element][i] = (pos_specific_score_matrix[i][element] / num_of_sequences)
+                    pos_specific_dict[element.upper()][i] = (pos_specific_score_matrix[i][element] / num_of_sequences)
             pos = [i for i in range(msa_length)]
             matrix_db = pandas.DataFrame(pos_specific_dict, index=pos)
-            used_alphabet = [k for k, v in pos_specific_dict.items() if sum(v) > 0]
+            # used_alphabet = [k for k, v in pos_specific_dict.items() if sum(v) > 0]
             max_value = 1
             if self.parameters.arguments["logo_type"] == 'information':
                 info_mat = logomaker.transform_matrix(matrix_db, from_type="probability", to_type="information")

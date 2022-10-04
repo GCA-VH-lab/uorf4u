@@ -6,42 +6,49 @@ import sys
 
 try:
     parameters = uorf4u.manager.Parameters()
-    parameters.load_config()
     parameters.parse_cmd_arguments()
-    if "accession_number" in parameters.arguments.keys():
-        refseq_protein = uorf4u.data_processing.RefSeqProtein(
-            accession_number=parameters.arguments['accession_number'],
-            parameters=parameters)
-        homologues_list = refseq_protein.blastp_searching_for_homologues()
-    if "homologues_list_file" in parameters.arguments.keys():
-        try:
-            with open(parameters.arguments["homologues_list_file"]) as hlf:
-                homologues_list = hlf.read().split('\n')
-        except:
-            raise uorf4u.manager.Ant4suorfError(f"Unable to parse the file with a list of homologous. Please, "
-                                                f"check your file: {parameters.arguments['homologous_list_file']}")
+    parameters.load_config(parameters.cmd_arguments["config_file"])
+    if "fasta" not in parameters.cmd_arguments.keys():
+        if "accession_number" in parameters.cmd_arguments.keys():
+            refseq_protein = uorf4u.data_processing.RefSeqProtein(
+                accession_number=parameters.arguments['accession_number'],
+                parameters=parameters)
+            homologues_list = refseq_protein.blastp_searching_for_homologues()
+        if "homologues_list_file" in parameters.cmd_arguments.keys():
+            try:
+                with open(parameters.arguments["homologues_list_file"]) as hlf:
+                    homologues_list = hlf.read().split('\n')
+            except Exception as error:
+                raise uorf4u.manager.uORF4uError(f"Unable to parse the file with a list of homologous. Please, "
+                                                 f"check your file: {parameters.arguments['homologues_list_file']}") \
+                    from error
 
-    if "homologues_list" in parameters.arguments.keys():
-        homologues_list = parameters.arguments["homologues_list"]
+        if "homologues_list" in parameters.cmd_arguments.keys():
+            homologues_list = parameters.arguments["homologues_list"]
 
-    homologues = uorf4u.data_processing.Homologues(homologues_list, parameters)
-    homologues.get_upstream_sequences()
-    homologues.save_upstream_sequences()
-    homologues.annotate_orfs()
-    homologues.filter_orfs_by_sd_annotation()  # add an argument to control
-    homologues.save_annotated_orfs()
-    homologues.conserved_orf_searching()
-    homologues.filter_out_similar_paths()
-    homologues.run_msa()
-    homologues.save_orfs_sequences()
-    homologues.save_msa()
-    homologues.save_results_summary_table()
-    homologues.plot_annotation()
-    homologues.plot_logo_figs()
-    homologues.plot_ggmsa_figs()
+        homologues = uorf4u.data_processing.Homologues(homologues_list, parameters)
+        upstream_sequences_records = homologues.get_upstream_sequences()
+    else:
+        upstream_sequences_records = uorf4u.methods.parse_fasta_file(parameters.arguments['fasta'], parameters)
+
+    upstream_seqs = uorf4u.data_processing.UpstreamSequences(upstream_sequences_records, parameters)
+    upstream_seqs.save_upstream_sequences()
+    upstream_seqs.annotate_orfs()
+    if parameters.arguments["filter_by_sd"]:
+        upstream_seqs.filter_orfs_by_sd_annotation()  # add an argument to control
+    upstream_seqs.save_annotated_orfs()
+    upstream_seqs.conserved_orf_searching()
+    upstream_seqs.filter_out_similar_paths()
+    upstream_seqs.run_msa()
+    upstream_seqs.save_orfs_sequences()
+    upstream_seqs.save_msa()
+    upstream_seqs.save_results_summary_table()
+    upstream_seqs.plot_annotation()
+    upstream_seqs.plot_logo_figs()
+    upstream_seqs.plot_ggmsa_figs()
 
 except Exception as e:
-    if parameters.arguments['debug']:
+    if parameters.arguments["debug"]:
         traceback.print_exc()
     else:
         for i in ((traceback.format_exc()).split('\n')):

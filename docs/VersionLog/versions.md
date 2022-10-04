@@ -1,6 +1,11 @@
 # Version log
 
-* **Ver 0.4.0** - 30 August 2022
+* **Ver 0.5.0** - 4 October 2022
+	* 'Eukaryotes' and 'Prokaryotes' mode were introduced.
+	* MSA now perfomed with MAFT.
+	* New cmd and configs parameters were added.
+	* Minor bugs were fixed.
+* Ver 0.4.0 - 30 August 2022
 	* Visualisation of loci annotation was added.
 	* Minor bugs were fixed.
 * Ver 0.3.1 - 17 August 2022

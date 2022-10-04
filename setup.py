@@ -4,7 +4,7 @@ with open("pypi.md", "r") as fh:
     long_description = fh.read()
 
 setup(name="uorf4u",
-      version="0.4.0.2",
+      version="0.4.1",
       description="A tool for short uORF annotation.",
       url="https://art-egorov.github.io/uorf4u/",
       author="Artyom Egorov",
@@ -15,7 +15,7 @@ setup(name="uorf4u",
                         "reportlab"],
       long_description=long_description,
       long_description_content_type="text/markdown",
+      include_package_data=True,
       scripts=["bin/uorf4u"],
       zip_safe=False,
-      package_data={"uorf4u": ["uorf4u_data/*", "uorf4u_data/fonts/*", "uorf4u_data/bin/*"]},
-      include_package_data=True)
+      package_data={"uorf4u": ["uorf4u_data/*", "uorf4u_data/fonts/*", "uorf4u_data/bin/*"]})

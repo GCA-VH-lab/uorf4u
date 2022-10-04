@@ -7,6 +7,7 @@ from reportlab.lib.units import cm, mm
 import reportlab.rl_config
 import reportlab.pdfbase.ttfonts
 import reportlab.pdfbase.pdfmetrics
+import Bio.Seq
 
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
@@ -31,8 +32,7 @@ class AnnotationPlotManager:
 
     """
 
-    def __init__(self, path, upstream_sequences: list,
-                 parameters: uorf4u.manager.Parameters):
+    def __init__(self, path, upstream_sequences: list, parameters: uorf4u.manager.Parameters):
         """Create a AnnotationPlotManager object.
 
         Arguments:
@@ -58,17 +58,17 @@ class AnnotationPlotManager:
         label_height = self.parameters.arguments["label_height_to_orf_height"] * self.parameters.arguments[
             "orf_height"] * cm
         label_font_size = uorf4u.methods.string_height_to_font_size(label_height, "regular", self.parameters.arguments)
-        max_label_width = max([reportlab.pdfbase.pdfmetrics.stringWidth(i["id"], "regular", label_font_size) for i in
-                               self.upstream_sequences])
-
         self.additional_data["label_font_size"] = label_font_size
         self.additional_data["ordered_upstream_sequences"] = [self.upstream_sequences[i] for i in
                                                               [orf.useq_index for orf in self.path.path]]
+        max_label_width = max([reportlab.pdfbase.pdfmetrics.stringWidth(i.annotations["label"], "regular",
+                                                                        label_font_size)
+                               for i in self.additional_data["ordered_upstream_sequences"]])
         self.additional_data["number_of_sequences"] = len(self.path)
         self.additional_data["max_upstream_sequence_length"] = max(
-            i["useq_upstream_region_length"] for i in self.additional_data["ordered_upstream_sequences"])
+            i.annotations["upstream_region_length"] for i in self.additional_data["ordered_upstream_sequences"])
         self.additional_data["max_downstream_sequence_length"] = max(
-            i["useq_downstream_region_length"] for i in self.additional_data["ordered_upstream_sequences"])
+            i.annotations["downstream_region_length"] for i in self.additional_data["ordered_upstream_sequences"])
         window_size_nt = self.additional_data["max_upstream_sequence_length"] + self.additional_data[
             "max_downstream_sequence_length"]
         if self.parameters.arguments["annotation_width"] == "auto":
@@ -112,13 +112,11 @@ class AnnotationPlotManager:
             self.coordinate_system["figure_height"] += track.needed_y_space()
             self.coordinate_system["figure_height"] += self.parameters.arguments["gap"] * cm
             # if index < self.additional_data["number_of_sequences"] - 1:
-
         axis_tics_loader = AxisLoader(self.parameters)
         axis_tics_loader.prepare_data(self.coordinate_system, self.additional_data)
         axis_tics_track = axis_tics_loader.create_track()
         self.tracks.append(axis_tics_track)
         self.coordinate_system["figure_height"] += axis_tics_track.needed_y_space()
-
         self.coordinate_system["figure_height"] += self.parameters.arguments["margin"] * cm
 
     def plot(self, filename):
@@ -201,6 +199,7 @@ class TitleVis(Track):
 
         Returns:
             float: needed vertical space.
+
         """
         font_type = self.parameters.arguments["title_font_type"]
         reportlab.pdfbase.pdfmetrics.registerFont(
@@ -294,7 +293,7 @@ class SequenceVis(Track):
         canvas.setFont("regular", self.visualisation_data["label_font_size"])
         y_l = y_c - 0.5 * (self.parameters.arguments["label_height_to_orf_height"] * orf_height)
         canvas.drawRightString(self.visualisation_data["coordinate_system"]["x_labels_stop"], y_l,
-                               self.visualisation_data["useq_id"])
+                               self.visualisation_data["useq_label"])
 
         # main_CDS
         canvas.setLineWidth(self.parameters.arguments["orf_line_width"])
@@ -320,7 +319,8 @@ class SequenceVis(Track):
                             orf_dict["left_out"], orf_dict["right_out"], fill_color, stroke_color)
 
         # Annotated in RefSeq CDSs
-        if self.parameters.arguments["check_assembly_annotation"]:
+        if self.parameters.arguments["check_assembly_annotation"] and \
+                "fasta" not in self.parameters.cmd_arguments.keys():
             fill_color = None
             stroke_color = uorf4u.methods.get_color("annotated_orf_stroke_color", self.parameters.arguments)
             for protein_id, cds_dict in self.visualisation_data["CDSs_coordinates_dict"].items():
@@ -580,7 +580,7 @@ class SequencesLoader(Loader):
         """
         super().__init__(parameters)
 
-    def prepare_data(self, upstream_sequence: dict, conserved_orf, coordinate_system: dict,
+    def prepare_data(self, upstream_sequence: Bio.SeqRecord.SeqRecord, conserved_orf, coordinate_system: dict,
                      additional_data: dict) -> dict:
         """Prepare data for a Title visualisation track.
 
@@ -600,8 +600,8 @@ class SequencesLoader(Loader):
         prepared_data["label_font_size"] = additional_data["label_font_size"]
         prepared_data["label_right_border"] = coordinate_system["x_labels_stop"]
         prepared_data["upstream_sequence_line_start_x"] = coordinate_system["x_annotation_start"] + \
-                                                          ((max_upstream_sequence_length - upstream_sequence[
-                                                              "useq_upstream_region_length"]) * \
+                                                          ((max_upstream_sequence_length -
+                                                            upstream_sequence.annotations["upstream_region_length"]) * \
                                                            coordinate_system["transformation_coef"])
         prepared_data["upstream_sequence_line_stop_x"] = coordinate_system["x_annotation_start"] + \
                                                          (max_upstream_sequence_length *
@@ -611,23 +611,23 @@ class SequencesLoader(Loader):
                                              coordinate_system["transformation_coef"])
         prepared_data["main_CDS_stop_x"] = coordinate_system["x_annotation_start"] + \
                                            ((max_upstream_sequence_length +
-                                             upstream_sequence["useq_downstream_region_length"]) *
+                                             upstream_sequence.annotations["downstream_region_length"]) *
                                             coordinate_system["transformation_coef"])
 
         prepared_data["orfs_coordinates_dict"] = {k: v for k, v in
-                                                  zip(upstream_sequence["ORFs"],
+                                                  zip(upstream_sequence.annotations["ORFs"],
                                                       [self.calculate_orf_position(i.start, i.stop, "+",
                                                                                    upstream_sequence,
                                                                                    max_upstream_sequence_length,
                                                                                    coordinate_system) for i in
-                                                       upstream_sequence["ORFs"]])}
-        prepared_data["useq_id"] = upstream_sequence["id"]
-        prepared_data["annotated_orfs"] = [orf for orf in upstream_sequence["ORFs"] if orf != conserved_orf]
+                                                       upstream_sequence.annotations["ORFs"]])}
+        prepared_data["useq_label"] = upstream_sequence.annotations["label"]
+        prepared_data["annotated_orfs"] = [orf for orf in upstream_sequence.annotations["ORFs"] if orf != conserved_orf]
         prepared_data["annotated_orfs"].append(conserved_orf)
         prepared_data["conserved_orf"] = conserved_orf
-        if self.parameters.arguments["check_assembly_annotation"]:
-            prepared_data["CDSs"] = [i for i in upstream_sequence["locus_annotation"].CDSs if
-                                     i["relative_start"] != upstream_sequence["useq_upstream_region_length"]]
+        if self.parameters.arguments["check_assembly_annotation"] and upstream_sequence.annotations["RefSeq"]:
+            prepared_data["CDSs"] = [i for i in upstream_sequence.annotations["locus_annotation"].CDSs if
+                                     i["relative_start"] != upstream_sequence.annotations["upstream_region_length"]]
             prepared_data["CDSs_coordinates_dict"] = {k: v for k, v in
                                                       zip([i["protein_id"] for i in
                                                            prepared_data["CDSs"]],
@@ -644,8 +644,8 @@ class SequencesLoader(Loader):
 
         return prepared_data
 
-    def calculate_orf_position(self, start: int, stop: int, strand: str, useq: dict, max_upstream_sequence_length: int,
-                               coordinate_system: dict) -> dict:
+    def calculate_orf_position(self, start: int, stop: int, strand: str, useq: Bio.SeqRecord.SeqRecord,
+                               max_upstream_sequence_length: int, coordinate_system: dict) -> dict:
         """Transform an ORF's nucleotide coordinates to pdf's coordinates.
 
         Arguments:
@@ -661,15 +661,15 @@ class SequencesLoader(Loader):
         """
         orf_coordinates = dict()
         orf_coordinates["x_start"] = coordinate_system["x_annotation_start"] + (
-                max(0, start) + (max_upstream_sequence_length - useq["useq_upstream_region_length"])) * \
+                max(0, start) + (max_upstream_sequence_length - useq.annotations["upstream_region_length"])) * \
                                      coordinate_system["transformation_coef"]
         orf_coordinates["x_stop"] = coordinate_system["x_annotation_start"] + (
-                min(stop, useq["length"]) + (
-                max_upstream_sequence_length - useq["useq_upstream_region_length"])) * \
+                min(stop, useq.annotations["length"]) + (
+                max_upstream_sequence_length - useq.annotations["upstream_region_length"])) * \
                                     coordinate_system["transformation_coef"]
         orf_coordinates["strand"] = strand
         orf_coordinates["left_out"] = start < 0
-        orf_coordinates["right_out"] = stop > useq["length"]
+        orf_coordinates["right_out"] = stop > useq.annotations["length"]
         return orf_coordinates
 
     def create_track(self) -> SequenceVis:

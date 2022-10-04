@@ -1,30 +1,54 @@
 # Quickstart guide
 
 Here we present several examples of uorf4u usage and the respective command-line parameters.  
-This chapter based on the considering of well-known uORFs that can be cis-acting translation modulators (see a review article [Koreaki Ito et.al. 2013](https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026)).
+This chapter based on the considering of well-known uORFs that are known as translation and transcription regulators (see review articles: [Ito et.al. 2013](https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026) and [Dever et.al. 2020](https://www.annualreviews.org/doi/abs/10.1146/annurev-genet-112618-043822)).
 
-Before start, the necessary sample data as well as adjustable tool' configuration files are priveded by uorf4u at the post-install step:    
+**Before start:**  
+The necessary sample data as well as adjustable tool' configuration files are priveded by uorf4u at the post-install step:    
 `uorf4u --data`   
+**If you work on a Linux machine** after installation you should run:  
+`uorf4u --linux`.  
+This command replaces the tools paths (maft, muscle) in the premade config files from the MacOS' version (default) to the Linux'. 
 
 
-## ErmCL 
+## Procaryotes. *vmlR*.  
 
-One of the well-known bacterial upstream ORFs that regulates its downstream frame is ErmCL. Inducible expression of the downstream Erm resistance gene relies on ribosome stalling on the uORF (ErmCL). Molecular mechanism of ribosome stalling based on the presence of so-called ribosome arrest peptide (RAP) in the ErmCL amino acid sequence. RAPs act in nascent states through interaction with ribosome that leads to translation arrest.  
-RAP-mediated regulations based on presence a particular amino acid sequence (also known as arrest-essential amino acids). For ErmCL (19 codons length) this sequence is **IFVI** (see the [review](https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026) for more detailed introduction). 
+'Prokayotic' example in our guide is based on recently described and extrimely short uORF of antibiotic resistance gene *vmlR*. In this case, antibiotic-induced ribosome stalling during translation of an upstream open reading frame in the *vmlR* leader region prevents formation of an anti-antiterminator structure, leading to the formation of an antiterminator structure that prevents intrinsic termination. *For details see article [Takada et. al., 2022](https://doi.org/10.1093/nar/gkac497)*. 
 
-To test whether uorf4u will be able to find this ORF we can use only accession number of ErmC protein as input! The searching result for "ErmC" in ncbi protein database gives us the RefSeq id: *WP_001003263.1*, which can be directly used for our searching:  
-`uorf4u -an WP_001003263.1 -verbose -o ErmC `  
-*Note:* `-verbose` and `-o` parameters are optional. `-verbose` used to show all progress messages, `-o` - to specify output folder name (by default it's uorf4u_{current_data} e.g. uorf4u_2022_08_09-15_00).  
-
-The results will be saved to the ErmC folder with the following structure:
-
-<img  src="img/output.svg" width="400"/>
-
-Searching with default parameters returns us only one set of conserved ORFs. Let's have a look at the respective amino acid sequence logo and annotation plot (only header of the output figure is shown below for the annotation plot). Fortunately, we can see that one of the most conserved region of the sequence is expected IFVI arrest-essential amino acids. 🥳
-
-<img  src="img/ermcl_output.svg" width="500"/>
+<img  src="img/vmlr_article.jpeg" width="500"/>
 
 
+To test whether uorf4u will be able to find this ORF we can use only the accession number of Vmlr protein as input! The searching result for Vmlr in the NCBI protein database gives us the RefSeq id: *WP_024026878.1*, that can beused for for our command:  
+`uorf4u -an WP_024026878.1 -bh 500 -bpid 0.7 -ul 300  -mna 1 -fast -c prokaryotes -o Vmlr`  
 
----
+*What do all these arguments mean? 🤔*  
+All arguments, except `-an`, are optional and were used in this example for demonstration.  
+`-bh` parameter overrides the max number of blastp hits in homology search [default: 200]. `-bpid` updates the cutoff for sequence identity between a hit and the query [default: 0.5]. With `-ul` parameter we can specify length of upstream regions to retrieve [default: 1000]. `-mna` parameter the most tricky here: it's used to limit the number of assemblies taken in the analysis from the NCBI indentical protein database. If there are more sequences in which a protein is annotated than we specifed then random sampling will be used to take only a subset of them. `-fast` argument activates the fast searching algorithm which is quite used for a big set of sequences (>~400). To set a path or name of a premade configuration file we use `-c` parameter. By default the tool uses 'prokaryotes' premade file, in this example we used it to make it clear. Output folder dir can be set with `-o` [by default it's uorf4u_{current_data} e.g. uorf4u_2022_08_09-15_00].  
+
+The results will be saved to the Vmlr folder with the following structure:
+
+<img  src="img/output.svg" width="380"/>
+
+The uORF was annotated in 450 upstream sequences of 453 identify homologous genes. Let's have a look at the respective amino acid sequence logo and annotation plot (only few sequences of the output figure is shown below for the annotation plot). Fortunately, we found that we expected.  🥳
+
+<img  src="img/vmlr_results.svg" width="350"/>
+
+
+
+## Eukaryotes. ATF4.
+
+The scanning mechanism is the key difference in eukaryotic translation initiation from prokayotic where ribosome binds directly to the SD sequence near a start codon. Usually, eaukaryotic uORFs' regulatation based on scanning ribosome stop mechanism that blocks the downstream ORF translation, or on efficasy of reinitiation [see reviews cited above for details].  
+One of the well-known case of such regulation is about stress-related transcription factor ATF4. The ATF4 mRNA contains two uORFs, the first one is extrimely short and the second one is overlapped with ATF4 main ORF (mORF). Under normal conditions, ribosome reinitiates on the second uORF resulting in inhibitory of the mORF. Under stress condition with phosporylated eIF2alpha and low eIF2-GTP level a ribosome during scanning after first termination in uORF1 usually pasts uORF2 and reinitiates on ATF4 mORF start codon.  
+
+Only few changes in the analysis pipeline are needed to handle such case properly: 1. We shouldn't filter uORFs by SD sequence presence. 2. While sequences retriving for found homologs we should take only mRNAs (the tool uses regex to handle that, *refseq_sequences_regex* in the config files. For eukaryotes it's set as '^[NX]M\_.*' that means that only sequences ids of that start with NM\_ or XM\_ (mRNAs) will be taken in the analysis.) 
+
+You don't need to set up it manually, as it was mentioned before uORF4u has two premade configuration files named *prokaryotes* and *eukaryotes*. All you need is just to tell the tool if you're analysing eukaryotic protein(s). 😉
+
+Finally, let's have a look at the command:  
+`uorf4u -an NP_877962.1 -bh 500 -mna 1 -c eukaryotes -o ATF4_documentation ` 
+
+All arguments used here were already described above.  
+The uORF1 and uORF2 were annotated in 272 and 285 upstream sequences, repspectively. The nucleotide sequence logo of the uORF1 and a small subset of sequences from the annotation plot are shown below:  
+
+<img  src="atf4_results.svg" width="350"/>
 

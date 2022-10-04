@@ -1,4 +1,4 @@
-uorf4u (version 0.4.0): a bioinformatics tool for annotation conserved upstream ORFs.
+uorf4u (version 0.5.0): a bioinformatics tool for annotation conserved upstream ORFs.
 
 COMMAND-LINE PARAMETERS
 _____________________________
@@ -19,37 +19,60 @@ _____________________________
 -hlf <file.txt>
 	Path to a file with list of accession numbers. File format:
 	one accession number per line, no header.
+  OR
+-fa <file.fa>
+    Path to a fasta file with upstream sequences.
+
 _____________________________
 [OPTIONAL ARGUMENTS]
+-bh <number_of_hits>
+    Max number of blastp hits in homologous search.
+-bpid <identity_cutoff>
+    blastp searching cutoff for hit's identity to your query protein.
+-mna <number_of_assemblies>
+    Max number of assemblies to take into analysis for each protein.
+    If there are more sequences in the identical protein database then
+    random sampling will be used.
 -al <path_to/assemblies_list.tsv>
 	Path to an assemblies list file (see documentation for details).
+-annot
+    Retrieve sequences annotation from the NCBI to be sure that
+    annotated uORFs are not overlapped with a known CDS [default: false].
 -ul <length>
-    Length of upstream sequences to retrieve for homologous.
--bh <number_of_hits>
-    Max number of blastp hits in homologous searching.
--at <aa|nt>
-	Alignment type used by uorf4u for conserved ORFs searching [default: aa]
+    Length of upstream sequences.
+-dl <length>
+    Length of downstream sequences.
 -asc
     Include alternative start codons in uORF annotation step.
     List of alternative start codons are taken from the ncbi genetic code.
--c <file.cfg>
-	Path to a configuration file [default: internal].
+-nsd
+    Deactivate filtering ORFs by SD sequence presence.
+    [default is True for 'prokaryotes' config and False for 'eukaryotes' config]
+-at <aa|nt>
+	Alignment type used by uorf4u for conserved ORFs searching [default: aa]
+-fast
+    Fast searching mode with less accuracy (>~300 sequences or >~2000 ORFs).
+-c prokaryotes|eukaryotes|<file.cfg>
+	Path to a configuration file or name of a premade config file
+	[default: prokaryotes].
 -o <name> 
-	Output dirname. It will be created if it's not exist.
+	Output dir name. It will be created if it's not exist.
 	All output dirs will be then created in this folder
 	[default: uorf4u_{current_date}; e.g. uorf4u_2022_07_25-20_41].
 _____________________________
 [MISCELLANEOUS ARGUMENTS]
 -h, --help
-	Show this help message and exit
+	Show this help message and exit.
 -v, --version
-	Show program version
+	Show program version.
 --debug
-	Provide detailed stack trace for debugging purposes
---verbose 
-	Show all progress messages
+	Provide detailed stack trace for debugging purposes.
+--quiet
+	Don't show progress messages.
 
 ___________________________________________
-[SIMPLE EXAMPLE WITH MINIMAL ARGUMENTS]
-Searching for the known ErmC' uORF called ErmCL: 
-uorf4u -an WP_001003263.1 -verbose
+[SIMPLE EXAMPLES WITH MINIMAL ARGUMENTS]
+- Searching for the known ErmC' uORF called ErmCL:
+  uorf4u -an WP_001003263.1
+- Searching for ATF4' uORFs:
+  uorf4u -an NP_001666.2 -c eukaryotes
