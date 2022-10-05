@@ -1,6 +1,6 @@
-# Quickstart guide
+# Example-driven guide
 
-Here we present several examples of uorf4u usage and the respective command-line parameters.  
+Here we present several examples of uorf4u command-line version usage and the respective command-line parameters.  
 This chapter based on the considering of well-known uORFs that are known as translation and transcription regulators (see review articles: [Ito et.al. 2013](https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026) and [Dever et.al. 2020](https://www.annualreviews.org/doi/abs/10.1146/annurev-genet-112618-043822)).
 
 **Before start:** The necessary sample data as well as adjustable tool' configuration files are provided by uorf4u at the post-install step:    
@@ -9,7 +9,7 @@ This chapter based on the considering of well-known uORFs that are known as tran
 This command replaces the tools paths (maft, muscle) in the pre-made config files from the MacOS' version (default) to the Linux'. 
 
 
-## Prokaryotes. *vmlR*.  
+## Prokaryotes: *vmlR*  
 
 'Prokaryotic' example in our guide is based on recently described and extremely short uORF of antibiotic resistance gene *vmlR*. In this case, antibiotic-induced ribosome stalling during translation of an upstream open reading frame in the *vmlR* leader region prevents formation of an anti-antiterminator structure, leading to the formation of an antiterminator structure that prevents intrinsic termination. *For the details see article [Takada et. al., 2022](https://doi.org/10.1093/nar/gkac497)*. 
 
@@ -33,7 +33,7 @@ The uORF was annotated in 450 upstream sequences of 453 identify homologous gene
 
 
 
-## Eukaryotes. ATF4.
+## Eukaryotes: *ATF4*
 
 The scanning mechanism is the key difference in eukaryotic translation initiation from prokaryotic where ribosome binds directly to the SD sequence near a start codon. Usually, eukaryotic uORFs' regulation based on scanning ribosome stop mechanism that blocks the downstream ORF translation or on reinitiation efficacy[see reviews cited above for details].  
 One of the well-known cases of such regulation is translation regulation of stress-related transcription factor ATF4. The ATF4 mRNA contains two uORFs, the first one is extremely short and located at a distance ~200nt from the ATF4 main ORF (mORF), while the second one is overlapped with mORF. Under normal conditions, ribosome reinitiates on the second uORF resulting in inhibitory of the mORF. Under stress condition with phosphorylated eIF2alpha and low eIF2-GTP level a ribosome during scanning after first termination in uORF1 usually pasts uORF2 and reinitiates on ATF4 mORF start codon. A protein encoded by ATF4 mORF under stress conditions then can change transcription profile of a wide range of adaptive genes.
@@ -43,7 +43,7 @@ Only few changes in the analysis pipeline are needed to handle eukaryotic analys
 You don't need to set up it manually, as it was mentioned before, uORF4u has two pre-made configuration files named *prokaryotes* and *eukaryotes*. All you need is just to tell the tool that you're analysing eukaryotic protein(s). 😉
 
 Finally, let's have a look at the command and results:  
-`uorf4u -an NP_877962.1 -bh 500 -mna 1 -c eukaryotes -o ATF4_documentation ` 
+`uorf4u -an NP_877962.1 -bh 500 -mna 1 -c eukaryotes -o ATF4` 
 
 All arguments used here were already described above.  
 The uORF1 and uORF2 were annotated in 272 and 285 upstream sequences, repspectively. The nucleotide sequence logo of the uORF1 and a small subset of sequences from the annotation plot are shown below:  

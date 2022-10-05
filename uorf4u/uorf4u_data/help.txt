@@ -7,6 +7,9 @@ _____________________________
     Creates the 'uorf4u_data' folder in the current working directory.
     The folder contains adjustable configuration files used by uorf4u
     (e.g. config, SD-aSD energies table, palettes...).
+--lunux
+    Replaces the tools paths in the premade config files from the MacOS'
+    version [default] to the Linux'.
 _____________________________
 [MANDATORY ARGUMENTS]
 -an <accession_number>	

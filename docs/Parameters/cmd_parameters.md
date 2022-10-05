@@ -9,7 +9,7 @@ The folder will contain the adjustable configuration file templates, palettes, t
 
 - `--linux`  
 **All Linux user should run it only once after installation.**  
-Replaces the tools paths (maft, muscle) in the premade config files from the MacOS' version [default] to the Linux'.
+Replaces the tools paths in the premade config files from the MacOS' version [default] to the Linux'.
  
 
 **MANDATORY ARGUMENTS**

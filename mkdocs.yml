@@ -8,21 +8,21 @@ edit_uri: ''  #disables edit button
 theme:
     name: material
     custom_dir: docs/material
+    favicon: assets/images/uorf4u_favicon.png
     palette:
     # Palette toggle for light mode
       - scheme: default
-        primary: blue grey
-        accent: teal
+        primary: grey
+        accent: yellow
     icon:
       logo: uorf4u_logo
 
     features:
         - content.code.annotate
-        - navigation.tabs.sticky
         - announce.dismiss
         - navigation.tabs
         - toc.integrate
-
+        - header.autohide
 
 extra_css:
 - css/material.css
@@ -31,7 +31,7 @@ extra_css:
 
 nav:
   - Home: index.md
-  - Quickstart guide: Quickstart/quickstart_guide.md
+  - Example-driven guide: ExampleDrivenGuide/cmd_guide.md
   - Parameters:
     - Command-line parameters: Parameters/cmd_parameters.md
     - Configuration file parameters: Parameters/config_parameters.md
@@ -79,7 +79,12 @@ plugins:
           show_category_heading: False
           merge_init_into_class: False
           docstring_section_style: list
-
+ - exclude:
+        glob:
+            - assets/images/favicon.png
 
 extra:
   generator: false
+  analytics:
+    provider: google
+    property: G-MD28PTNXBF

@@ -897,15 +897,10 @@ class UpstreamSequences:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🧮 Running MSA tool ({self.parameters.arguments['msa_tool']}) for conserved ORFs.",
+                print(f"🧮 Running MSA for conserved ORFs.",
                       file=sys.stdout)
             for path in self.conserved_paths:
-                if self.parameters.arguments["msa_tool"] == "muscle":
-                    path.muscle_msa()
-                elif self.parameters.arguments["msa_tool"] == "maft":
                     path.maft_msa()
-                else:
-                    raise uorf4u.manager.uORF4uError("Invalid name of a msa tool. Check 'msa_tool' config parameter.")
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to get MSA of conserved uORFS.") from error
