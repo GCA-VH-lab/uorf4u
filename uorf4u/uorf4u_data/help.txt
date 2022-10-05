@@ -8,7 +8,7 @@ _____________________________
     The folder contains adjustable configuration files used by uorf4u
     (e.g. config, SD-aSD energies table, palettes...).
 --lunux
-    Replaces the tools paths in the premade config files from the MacOS'
+    Replaces the tools paths in the pre-made config files from the MacOS'
     version [default] to the Linux'.
 _____________________________
 [MANDATORY ARGUMENTS]
@@ -50,7 +50,7 @@ _____________________________
     List of alternative start codons are taken from the ncbi genetic code.
 -nsd
     Deactivate filtering ORFs by SD sequence presence.
-    [default is True for 'prokaryotes' config and False for 'eukaryotes' config]
+    [default is True for 'prokaryotes' config and False for 'eukaryotes' config].
 -at <aa|nt>
 	Alignment type used by uorf4u for conserved ORFs searching [default: aa]
 -fast
@@ -72,10 +72,3 @@ _____________________________
 	Provide detailed stack trace for debugging purposes.
 --quiet
 	Don't show progress messages.
-
-___________________________________________
-[SIMPLE EXAMPLES WITH MINIMAL ARGUMENTS]
-- Searching for the known ErmC' uORF called ErmCL:
-  uorf4u -an WP_001003263.1
-- Searching for ATF4' uORFs:
-  uorf4u -an NP_001666.2 -c eukaryotes

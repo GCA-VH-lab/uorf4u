@@ -1,10 +1,10 @@
 from setuptools import setup
 
-with open("pypi.md", "r") as fh:
+with open("uorf4u/docs/pypi.md", "r") as fh:
     long_description = fh.read()
 
 setup(name="uorf4u",
-      version="0.5.0",
+      version="0.5.0.4",
       description="A tool for short uORF annotation.",
       url="https://art-egorov.github.io/uorf4u/",
       author="Artyom Egorov",
@@ -15,7 +15,7 @@ setup(name="uorf4u",
                         "reportlab"],
       long_description=long_description,
       long_description_content_type="text/markdown",
+      package_data={"uorf4u": ["docs/pypi.md", "uorf4u_data/*", "uorf4u_data/fonts/*", "uorf4u_data/bin/*"]},
       include_package_data=True,
       scripts=["bin/uorf4u"],
-      zip_safe=True,
-      package_data={"uorf4u": ["uorf4u_data/*", "uorf4u_data/fonts/*", "uorf4u_data/bin/*"]})
+      zip_safe=True)
