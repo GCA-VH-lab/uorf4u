@@ -3,7 +3,6 @@ site/
 docs/templates/
 docs/material
 .*
-!/.gitignore
 __pycache__
 build/
 dist/
