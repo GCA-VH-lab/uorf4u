@@ -13,7 +13,7 @@
     
     
       
-        <title>Example Drived Guide - uorf4u</title>
+        <title>Example-driven guide - uorf4u</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quickstart-guide" class="md-skip">
+        <a href="#example-driven-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -135,7 +135,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Example Drived Guide
+              Example-driven guide
             
           </span>
         </div>
@@ -234,7 +234,7 @@
 
   <li class="md-tabs__item">
     <a href="./" class="md-tabs__link md-tabs__link--active">
-      Example Drived Guide
+      Example-driven guide
     </a>
   </li>
 
@@ -384,12 +384,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Example Drived Guide
+          Example-driven guide
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Example Drived Guide
+        Example-driven guide
       </a>
       
         
@@ -409,14 +409,14 @@
       
         <li class="md-nav__item">
   <a href="#prokaryotes-vmlr" class="md-nav__link">
-    Prokaryotes. vmlR.
+    Prokaryotes: vmlR
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#eukaryotes-atf4" class="md-nav__link">
-    Eukaryotes. ATF4.
+    Eukaryotes: ATF4
   </a>
   
 </li>
@@ -582,14 +582,14 @@
                 
 
 
-<h1 id="quickstart-guide">Quickstart guide</h1>
-<p>Here we present several examples of uorf4u usage and the respective command-line parameters.<br />
+<h1 id="example-driven-guide">Example-driven guide</h1>
+<p>Here we present several examples of uorf4u command-line version usage and the respective command-line parameters.<br />
 This chapter based on the considering of well-known uORFs that are known as translation and transcription regulators (see review articles: <a href="https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026">Ito et.al. 2013</a> and <a href="https://www.annualreviews.org/doi/abs/10.1146/annurev-genet-112618-043822">Dever et.al. 2020</a>).</p>
 <p><strong>Before start:</strong> The necessary sample data as well as adjustable tool' configuration files are provided by uorf4u at the post-install step:  <br />
 <code>uorf4u --data</code> <br />
 <strong>If you work on a Linux machine</strong> after installation you should run: <code>uorf4u --linux</code><br />
 This command replaces the tools paths (maft, muscle) in the pre-made config files from the MacOS' version (default) to the Linux'. </p>
-<h2 id="prokaryotes-vmlr">Prokaryotes. <em>vmlR</em>.</h2>
+<h2 id="prokaryotes-vmlr">Prokaryotes: <em>vmlR</em></h2>
 <p>'Prokaryotic' example in our guide is based on recently described and extremely short uORF of antibiotic resistance gene <em>vmlR</em>. In this case, antibiotic-induced ribosome stalling during translation of an upstream open reading frame in the <em>vmlR</em> leader region prevents formation of an anti-antiterminator structure, leading to the formation of an antiterminator structure that prevents intrinsic termination. <em>For the details see article <a href="https://doi.org/10.1093/nar/gkac497">Takada et. al., 2022</a></em>. </p>
 <p><img  src="img/vmlr_article.jpeg" width="650"/> </p>
 <p>To test whether uorf4u will be able to find this uORF we can use only the accession number of <em>Vmlr</em> protein as input! The searching results for <em>Vmlr</em> in the NCBI protein database gives us the RefSeq id: <em>WP_024026878.1</em> that can be used for our command:<br />
@@ -601,13 +601,13 @@ All arguments, except <code>-an</code>, are optional and were used in this examp
 <p><img  src="img/output.png" width="380"/></p>
 <p>The uORF was annotated in 450 upstream sequences of 453 identify homologous genes. Let's have a look at the respective amino acid sequence logo and annotation plot (only few sequences of the output figure is shown below for the annotation plot). Fortunately, we found that we expected.  🥳</p>
 <p><img  src="img/vmlr_results.png" width="370"/></p>
-<h2 id="eukaryotes-atf4">Eukaryotes. ATF4.</h2>
+<h2 id="eukaryotes-atf4">Eukaryotes: <em>ATF4</em></h2>
 <p>The scanning mechanism is the key difference in eukaryotic translation initiation from prokaryotic where ribosome binds directly to the SD sequence near a start codon. Usually, eukaryotic uORFs' regulation based on scanning ribosome stop mechanism that blocks the downstream ORF translation or on reinitiation efficacy[see reviews cited above for details].<br />
 One of the well-known cases of such regulation is translation regulation of stress-related transcription factor ATF4. The ATF4 mRNA contains two uORFs, the first one is extremely short and located at a distance ~200nt from the ATF4 main ORF (mORF), while the second one is overlapped with mORF. Under normal conditions, ribosome reinitiates on the second uORF resulting in inhibitory of the mORF. Under stress condition with phosphorylated eIF2alpha and low eIF2-GTP level a ribosome during scanning after first termination in uORF1 usually pasts uORF2 and reinitiates on ATF4 mORF start codon. A protein encoded by ATF4 mORF under stress conditions then can change transcription profile of a wide range of adaptive genes.</p>
 <p>Only few changes in the analysis pipeline are needed to handle eukaryotic analysis properly: 1. We shouldn't filter annotated uORFs by SD sequence presence. 2. While sequences retrieving for found homologues we should take only mRNAs (the tool uses regex to perform that, <em>refseq_sequences_regex</em> in the config files. For eukaryotes it's set as '^[NX]M_.*' that means that only sequences with ids that start with NM_ or XM_ (mRNAs) will be taken in the analysis.) </p>
 <p>You don't need to set up it manually, as it was mentioned before, uORF4u has two pre-made configuration files named <em>prokaryotes</em> and <em>eukaryotes</em>. All you need is just to tell the tool that you're analysing eukaryotic protein(s). 😉</p>
 <p>Finally, let's have a look at the command and results:<br />
-<code>uorf4u -an NP_877962.1 -bh 500 -mna 1 -c eukaryotes -o ATF4_documentation</code> </p>
+<code>uorf4u -an NP_877962.1 -bh 500 -mna 1 -c eukaryotes -o ATF4</code> </p>
 <p>All arguments used here were already described above.<br />
 The uORF1 and uORF2 were annotated in 272 and 285 upstream sequences, repspectively. The nucleotide sequence logo of the uORF1 and a small subset of sequences from the annotation plot are shown below:  </p>
 <p><img  src="img/atf4_results.png" width="400"/></p>
