@@ -2,7 +2,7 @@
 
 * **Ver 0.5.1** - 6 October 2022
 	* Now compatible with python3.7 (previous versions were compatible only with python3.8+).
-* **Ver 0.5.0** - 4 October 2022
+* Ver 0.5.0 - 4 October 2022
 	* 'Eukaryotes' and 'Prokaryotes' mode were introduced.
 	* MSA now perfomed with MAFT.
 	* New cmd and configs parameters were added.
