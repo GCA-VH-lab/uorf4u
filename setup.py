@@ -4,7 +4,7 @@ with open("uorf4u/docs/pypi.md", "r") as fh:
     long_description = fh.read()
 
 setup(name="uorf4u",
-      version="0.5.0.4",
+      version="0.5.1",
       description="A tool for short uORF annotation.",
       url="https://art-egorov.github.io/uorf4u/",
       author="Artyom Egorov",

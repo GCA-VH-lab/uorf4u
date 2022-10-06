@@ -57,7 +57,8 @@ def get_color(name: str, parameters: dict) -> tuple:
         tuple: RGB color.
 
     """
-    return *hex_to_rgb(parameters[name]), parameters[f"{name}_alpha"]
+    rgb_color = *hex_to_rgb(parameters[name]), parameters[f"{name}_alpha"]
+    return rgb_color
 
 
 def hex_to_rgb(value: str) -> list:
@@ -80,7 +81,7 @@ def hex_to_rgb(value: str) -> list:
             f"Unable to convert color definition from HEX to RGB. Please check the palette config file.") from error
 
 
-def string_height_to_font_size(height: float, font_type: str, parameters: dict):
+def string_height_to_font_size(height: float, font_type: str, parameters: dict) -> float:
     """Transform string height to the font size.
 
     Arguments:

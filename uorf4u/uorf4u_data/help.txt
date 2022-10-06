@@ -1,4 +1,4 @@
-uorf4u (version 0.5.0): a bioinformatics tool for annotation conserved upstream ORFs.
+uorf4u (version 0.5.1): a bioinformatics tool for annotation conserved upstream ORFs.
 
 COMMAND-LINE PARAMETERS
 _____________________________
@@ -25,7 +25,6 @@ _____________________________
   OR
 -fa <file.fa>
     Path to a fasta file with upstream sequences.
-
 _____________________________
 [OPTIONAL ARGUMENTS]
 -bh <number_of_hits>

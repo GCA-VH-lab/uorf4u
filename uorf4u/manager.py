@@ -54,7 +54,7 @@ class Parameters:
         parser.add_argument("-fast", dest="fast_searching", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="prokaryotes")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.5.0')
+        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.5.1')
         parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
