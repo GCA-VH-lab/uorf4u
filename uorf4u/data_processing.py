@@ -608,6 +608,11 @@ class UpstreamSequences:
                                             current_orf.extended_orfs.append(annotated_orfs.id)
                                 break
             number_of_orfs = sum(len(i.annotations["ORFs"]) for i in self.records)
+            if self.parameters.arguments["fast_searchibg"] == "auto" and \
+                    (len(self.records) > 200 and number_of_orfs > 1000):
+                self.parameters.arguments["fast_searching"] = True
+            else:
+                self.parameters.arguments["fast_searching"] = False
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF was annotated in upstream sequences."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
@@ -900,7 +905,7 @@ class UpstreamSequences:
                 print(f"🧮 Running MSA for conserved ORFs.",
                       file=sys.stdout)
             for path in self.conserved_paths:
-                    path.maft_msa()
+                path.maft_msa()
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to get MSA of conserved uORFS.") from error
@@ -1457,13 +1462,13 @@ class Path:
             else:
                 seq_type = "aa"
 
-            output_file = os.path.abspath(os.path.join(output_dirs[s_type], f"{self.id}.pdf"))
+            output_dir = os.path.abspath(os.path.join(output_dirs[s_type]))
             input_file = os.path.abspath(os.path.join(fasta_files_dirs[s_type], f"{self.id}.fa"))
             num_sequences = len(current_msa)
             length_of_alignment = current_msa.get_alignment_length()
             page_width = (50 + length_of_alignment) * 5
             page_height = max(17, (num_sequences + 5) * 3)
-            subprocess.run(["Rscript", r_script_local, "--msa_fasta", input_file, "--output", output_file,
+            subprocess.run(["Rscript", r_script_local, "--msa_fasta", input_file, "--output", output_dir,
                             "--seq_type", seq_type, "--width", str(page_width), "--height", str(page_height)])
 
     def plot_logo(self) -> None:

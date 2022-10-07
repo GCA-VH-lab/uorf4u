@@ -68,7 +68,7 @@ if (opt$seq_type != "nt" & opt$seq_type != "aa") {
 }
 
 file_path <- opt$msa_fasta
-output = paste(opt$output, gsub(".fa$", '.pdf', basename(file_path)))
+output = file.path(opt$output, gsub(".fa$", '.pdf', basename(file_path)))
 color <- ifelse(opt$seq_type == "nt", "Chemistry_NT",
                 "Chemistry_AA")
 fig <- ggmsa(

@@ -1,5 +1,8 @@
-uorf4u (version 0.5.1): a bioinformatics tool for annotation conserved upstream ORFs.
-
+uorf4u (version 0.5.2):
+a bioinformatics tool for conserved upstream ORFs annotation.
+Home page and documentation:
+art-egorov.github.io/uorf4u
+-----------------------------
 COMMAND-LINE PARAMETERS
 _____________________________
 [POST-INSTALL DATA]
@@ -7,7 +10,7 @@ _____________________________
     Creates the 'uorf4u_data' folder in the current working directory.
     The folder contains adjustable configuration files used by uorf4u
     (e.g. config, SD-aSD energies table, palettes...).
---lunux
+--linux
     Replaces the tools paths in the pre-made config files from the MacOS'
     version [default] to the Linux'.
 _____________________________
@@ -29,7 +32,7 @@ _____________________________
 [OPTIONAL ARGUMENTS]
 -bh <number_of_hits>
     Max number of blastp hits in homologous search.
--bpid <identity_cutoff>
+-bid <identity_cutoff>
     blastp searching cutoff for hit's identity to your query protein.
 -mna <number_of_assemblies>
     Max number of assemblies to take into analysis for each protein.
@@ -54,7 +57,7 @@ _____________________________
 	Alignment type used by uorf4u for conserved ORFs searching [default: aa]
 -fast
     Fast searching mode with less accuracy (>~300 sequences or >~2000 ORFs).
--c prokaryotes|eukaryotes|<file.cfg>
+-c <prokaryotes|eukaryotes|<file.cfg>
 	Path to a configuration file or name of a premade config file
 	[default: prokaryotes].
 -o <name> 

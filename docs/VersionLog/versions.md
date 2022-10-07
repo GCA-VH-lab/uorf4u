@@ -1,6 +1,8 @@
 # Version log
-
-* **Ver 0.5.1** - 6 October 2022
+* **Ver 0.5.2** - 7 October 2022
+	* MSA tool's path bug was fixed.
+	* Fast searching now is set as 'auto'.
+* Ver 0.5.1 - 6 October 2022
 	* Now compatible with python3.7 (previous versions were compatible only with python3.8+).
 * Ver 0.5.0 - 4 October 2022
 	* 'Eukaryotes' and 'Prokaryotes' mode were introduced.

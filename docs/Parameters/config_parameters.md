@@ -34,7 +34,7 @@ uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u
 **check_assembly_annotation = False**; [bool] retrieve or not the NCBI sequences annotation to be sure that annotated uORFs are not overlapped with known CDSs (can be overriden by '-annot' cmd parameter).
 
 ***;[conserved ORFs searching]***  
-**fast_searching = False**; *[bool] use or not fast searching mode with less accuracy (needed for >~300 sequences or >~2000 ORFs). (can be overriden by '-fast' cmd parameter).*  
+**fast_searching = auto**; *[bool(true or false) or 'auto'] use or not fast searching mode with less accuracy (needed for >~200 sequences or >~2000 ORFs). Can be also set as auto [default]. (can be overriden by '-fast' cmd parameter).*  
 **fast_searching_fraction_of_initial_genomes = 0.3**; *[bool] fraction of input sequences that will be used as initial step in algorithm searching. Applied only if the fast_searching parameter is True.*    
 **orf_length_group_range = 0.25**; *[float or int] orf's lengths window within conserved uORFs set can be annotated. If it's a float value [0-1] then the radius of window is a set percentage of the claster's length, while if it's int then the window radius is fixed.*    
 **orfs_presence_cutoff = 0.5**; *[float] a set of ORFs will be returned only if they were found in a fraction of input sequences larger than this cutoff.*    

@@ -1,12 +1,12 @@
 # Example-driven guide
 
 Here we present several examples of uorf4u command-line version usage and the respective command-line parameters.  
-This chapter based on the considering of well-known uORFs that are known as translation and transcription regulators (see review articles: [Ito et.al. 2013](https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026) and [Dever et.al. 2020](https://www.annualreviews.org/doi/abs/10.1146/annurev-genet-112618-043822)).
+This chapter based on the considering of several uORFs that are known as translation and transcription regulators (see review articles about uORFs in prokaryotes and eukaryotes: [Ito et.al. 2013](https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026) and [Dever et.al. 2020](https://www.annualreviews.org/doi/abs/10.1146/annurev-genet-112618-043822)).
 
 **Before start:** The necessary sample data as well as adjustable tool' configuration files are provided by uorf4u at the post-install step:    
 `uorf4u --data`   
 **If you work on a Linux machine** after installation you should run: `uorf4u --linux`  
-This command replaces the tools paths (maft, muscle) in the pre-made config files from the MacOS' version (default) to the Linux'. 
+This command replaces the tools paths (maft) in the pre-made config files from the MacOS' version (default) to the Linux'. 
 
 
 ## Prokaryotes: *vmlR*  

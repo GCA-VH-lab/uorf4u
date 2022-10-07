@@ -37,7 +37,7 @@ Path to a file with list of accession numbers. File format: one accession number
 - `-bh` *number_of_hits*  
 Max number of blastp hits in homologous searching.
 
-- `-bpid` *identity_cutoff [0-1]*  
+- `-bid` *identity_cutoff [0-1]*  
 BlastP searching cutoff for hit's identity to your query protein.
 
 - `-mna` *number_f_assemblies*  
