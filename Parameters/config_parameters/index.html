@@ -503,8 +503,50 @@
   
   
     <li class="md-nav__item">
-      <a href="../../API/package/" class="md-nav__link">
-        uorf4u package
+      <a href="../../API/package_data_processing/" class="md-nav__link">
+        uorf4u.data_processing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API/package_manager/" class="md-nav__link">
+        uorf4u.manager
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API/package_drawing/" class="md-nav__link">
+        uorf4u.drawing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API/package_methods/" class="md-nav__link">
+        uorf4u.methods
       </a>
     </li>
   
@@ -573,7 +615,7 @@ uorf4u has two pre-made configuration files: <em>uorf4u_eukaryotes.cfg</em> and 
 <strong>sd_window_length = 20</strong>; <em>[int] length of a region for SD sequence search.</em>  <br />
 <strong>check_assembly_annotation = False</strong>; [bool] retrieve or not the NCBI sequences annotation to be sure that annotated uORFs are not overlapped with known CDSs (can be overriden by '-annot' cmd parameter).</p>
 <p><strong><em>;[conserved ORFs searching]</em></strong><br />
-<strong>fast_searching = False</strong>; <em>[bool] use or not fast searching mode with less accuracy (needed for &gt;~300 sequences or &gt;~2000 ORFs). (can be overriden by '-fast' cmd parameter).</em><br />
+<strong>fast_searching = auto</strong>; <em>[bool(true or false) or 'auto'] use or not fast searching mode with less accuracy (needed for &gt;~200 sequences or &gt;~2000 ORFs). Can be also set as auto [default]. (can be overriden by '-fast' cmd parameter).</em><br />
 <strong>fast_searching_fraction_of_initial_genomes = 0.3</strong>; <em>[bool] fraction of input sequences that will be used as initial step in algorithm searching. Applied only if the fast_searching parameter is True.</em>  <br />
 <strong>orf_length_group_range = 0.25</strong>; <em>[float or int] orf's lengths window within conserved uORFs set can be annotated. If it's a float value [0-1] then the radius of window is a set percentage of the claster's length, while if it's int then the window radius is fixed.</em>  <br />
 <strong>orfs_presence_cutoff = 0.5</strong>; <em>[float] a set of ORFs will be returned only if they were found in a fraction of input sequences larger than this cutoff.</em>  <br />
