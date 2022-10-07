@@ -37,7 +37,10 @@ nav:
     - Configuration file parameters: Parameters/config_parameters.md
   - API:
     - Usage examples: API/usage_examples.md
-    - uorf4u package: API/package.md
+    - uorf4u.data_processing: API/package_data_processing.md
+    - uorf4u.manager: API/package_manager.md
+    - uorf4u.drawing: API/package_drawing.md
+    - uorf4u.methods: API/package_methods.md
   - Version log: VersionLog/versions.md
 
 markdown_extensions:

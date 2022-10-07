@@ -608,7 +608,7 @@ class UpstreamSequences:
                                             current_orf.extended_orfs.append(annotated_orfs.id)
                                 break
             number_of_orfs = sum(len(i.annotations["ORFs"]) for i in self.records)
-            if self.parameters.arguments["fast_searchibg"] == "auto" and \
+            if self.parameters.arguments["fast_searching"] == "auto" and \
                     (len(self.records) > 200 and number_of_orfs > 1000):
                 self.parameters.arguments["fast_searching"] = True
             else:
