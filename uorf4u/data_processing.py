@@ -228,7 +228,7 @@ class RefSeqProtein:
             f.write("\n".join(table))
             if self.parameters.arguments["verbose"]:
                 print(f"✅ {len(hits_records_list) - 1} homologues were found. "
-                      f"💌 Summary table saved to: {output_filename}", file=sys.stdout)
+                      f"💌 Summary table was saved to: {output_filename}", file=sys.stdout)
             return hits_an_list
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to perform searching for homologues with blastp.") from error
@@ -291,16 +291,16 @@ class Locus:
                             main_start, main_stop = coordinates[0][0], coordinates[-1][-1]
                             if strand == "+":
                                 main_stop = main_stop - 3
-                                relative_start, relative_stop = main_start - start_b, main_stop - start_b
                             elif strand == "-":
                                 main_start = main_start + 3
-                                relative_start_r, relative_stop_r = main_start - start_b, main_stop - start_b
-                                useq_length = stop_b - start_b
-                                relative_start, relative_stop = useq_length - relative_stop_r, useq_length - relative_start_r
+                            relative_start, relative_stop = main_start - start_b, main_stop - start_b
                             if strand == target_strand:
                                 relative_strand = "+"
                             else:
                                 relative_strand = "-"
+                                useq_length = stop_b - start_b
+                            if target_strand == "-":
+                                relative_start, relative_stop = useq_length - relative_stop, useq_length - relative_start
                             if (start_b <= main_start < stop_b) or (start_b <= main_stop < stop_b):
                                 cds_seq = self.locus_record.seq[main_start:main_stop]
                                 if strand == '-':
@@ -360,7 +360,7 @@ class Homologues:
         """Get upstream sequences of proteins' genes.
 
         Note:
-            A protein may be found in several assemblies (for example in different strains).
+            A protein may be found in multiple assemblies (for example in different strains).
 
         Returns:
             list: List of Bio.SeqRecord.SeqRecord objects of upstream sequences.
@@ -392,7 +392,7 @@ class Homologues:
                 assemblies_table_file.close()
                 if len(list_of_protein_with_multiple_assemblies) > 0:
                     print(f"❗️Warning message:\n\tFor {len(list_of_protein_with_multiple_assemblies)} proteins "
-                          f"several assemblies were found in identical protein database\n"
+                          f"multiple assemblies were found in identical protein database\n"
                           f"\twith max number of assemblies per one protein as {max(numbers_of_assemblies)} 😱.\n\t"
                           f"A table with information about the assemblies was saved as a tsv file: "
                           f"{assemblies_table_path}.\n\tYou can edit it and remove lines with assemblies "
@@ -557,7 +557,7 @@ class UpstreamSequences:
                                                                         target_strand=useq_record.annotations["strand"])
                 useq_record.annotations["ORFs"] = []
                 for first_position in range((useq_record.annotations["length"] - self.parameters.arguments[
-                    "downstream_region_length"] - 3) + 1):
+                    "downstream_region_length"]) + 1):
                     first_codon = useq_record.seq[first_position:first_position + 3]
                     if first_codon.upper() in start_codons_list:
                         start_codon_position = first_position
@@ -665,8 +665,8 @@ class UpstreamSequences:
         """
         try:
             colnames = "\t".join(
-                ["id", "name", "length", "nt_sequence", "aa_sequence", "sd_sequence_window", "extended_orfs",
-                 "annotation"])
+                ["id", "name", "length", "nt_sequence", "aa_sequence", "sd_sequence_window", "SD-aSD energy",
+                 "extended_orfs", "annotation"])
             if not os.path.exists(self.parameters.arguments["output_dir"]):
                 os.mkdir(self.parameters.arguments["output_dir"])
             output_dir_path = os.path.join(self.parameters.arguments["output_dir"], "annotated_ORFs")
@@ -682,7 +682,7 @@ class UpstreamSequences:
                         extented_orfs_value = ';'.join(orf.extended_orfs)
                     lines.append("\t".join(
                         [orf.id, orf.name, str(orf.length), str(orf.nt_sequence), str(orf.aa_sequence),
-                         str(orf.sd_window_seq_str), extented_orfs_value, orf.annotation]))
+                         str(orf.sd_window_seq_str), str(orf.min_energy), extented_orfs_value, orf.annotation]))
                 with open(os.path.join(output_dir_path, f"{file_name}.tsv"), "w") as output:
                     output.write("\n".join(lines))
             if self.parameters.arguments["verbose"]:
@@ -1119,7 +1119,7 @@ class UpstreamSequences:
                 annotation_plot_manager.create_tracks()
                 annotation_plot_manager.plot(output_file_name)
             if self.parameters.arguments["verbose"]:
-                print(f"💌 Annotation figures were saved to the {output_dir} folder",
+                print(f"💌 Annotation figures were saved to the folder: {output_dir}",
                       file=sys.stdout)
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to plot loci' annotations figures.") from error
@@ -1244,7 +1244,7 @@ class ORF:
                     self.putative_sd_sequence = self.sd_window_seq[sd_start_position:sd_start_position + sd_seq_length]
                     self.sd_window_seq_str = (f"{self.sd_window_seq[0:sd_start_position].lower()}"
                                               f"{self.putative_sd_sequence.upper()}"
-                                              f"{self.sd_window_seq[sd_start_position:sd_start_position + sd_seq_length:].lower()}")
+                                              f"{self.sd_window_seq[sd_start_position + sd_seq_length:].lower()}")
 
         return None
 
@@ -1529,7 +1529,9 @@ class Path:
             logo.style_spines(spines=["left"], visible=True, linewidth=0.7)
             logo.ax.set_xticks([])
             logo.ax.set_yticks([0, max_value])
+            plt.show(block=False)
             plt.savefig(output_file)
-            plt.close(logo.fig)
+            plt.clf()
+            plt.close("all")
 
         return None
