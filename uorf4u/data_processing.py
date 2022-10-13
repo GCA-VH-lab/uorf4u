@@ -744,7 +744,7 @@ class UpstreamSequences:
                             num_of_identical_elements = len(set(filtered_orfs) & set(filtered_orfs_dict[added_length]))
                             fraction = num_of_identical_elements / min(len(filtered_orfs),
                                                                        len(filtered_orfs_dict[added_length]))
-                            if fraction > 0.8:
+                            if fraction > 0.8:  # to add as a config parameter
                                 if len(filtered_orfs) >= len(filtered_orfs_dict[added_length]):
                                     keys_to_remove.append(added_length)
                                 else:
@@ -776,9 +776,12 @@ class UpstreamSequences:
                     "orfs_presence_cutoff"]:
                     if self.parameters.arguments["fast_searching"]:
                         genome_iterator = random.sample(filtered_orfs.keys(),
-                                                        max(1, round(self.parameters.arguments[
-                                                                         "fast_searching_fraction_of_initial_genomes"] *
-                                                                     len(useq_indexes_with_filtered_orfs))))
+                                                        max(1, min(round(self.parameters.arguments["fast_searching_"
+                                                                                                   "fraction_of_initial"
+                                                                                                   "_genomes"] * len(
+                                                            useq_indexes_with_filtered_orfs)),
+                                                                   self.parameters.arguments[
+                                                                       "max_num_of_initial_genome_iteration"])))
                     elif len(filtered_orfs.keys()) > self.parameters.arguments["max_num_of_initial_genome_iteration"]:
                         genome_iterator = random.sample(filtered_orfs.keys(),
                                                         self.parameters.arguments[
@@ -1529,8 +1532,8 @@ class Path:
             logo.style_spines(spines=["left"], visible=True, linewidth=0.7)
             logo.ax.set_xticks([])
             logo.ax.set_yticks([0, max_value])
-            plt.show(block=False)
             plt.savefig(output_file)
+            plt.show(block=False)
             plt.clf()
             plt.close("all")
 

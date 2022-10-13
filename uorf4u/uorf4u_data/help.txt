@@ -1,4 +1,4 @@
-uorf4u (version 0.5.3):
+uorf4u (version 0.5.4):
 a bioinformatics tool for conserved upstream ORFs annotation.
 Home page and documentation:
 art-egorov.github.io/uorf4u
