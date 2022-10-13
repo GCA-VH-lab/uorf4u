@@ -1,5 +1,9 @@
 # Version log
-* **Ver 0.5.2** - 7 October 2022
+* **Ver 0.5.4** - 13 October 2022
+	* Annotation visualisation' bug was fixed 
+* Ver 0.5.3 - 12 October 2022
+	* Minor bugs with pathes were fixed  
+* Ver 0.5.2 - 7 October 2022
 	* MSA tool's path bug was fixed.
 	* Fast searching now is set as 'auto'.
 * Ver 0.5.1 - 6 October 2022
