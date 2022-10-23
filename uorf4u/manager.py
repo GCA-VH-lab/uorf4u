@@ -54,7 +54,7 @@ class Parameters:
         parser.add_argument("-fast", dest="fast_searching", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="prokaryotes")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.5.4')
+        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.6.0')
         parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
@@ -69,10 +69,7 @@ class Parameters:
             sys.exit()
 
         if args["linux"]:
-            try:
-                uorf4u.methods.adjust_paths_for_linux()
-            except:
-                traceback.print_exc()
+            uorf4u.methods.adjust_paths_for_linux()
             sys.exit()
 
         if args["help"]:
@@ -100,19 +97,24 @@ class Parameters:
             self.arguments.update(config['root'])
             self.arguments.update(self.cmd_arguments)
             self.load_palette()
+            self.load_color_config()
         except Exception as error:
             raise uORF4uError(
                 "Unable to parse the specified config file. Please check your config file or written name.") from error
 
-    def load_palette(self):
+    def load_palette(self) -> None:
+        palette_path = self.arguments[f"palette"]
+        self.arguments[f"palette"] = configs.load(palette_path).get_config()["root"]
+
+    def load_color_config(self) -> None:
         for seq_type in ["nt", "aa"]:
-            palette_path = self.arguments[f"palette_{seq_type}"]
-            palette_pre_dict = configs.load(palette_path).get_config()["root"]
-            palette_dict = dict()
-            for elements, color in palette_pre_dict.items():
+            path = self.arguments[f"colors_{seq_type}"]
+            colors_pre_dict = configs.load(path).get_config()["root"]
+            colors_dict = dict()
+            for elements, color in colors_pre_dict.items():
                 for element in elements:
-                    palette_dict[element] = color
-            self.arguments[f"palette_{seq_type}"] = palette_dict
+                    colors_dict[element] = color
+            self.arguments[f"colors_{seq_type}"] = colors_dict
 
     def update(self, parameters):
         self.arguments.update(parameters)

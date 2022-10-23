@@ -1,5 +1,7 @@
 # Version log
-* **Ver 0.5.4** - 13 October 2022
+* **Ver 0.6.0** - 23 October 2022
+	* New implementation of MSA visualisation
+* Ver 0.5.4 - 13 October 2022
 	* Annotation visualisation' bug was fixed 
 * Ver 0.5.3 - 12 October 2022
 	* Minor bugs with pathes were fixed  

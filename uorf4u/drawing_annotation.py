@@ -277,17 +277,28 @@ class SequenceVis(Track):
         """
         orf_height = self.parameters.arguments["orf_height"] * cm
         y_c = self.visualisation_data["y_top"] - 0.5 * orf_height
+        x_offset = 0.5 * self.parameters.arguments["upstream_seq_line_width"]
         canvas.setStrokeColorRGB(*uorf4u.methods.get_color("upstream_seq_line_color", self.parameters.arguments))
         canvas.setLineCap(0)
         canvas.setLineWidth(self.parameters.arguments["upstream_seq_line_width"])
         canvas.line(self.visualisation_data["upstream_sequence_line_start_x"], y_c,
-                    self.visualisation_data["upstream_sequence_line_stop_x"], y_c)
+                    self.visualisation_data["upstream_sequence_line_stop_x"] - x_offset, y_c)
         # Cleaning the space:
-        canvas.setFillColorRGB(1, 1, 1, 1)
+        canvas.setFillColorRGB
+        canvas.setStrokeColorRGB(1, 1, 1, 1)
+
         for orf_dict in self.visualisation_data["orfs_coordinates_dict"].values():
-            # canvas.line(orf_dict["x_start"], y_c, orf_dict["x_stop"], y_c)
-            canvas.rect(orf_dict["x_start"], y_c - orf_height / 2, orf_dict["x_stop"] - orf_dict["x_start"], orf_height,
-                        stroke=0, fill=1)
+
+            canvas.setLineWidth(self.parameters.arguments["upstream_seq_line_width"]*1.5)
+            canvas.line(orf_dict["x_start"], y_c, orf_dict["x_stop"], y_c)
+            #canvas.rect(orf_dict["x_start"], y_c - orf_height / 2, orf_dict["x_stop"] - orf_dict["x_start"], orf_height,
+            #            stroke=0, fill=1)
+        if self.parameters.arguments["check_assembly_annotation"] and \
+                "fasta" not in self.parameters.cmd_arguments.keys():
+            for protein_id, cds_dict in self.visualisation_data["CDSs_coordinates_dict"].items():
+                canvas.line(cds_dict["x_start"], y_c, cds_dict["x_stop"], y_c)
+        canvas.setLineWidth(self.parameters.arguments["upstream_seq_line_width"])
+
         # Labels
         canvas.setFillColorRGB(*uorf4u.methods.get_color("label_color", self.parameters.arguments))
         canvas.setFont("regular", self.visualisation_data["label_font_size"])
@@ -716,7 +727,7 @@ class AxisLoader(Loader):
         prepared_data["coordinate_system"] = coordinate_system
         prepared_data["max_upstream_sequence_length"] = additional_data["max_upstream_sequence_length"]
         prepared_data["max_downstream_sequence_length"] = additional_data["max_downstream_sequence_length"]
-        step = int(round(additional_data["max_upstream_sequence_length"] / 3, -2))
+        step = int(round(additional_data["max_upstream_sequence_length"] / 2, -2))
         tics = [-additional_data["max_upstream_sequence_length"], 0, additional_data["max_downstream_sequence_length"]]
         x_tic_centred = int(round(-additional_data["max_upstream_sequence_length"] / 2, -2))
         tics.append(x_tic_centred)

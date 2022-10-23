@@ -46,21 +46,6 @@ def copy_package_data() -> None:
         raise uorf4u.manager.uORF4uError(f"Unable to copy uorf4u_data folder in your working dir.") from error
 
 
-def get_color(name: str, parameters: dict) -> tuple:
-    """Get color code by a name.
-
-    Arguments:
-        name (str): name of a color.
-        parameters (dict): Parameters' object dict.
-
-    Returns:
-        tuple: RGB color.
-
-    """
-    rgb_color = *hex_to_rgb(parameters[name]), parameters[f"{name}_alpha"]
-    return rgb_color
-
-
 def hex_to_rgb(value: str) -> list:
     """Convert HEX color to RGB format.
 
@@ -79,6 +64,25 @@ def hex_to_rgb(value: str) -> list:
     except Exception as error:
         raise uorf4u.manager.uORF4uError(
             f"Unable to convert color definition from HEX to RGB. Please check the palette config file.") from error
+
+
+def color_name_to_hex(name: str, parameters: dict) -> str:
+    return parameters["palette"][name]
+
+
+def get_color(name: str, parameters: dict) -> tuple:
+    """Get color code by a name.
+
+    Arguments:
+        name (str): name of a color.
+        parameters (dict): Parameters' object dict.
+
+    Returns:
+        tuple: RGB color.
+
+    """
+    rgb_color = *hex_to_rgb(parameters['palette'][parameters[name]]), parameters[f"{name}_alpha"]
+    return rgb_color
 
 
 def string_height_to_font_size(height: float, font_type: str, parameters: dict) -> float:

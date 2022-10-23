@@ -60,7 +60,7 @@ Length of downstream sequences to retrieve.
 Include alternative start codons in uORF annotation step. List of alternative start codons are taken from the ncbi genetic code.
 
 - `-nsd`  
-Deactivate filtering ORFs by SD sequence presence. [default is True for 'prokaryotes' config and False for 'eukaryotes' config].
+Deactivate filtering ORFs by SD sequence presence. [default: True for 'prokaryotes' config and False for 'eukaryotes' config].
 
 - `-at` *aa|nt*  
 Alignment type used by uorf4u for conserved ORFs searching [default: aa]. 
@@ -71,7 +71,7 @@ Fast searching mode with less accuracy (>~300 sequences or >~2000 ORFs).
 - `-o` *dirname*  
 Output dirname. It will be created if it's not exist. All output dirs will be then created in this folder [default: uorf4u_{current_date}; e.g. uorf4u_2022_07_25-20_41].
 
-- `-c` *prokaryotes|eukaryotes|<file.cfg>*  
+- `-c` *prokaryotes|eukaryotes|file.cfg*  
 Path to a configuration file [default: internal].
 
 

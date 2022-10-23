@@ -45,7 +45,7 @@ try:
     upstream_seqs.save_results_summary_table()
     upstream_seqs.plot_annotation()
     upstream_seqs.plot_logo_figs()
-    upstream_seqs.plot_ggmsa_figs()
+    upstream_seqs.plot_msa_figs()
 
 except Exception as e:
     if parameters.arguments["debug"]:

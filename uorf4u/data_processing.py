@@ -27,7 +27,9 @@ import re
 import os
 
 import uorf4u.manager
-import uorf4u.drawing
+import uorf4u.drawing_annotation
+import uorf4u.methods
+import uorf4u.drawing_msa
 
 Bio.Entrez.email = "anonymous@mail.se"
 
@@ -136,7 +138,8 @@ class RefSeqProtein:
                                       f" cannot be processed", file=sys.stderr)
             if len(assemblies_coordinates) == 0:
                 print(f"❗Warning message:\n\tNo assembly was found for the protein "
-                      f"'{self.accession_number}'.\n\tThis protein record can be suppressed by the ncbi.",
+                      f"'{self.accession_number}'.\n\tThis protein record can be suppressed by the ncbi\n "
+                      f"or it has no sequence record that satisfies refseq_sequecnes_regex config parameter.",
                       file=sys.stderr)
             self.assemblies_coordinates = assemblies_coordinates
             return assemblies_coordinates
@@ -382,7 +385,9 @@ class Homologues:
                         numbers_of_assemblies.append(len(record.assemblies_coordinates))
                     for assembly in record.assemblies_coordinates:
                         assemblies_table.append(
-                            f"{record.accession_number}\t{assembly['locus_id']}\t{assembly['assembly']}"
+                            f"{record.accession_number}\t"
+                            f"{assembly['locus_id']}:{assembly['start']}:{assembly['stop']}({assembly['strand']}"
+                            f"\t{assembly['assembly']}"
                             f"\t{assembly['org']}\t{assembly['strain']}\t{assembly['taxid']}")
                 if not os.path.exists(self.parameters.arguments["output_dir"]):
                     os.mkdir(self.parameters.arguments["output_dir"])
@@ -447,7 +452,12 @@ class Homologues:
                         if useq_stop == len(locus_record.seq):
                             useq_upstream_region_length = len(locus_record.seq) - assembly["stop"]
                     useq_length = abs(useq_stop - useq_start)
-                    if useq_length >= self.parameters.arguments["minimal_upstream_region_length"] or \
+                    if self.parameters.arguments["upstream_region_length"] != 'all':
+                        if self.parameters.arguments["minimal_upstream_region_length"] < self.parameters.arguments[
+                            "upstream_region_length"]:
+                            self.parameters.arguments["minimal_upstream_region_length"] = self.parameters.arguments[
+                                "upstream_region_length"]
+                    if useq_upstream_region_length >= self.parameters.arguments["minimal_upstream_region_length"] or \
                             self.parameters.arguments["upstream_region_length"] == "all":
                         useq = locus_record.seq[useq_start:useq_stop]
                         if assembly["strand"] == "-":
@@ -455,11 +465,13 @@ class Homologues:
                         if assembly["strain"] == "NA":
                             useq_name = assembly["org"]
                         elif assembly["strain"] in assembly["org"]:
-                            useq_name = f"{assembly['org'].replace(assembly['strain'], '')}[{assembly['strain']}]"
+                            useq_name = f"{assembly['org'].replace(assembly['strain'], '')}{assembly['strain']}"
                         else:
-                            useq_name = f"{assembly['org']} [{assembly['strain']}]"
-                        useq_id = f"{assembly['locus_id']}|{useq_start}-{useq_stop}({assembly['strand']})"
-                        useq_label = f"{useq_name}|{assembly['locus_id']}"
+                            useq_name = f"{assembly['org']} {assembly['strain']}"
+                        useq_id = f"{assembly['locus_id']}|{useq_start}-{useq_stop}({assembly['strand']})|" \
+                                  f"{record.accession_number}"
+                        # useq_id = f"{useq_name}|{assembly['locus_id']}|{record.accession_number}"
+                        useq_label = f"{useq_name}|{assembly['locus_id']}|{record.accession_number}"
                         useq_annotations = dict(RefSeq=True, locus_id=assembly['locus_id'], length=useq_length,
                                                 start=useq_start, stop=useq_stop, strand=assembly["strand"],
                                                 accession_number=record.accession_number,
@@ -573,7 +585,7 @@ class UpstreamSequences:
                                     orf_id = f"{useq_record.annotations['locus_id']}|" \
                                              f"{useq_record.annotations['accession_number']}|" \
                                              f"{distance}"
-                                    orf_name = f"{useq_record.description}|{orf_id}"
+                                    orf_name = f"{useq_record.annotations['label']}|{distance}"
                                 else:
                                     distance = useq_record.annotations["length"] - stop_codon_position
                                     orf_id = f"{useq_record.id}|{distance}"
@@ -608,11 +620,11 @@ class UpstreamSequences:
                                             current_orf.extended_orfs.append(annotated_orfs.id)
                                 break
             number_of_orfs = sum(len(i.annotations["ORFs"]) for i in self.records)
-            if self.parameters.arguments["fast_searching"] == "auto" and \
-                    (len(self.records) > 200 and number_of_orfs > 1000):
-                self.parameters.arguments["fast_searching"] = True
-            else:
-                self.parameters.arguments["fast_searching"] = False
+            if self.parameters.arguments["fast_searching"] == "auto":
+                if (len(self.records) > 150 or number_of_orfs > 1000):
+                    self.parameters.arguments["fast_searching"] = True
+                else:
+                    self.parameters.arguments["fast_searching"] = False
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF was annotated in upstream sequences."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
@@ -721,7 +733,6 @@ class UpstreamSequences:
             global_aligner.query_end_gap_score = self.parameters.arguments["global_query_end_gap_score"]
             length_variance = self.parameters.arguments["orf_length_group_range"]
             number_of_useqs = len(self.records)
-
             if self.parameters.arguments["fast_searching"]:
                 filtered_orfs_dict = dict()
                 for length in lengths:
@@ -754,6 +765,7 @@ class UpstreamSequences:
                         if to_add:
                             filtered_orfs_dict[length] = filtered_orfs
                 lengths = list(filtered_orfs_dict.keys())
+
             conserved_paths = []
             for length in lengths:
                 if isinstance(self.parameters.arguments["orf_length_group_range"], float):
@@ -833,7 +845,6 @@ class UpstreamSequences:
                                                 selected_orf = the_closest_by_length_orfs[
                                                     the_closest_by_length_orfs_lengths.index(max_length)]
                                         conserved_path.update(selected_orf, max_score)
-
                             if len(conserved_path) / number_of_useqs >= self.parameters.arguments[
                                 "orfs_presence_cutoff"]:
                                 to_save_this_path = 1
@@ -1029,6 +1040,32 @@ class UpstreamSequences:
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to save results summary table.") from error
 
+    def plot_msa_figs(self) -> None:
+        """Plot MSA plots of  conserved ORFs
+
+        Returns:
+            None
+
+        """
+        try:
+            if self.parameters.arguments["verbose"]:
+                print(f"🎨 MSA figures plotting...", file=sys.stdout)
+            for path in self.conserved_paths:
+                path.plot_msa()
+
+            if self.parameters.arguments["verbose"]:
+                rename_dict = dict(nt="nucleotide", aa="amino_acid", sd="sd")
+                output_dirs = dict(zip(self.parameters.arguments["sequences_to_write"],
+                                       [os.path.join(self.parameters.arguments["output_dir"],
+                                                     f"{rename_dict[i]}_msa_visualisation") for i in
+                                        self.parameters.arguments['sequences_to_write']]))
+                delimiter = ",\n\t"
+                print(f"💌 MSA figures were saved to the folders: \n\t{delimiter.join(output_dirs.values())}",
+                      file=sys.stdout)
+            return None
+        except Exception as error:
+            raise uorf4u.manager.uORF4uError("Unable to plot sequence logo of conserved uORFs.") from error
+
     def plot_ggmsa_figs(self) -> None:
         """Plot MSA plots of conserved ORFs saved as fasta files.
 
@@ -1047,8 +1084,7 @@ class UpstreamSequences:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🎨 MSA figures plotting...",
-                      file=sys.stdout)
+                print(f"🎨 MSA figures plotting...", file=sys.stdout)
             for path in self.conserved_paths:
                 path.plot_ggmsa()
 
@@ -1116,8 +1152,8 @@ class UpstreamSequences:
                 os.mkdir(output_dir)
             for path in self.conserved_paths:
                 output_file_name = f"{os.path.join(output_dir, path.id)}.pdf"
-                annotation_plot_manager = uorf4u.drawing.AnnotationPlotManager(path, self.records,
-                                                                               self.parameters)
+                annotation_plot_manager = uorf4u.drawing_annotation.AnnotationPlotManager(path, self.records,
+                                                                                          self.parameters)
                 annotation_plot_manager.define_x_axis_coordinate_system()
                 annotation_plot_manager.create_tracks()
                 annotation_plot_manager.plot(output_file_name)
@@ -1398,8 +1434,8 @@ class Path:
             for orf in self.path:
                 # record_id = f"{orf.id}"
                 # record_description = f"{(orf.name.split('|')[0])}"
-                record_id = f"{orf.name}"
-                record_description = ""
+                record_id = f"{orf.id}"
+                record_description = orf.name
                 if seq_type == "nt":
                     record = Bio.SeqRecord.SeqRecord(orf.nt_sequence, record_id, "", record_description)
                 elif seq_type == "aa":
@@ -1414,7 +1450,9 @@ class Path:
             subprocess.run([maft, "--auto", temp_input.name], stdout=temp_output, stderr=subprocess.DEVNULL)
             temp_input.close()
             msa = Bio.AlignIO.read(temp_output.name, "fasta")
-            msa.sort(key=lambda r: r.description)
+            for record in msa:
+                record.description = " ".join(record.description.split(" ")[1:])
+            # msa.sort(key=lambda r: r.description) # add a parameter for order setting
             msa_info = Bio.Align.AlignInfo.SummaryInfo(msa)
             msa_consensus = msa_info.gap_consensus(threshold=self.parameters.arguments["consensus_threshold"])
             temp_output.close()
@@ -1425,6 +1463,35 @@ class Path:
             self.id = f"length-{self.msa['nt'].get_alignment_length()}|score–{round(self.score)}|" \
                       f"num_of_orfs-{len(self.path)}|avr_dist-{avr_distance}"
         return None
+
+    def plot_msa(self) -> None:
+        """Plot MSA of conserved ORFs.
+
+        Returns:
+            None
+
+        """
+
+        rename_dict = dict(nt="nucleotide", aa="amino_acid", sd="sd")
+        output_dirs = dict(zip(self.parameters.arguments["sequences_to_write"],
+                               [os.path.join(self.parameters.arguments["output_dir"],
+                                             f"{rename_dict[i]}_msa_visualisation") for i in
+                                self.parameters.arguments["sequences_to_write"]]))
+        for o_dir in output_dirs.values():
+            if not (os.path.exists(o_dir)):
+                os.mkdir(o_dir)
+
+        for s_type in self.parameters.arguments["sequences_to_write"]:
+            current_msa = self.msa[s_type]
+            if s_type == "nt" or s_type == "sd":
+                seq_type = "nt"
+            else:
+                seq_type = "aa"
+            msa_plot_manager = uorf4u.drawing_msa.MSAPlotManager(current_msa, self.parameters, seq_type)
+            msa_plot_manager.define_x_axis_coordinate_system()
+            output_file = os.path.join(output_dirs[s_type], f"{self.id}.pdf")
+            msa_plot_manager.create_tracks()
+            msa_plot_manager.plot(output_file)
 
     def plot_ggmsa(self) -> None:
         """Plot MSA of conserved ORFs saved as fasta files.
@@ -1493,11 +1560,14 @@ class Path:
         for o_dir in output_dirs.values():
             if not (os.path.exists(o_dir)):
                 os.mkdir(o_dir)
-        codons = Bio.Data.CodonTable.ambiguous_dna_by_name[
-            self.parameters.arguments["ncbi_genetic_code_name"]].protein_alphabet
-        nucleotides = Bio.Data.CodonTable.ambiguous_dna_by_name[
-            self.parameters.arguments["ncbi_genetic_code_name"]].nucleotide_alphabet
-        alphabet = dict(nt=nucleotides, aa=codons)
+        ambiguous_codon_table = Bio.Data.CodonTable.ambiguous_dna_by_name[
+            self.parameters.arguments["ncbi_genetic_code_name"]]
+        unambiguous_codon_table = Bio.Data.CodonTable.unambiguous_dna_by_name[
+            self.parameters.arguments["ncbi_genetic_code_name"]]
+        alphabet = dict(nt=set(ambiguous_codon_table.nucleotide_alphabet),
+                        aa=set(ambiguous_codon_table.protein_alphabet))
+        unambiguous_alphabet = dict(nt=set(unambiguous_codon_table.nucleotide_alphabet),
+                                    aa=set(unambiguous_codon_table.protein_alphabet))
         for s_type in self.parameters.arguments["sequences_to_write"]:
             current_msa = self.msa[s_type]
             if s_type == "nt" or s_type == "sd":
@@ -1505,7 +1575,7 @@ class Path:
             elif s_type == "aa":
                 seq_type = "aa"
             output_file = os.path.abspath(
-                os.path.join(output_dirs[s_type], f"{os.path.basename(self.id)}.pdf"))
+                os.path.join(output_dirs[s_type], os.path.basename(self.id)))
             msa_length = current_msa.get_alignment_length()
             num_of_sequences = len(current_msa)
             current_msa_info = Bio.Align.AlignInfo.SummaryInfo(current_msa)
@@ -1517,24 +1587,42 @@ class Path:
                 for element in pos_specific_score_matrix[i].keys():
                     pos_specific_dict[element.upper()][i] = (pos_specific_score_matrix[i][element] / num_of_sequences)
             pos = [i for i in range(msa_length)]
-            matrix_db = pandas.DataFrame(pos_specific_dict, index=pos)
-            # used_alphabet = [k for k, v in pos_specific_dict.items() if sum(v) > 0]
-            max_value = 1
-            if self.parameters.arguments["logo_type"] == 'information':
-                info_mat = logomaker.transform_matrix(matrix_db, from_type="probability", to_type="information")
-                matrix_db = info_mat
-                # max_value = math.log2(len(used_alphabet)) # to update
-                max_value = math.log2(len(alphabet[seq_type]))
-            colors = self.parameters.arguments[f"palette_{seq_type}"]
-            fig_size = (max(10, msa_length * 1.3), min(2.5, 2.5 * 10 / (msa_length ** (1 / 6))))
-            logo = logomaker.Logo(matrix_db, color_scheme=colors, figsize=fig_size)
-            logo.style_spines(visible=False)
-            logo.style_spines(spines=["left"], visible=True, linewidth=0.7)
-            logo.ax.set_xticks([])
-            logo.ax.set_yticks([0, max_value])
-            plt.savefig(output_file)
-            plt.show(block=False)
-            plt.clf()
-            plt.close("all")
+            pos_specific_dict = {k: v for k, v in pos_specific_dict.items() if
+                                 sum(v) > 0 or k in unambiguous_alphabet[seq_type]}
+            matrix_fr = pandas.DataFrame(pos_specific_dict, index=pos)
 
+            colors = self.parameters.arguments[f"colors_{seq_type}"]
+            colors = {k: uorf4u.methods.color_name_to_hex(v, self.parameters.arguments) for k, v in colors.items()}
+            fig_size = (max(10, msa_length * 1.3), min(2.5, 2.5 * 10 / (msa_length ** (1 / 5))))
+
+            if self.parameters.arguments["logo_type"] == "probability" or \
+                    self.parameters.arguments["logo_type"] == "both":
+                output_file_fr = f"{output_file}_prob.pdf"
+                max_value_fr = 1
+                logo_fr = logomaker.Logo(matrix_fr, color_scheme=colors, figsize=fig_size,
+                                         alpha=self.parameters.arguments["logo_alpha"], show_spines=False,
+                                         baseline_width=0)
+                logo_fr.style_spines(spines=["left"], visible=True, linewidth=0.7)
+                logo_fr.ax.set_xticks([])
+                logo_fr.ax.set_yticks([0, max_value_fr])
+                plt.savefig(output_file_fr)
+                plt.close("all")
+
+            if self.parameters.arguments["logo_type"] == "information" or \
+                    self.parameters.arguments["logo_type"] == "both":
+                colors["-"] = colors["_"]
+                matrix_fr["-"] = round((1 - matrix_fr.sum(axis=1)), 5)
+                if matrix_fr["-"].sum() == 0:
+                    del matrix_fr['-']
+                matrix_info = logomaker.transform_matrix(matrix_fr, from_type="probability", to_type="information")
+                max_value_info = math.log2(len(pos_specific_dict.keys()))
+                output_file_info = f"{output_file}_info.pdf"
+                logo_info = logomaker.Logo(matrix_info, color_scheme=colors, figsize=fig_size,
+                                           alpha=self.parameters.arguments["logo_alpha"], show_spines=False,
+                                           baseline_width=0)
+                logo_info.style_spines(spines=["left"], visible=True, linewidth=0.7)
+                logo_info.ax.set_xticks([])
+                logo_info.ax.set_yticks([0, max_value_info])
+                plt.savefig(output_file_info)
+                plt.close("all")
         return None

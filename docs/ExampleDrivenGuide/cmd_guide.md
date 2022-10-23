@@ -1,52 +1,71 @@
 # Example-driven guide
 
-Here we present several examples of uorf4u command-line version usage and the respective command-line parameters.  
-This chapter based on the considering of several uORFs that are known as translation and transcription regulators (see review articles about uORFs in prokaryotes and eukaryotes: [Ito et.al. 2013](https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026) and [Dever et.al. 2020](https://www.annualreviews.org/doi/abs/10.1146/annurev-genet-112618-043822)).
+Here we show several usage examples of the uorf4u command-line interface for two well-known uORFs: *ermCL* (bacteria) and *ATF4* (eukaryotes).  
+(See review articles about uORFs in prokaryotes and eukaryotes: [Ito et.al. 2013](https://www.annualreviews.org/doi/10.1146/annurev-biochem-080211-105026) and [Dever et.al. 2020](https://www.annualreviews.org/doi/abs/10.1146/annurev-genet-112618-043822).
 
 **Before start:** The necessary sample data as well as adjustable tool' configuration files are provided by uorf4u at the post-install step:    
 `uorf4u --data`   
 **If you work on a Linux machine** after installation you should run: `uorf4u --linux`  
 This command replaces the tools paths (maft) in the pre-made config files from the MacOS' version (default) to the Linux'. 
 
+---
 
-## Prokaryotes: *vmlR*  
+## Bacteria: *ermCL*
 
-'Prokaryotic' example in our guide is based on recently described and extremely short uORF of antibiotic resistance gene *vmlR*. In this case, antibiotic-induced ribosome stalling during translation of an upstream open reading frame in the *vmlR* leader region prevents formation of an anti-antiterminator structure, leading to the formation of an antiterminator structure that prevents intrinsic termination. *For the details see article [Takada et. al., 2022](https://doi.org/10.1093/nar/gkac497)*. 
+Expression of 23S rRNA methyltransferase *ermC* is regulated by translational attenuation: ribosome stalling on the *ermC* uORF (named *ermCL*) is inducible by erythromycin. The arresst alters the regional mRNA structure, exposing the ermC SD sequence and allowing translation of the *ermC* ORF. 
 
-<img  src="img/vmlr_article.jpeg" width="650"/> 
+<img  src="img/ermC_regulation.png" width="600"/>
 
+**Using a single RefSeq protein accession number as input**  
 
-To test whether uorf4u will be able to find this uORF we can use only the accession number of *Vmlr* protein as input! The searching results for *Vmlr* in the NCBI protein database gives us the RefSeq id: *WP_024026878.1* that can be used for our command:  
-`uorf4u -an WP_024026878.1 -bh 500 -bpid 0.7 -ul 300  -mna 1 -fast -c prokaryotes -o Vmlr`  
+To test whether uORF4u will find the *ermCL* we can use only the RefSeq accession number of *ermC* protein as input which is *WP_001003263.1*.  
+`uorf4u -an WP_001003263.1 -ul 400 -o ErmC`,  
+All arguments, except `-an`, were optional. `-ul` was used to overrides the upstream region length to retrieve (default: 500).  
+Output folder name can be set with `-o` parameter (default: uorf4u_{current_date}).  
 
-*What do all these arguments mean? 🤔*  
-All arguments, except `-an`, are optional and were used in this example for demonstration and retrieving a larger set of homologues.  
-`-bh` parameter overrides the max number of blastp hits in homology search [default: 200]. `-bpid` updates the cutoff for sequence identity between a hit and the query [default: 0.5]. With `-ul` parameter we can specify length of upstream regions to retrieve [default: 1000]. `-mna` parameter the most tricky here: it's used to limit the number of assemblies taken in the analysis from the NCBI identical protein database. If there are more sequences in which a protein is annotated than we specified then random sampling will be used to take only a subset of them. `-fast` argument activates the fast searching algorithm which is quite used for a big set of sequences (>~400). To set a path or name of a pre-made configuration file we use `-c` parameter. By default the tool uses 'prokaryotes' pre-made file, in this example we used it to make it clear. Output folder dir can be set with `-o` [by default it's uorf4u_{current_data} e.g. uorf4u_2022_08_09-15_00].  
+uORF4u finds the expected *ermCL* and returns one set of conserved uORFs. Output contains [**MSA plot**](img/ermC_msa.pdf), [**annotation plot**](img/ermC_annotation_plot.pdf), and sequence logo:  
+<img  src="img/ermC_logo.png" width="430"/>
 
-The results will be saved to the *Vmlr* folder with the following structure:
+**Using a list of homologues as input**
 
-<img  src="img/output.png" width="380"/>
+Alternatively, a list of homologues can be used as input. This is important for allowing the user to decide the breadth and depth of the search. In addition, it can be useful for creating compact output figures that can be used in articles. For such demonstration, we have chosen several *ermC* proteins from the previous run and used them as input:  
+```
+uorf4u -hl WP_202338192.1 WP_102227852.1 WP_034984371.1 WP_159316313.1 WP_095341278.1 WP_150861853.1 WP_011382144.1 WP_081624258.1 -c prokaryotes -annot -ul 400
+```  
+where `-annot` parameter was used to show on annotation plot ORFs annotated in the NCBI (shown with blue outlines).  
+*Note*: List of homologues can be also written in a txt file (one accession per line) and used as input with `-hlf` parameter.
 
-The uORF was annotated in 450 upstream sequences of 453 identify homologous genes. Let's have a look at the respective amino acid sequence logo and annotation plot (only few sequences of the output figure is shown below for the annotation plot). Fortunately, we found that we expected.  🥳
+Results with annotation plot, MSA visualisation and sequence logos:  
 
-<img  src="img/vmlr_results.png" width="370"/>
-
-
+<img  src="img/ermC_selected_proteins.png" width="600"/>
 
 ## Eukaryotes: *ATF4*
 
-The scanning mechanism is the key difference in eukaryotic translation initiation from prokaryotic where ribosome binds directly to the SD sequence near a start codon. Usually, eukaryotic uORFs' regulation based on scanning ribosome stop mechanism that blocks the downstream ORF translation or on reinitiation efficacy[see reviews cited above for details].  
-One of the well-known cases of such regulation is translation regulation of stress-related transcription factor ATF4. The ATF4 mRNA contains two uORFs, the first one is extremely short and located at a distance ~200nt from the ATF4 main ORF (mORF), while the second one is overlapped with mORF. Under normal conditions, ribosome reinitiates on the second uORF resulting in inhibitory of the mORF. Under stress condition with phosphorylated eIF2alpha and low eIF2-GTP level a ribosome during scanning after first termination in uORF1 usually pasts uORF2 and reinitiates on ATF4 mORF start codon. A protein encoded by ATF4 mORF under stress conditions then can change transcription profile of a wide range of adaptive genes.
+The expression of *ATF4* (activating transcription factor) is regulated by two uORFs. After translation of the first uORF1, ribosomes are normally able to reinitiate translation at a downstream uORF2 after rebinding the initiating ternary complex (*eIF2-GTP-Met-tRNA*). Reduced levels of the ternary complex during stress conditions leads to the ribosome scanning through the uORF2 start codon and instead reinitiating at the ATF4 uORF.
 
-Only few changes in the analysis pipeline are needed to handle eukaryotic analysis properly: 1. We shouldn't filter annotated uORFs by SD sequence presence. 2. While sequences retrieving for found homologues we should take only mRNAs (the tool uses regex to perform that, *refseq_sequences_regex* in the config files. For eukaryotes it's set as '^[NX]M\_.*' that means that only sequences with ids that start with NM\_ or XM\_ (mRNAs) will be taken in the analysis.) 
+<img  src="img/ATF4_regulation.png" width="400"/>
 
-You don't need to set up it manually, as it was mentioned before, uORF4u has two pre-made configuration files named *prokaryotes* and *eukaryotes*. All you need is just to tell the tool that you're analysing eukaryotic protein(s). 😉
+uORF4u has two modes: *prokaryotes* (set as default) and *eukaryotes* that defined by pre-made configuration files.  
+The main differences between two modes: 1. For eukaryotes there is SD sequence annotation. 2. While sequences retrieving for found homologues we should take only mRNAs (the tool uses regex to perform that, *refseq_sequences_regex* in the config files. For eukaryotes it's set as '^[NX]M\_.*' that means that only sequences with ids that start with NM\_ or XM\_ (mRNAs) will be taken in the analysis).
 
-Finally, let's have a look at the command and results:  
-`uorf4u -an NP_877962.1 -bh 500 -mna 1 -c eukaryotes -o ATF4` 
+**Using a single RefSeq protein accession number as input**  
 
-All arguments used here were already described above.  
-The uORF1 and uORF2 were annotated in 272 and 285 upstream sequences, repspectively. The nucleotide sequence logo of the uORF1 and a small subset of sequences from the annotation plot are shown below:  
+Similarly to the bacteria' example, firstly we can use a single protein accession number as input:  
+`uorf4u -an NP_877962.1 -c eukaryotes -o ATF4`  
+We used *eukaryotes* mode by specifying the premade configuration file with `-c` parameter.  
 
-<img  src="img/atf4_results.png" width="400"/>
+uORF4u finds both uORFs and returns (as always) MSA plots ([**uORF1 nt**](img/ATF4_uorf1_MSA.pdf), [**uORF2 nt**](img/ATF4_uorf2_MSA.pdf)), annotation plots ([**uORF1**](img/ATF4_uorf1_annot.pdf), [**uORF2**](img/ATF4_uorf2_annot.pdf)) and sequence logos. A nucleotide sequence logo for uORF1:  
+<img  src="img/ATF4_uorf1_logo.png" width="270"/>
+ 
+**Using a list of homologues as input**
+
+Let's use again a subset of the found homologues to get a compact output.   
+```
+uorf4u -hl NP_001666.2 XP_036720744.1 XP_024434925.1 XP_034632036.1 XP_008703764.1 XP_034983127.1 XP_019400505.1 XP_003989324.2 XP_003419800.1 XP_019302483.1 XP_047407736.1 XP_032062344.1 -c eukaryotes
+```  
+
+<img  src="img/ATF4_selected_proteins.png" width="600"/>
+
+*Note*: unfortunately, animal's emojis were added manually. 
+
 

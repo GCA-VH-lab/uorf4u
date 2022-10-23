@@ -1,0 +1,7 @@
+;Format: Nucleotide(s) = color
+A = blue
+C = yellow
+T = purple
+G = orange
+RYWSMKHBVDNX = lightgrey  
+_ = white

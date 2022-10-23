@@ -2,25 +2,22 @@
 <img  src="docs/img/uorf4u_logo.png" width="270"/>
 
 
-
-
 ## Description
 
-uorf4u is a bioinformatics tool for conserved upstream ORFs annotation.    
+uorf4u is a bioinformatics tool for conserved upstream ORF annotation.    
 
 **Programming languages:** Python3   
 **OS:** MacOS, Linux  
 **Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
-**R dependencies:** ggmsa, ggplot2, optparse  
 **OS-level dependencies:** mafft (v. 7.505 is included in the package)   
 **License:** [WTFPL](http://www.wtfpl.net)  
-**Version:** 0.5.4 (October 2022)
+**Version:** 0.6.0 (October 2022)
 
 [**Detailed documentation**](https://art-egorov.github.io/uorf4u)
 
 ### Data analysis pipeline:
 
-<img  src="docs/img/uorf4u_pipeline.png" width="360"/>
+<img  src="docs/img/uorf4u_workflow.png" width="360"/>
 
 
 ## Installation
@@ -48,15 +45,13 @@ python3 -m pip install -e .
 ## Reference
 
 If you find uorf4u useful, please cite:  
-Artyom A. Egorov, Gemma C. Atkinson **uorf4u: ...,** *---, [doi]()*
+xxx
 
 
 ## Contact
 
 Please contact us by e-mail _artem**dot**egorov**AT**med**dot**lu**dot**se_ or use Issues to report any technical problems.  
 
-
 ## Authors
 
-uorf4u is developed by Artyom Egorov at [The Atkinson Lab](https://atkinson-lab.com), Department of Experimental Medical Science, Lund University, Sweden. We are open for suggestions to extend and improve uorf4u functionality. Please don't hesitate to share your ideas or feature requests.
-
+uorf4u is developed by Artyom Egorov at [the Atkinson Lab](https://atkinson-lab.com), Department of Experimental Medical Science, Lund University, Sweden. We are open for suggestions to extend and improve svist4get functionality. Please don't hesitate to share your ideas or feature requests.

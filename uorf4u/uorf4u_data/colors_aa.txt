@@ -1,0 +1,15 @@
+; Format: Amino_acid(s) = color
+;polar positive
+HKR = red
+;polar negative
+DE = blue 
+;polar neutral
+STNQ = green 
+;non-polar aliphatic
+AVLIM = orange 
+;non polar aromatic
+FWY = purple
+PG = pink
+C = yellow
+BXZJUO = lightgrey
+_ = white

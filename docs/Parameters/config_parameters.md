@@ -1,7 +1,7 @@
 # Configuration file parameters
 
 
-uorf4u configuration file allows detailed customization of the tool's parameters. Below, comments (*placed after ; in each line*) are allowed in configuration files. Here they are used to provide short parameter descriptions.  
+uorf4u configuration file allows detailed customization of the tool's parameters.
 
 ***Note:***   
 uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u_prokaryotes* located in: ./uorftu/uorf4u_data/ folder (internal). By default, 'prokaryotes' config file is used if no path or name of premade file is specified by a cmd parameter: `-c  prokaryotes|eukaryotes|<file.cfg>`.
@@ -14,13 +14,13 @@ uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u
 **minimal_upstream_region_length = 500**; *[int] minimal upstream region length for sequences to retrieve. If available sequence length to retrieve is shorter then this record won't be taken in the analysis*.    
 **downstream_region_length = 100**; *[int] downstream region (overlapped with CDS) length to retrieve. (can be overriden by '-dl' cmd parameter).*  
 **filter_refseq_sequences_by_regex = True**; *[bool] use or not regex parameter (below) for filtering the NCBI RefSeq sequences to retrieve.*    
-**refseq_sequences_regex = ^[N]._.***; *[regex] that will be used to filter the NCBI RefSeq sequnces. For eukaryotes set as '^[NX]M_.*' that means that only sequences that start with NM_ or XM_ (mRNAs) will be taken in the analysis.*  
-**max_number_of_assemblies = 5**; *[int] max number of assemblies to take into analysis for each protein. If there are more sequences in the identical protein database then random sampling will be used. (can be overriden by '-mna' cmd parameter).*
+**refseq_sequences_regex = ^[N][ZCW]_.***; *[regex] that will be used to filter the NCBI RefSeq sequnces. For eukaryotes set as '^[NX]M_.*' that means that only sequences that start with NM_ or XM_ (mRNAs) will be taken in the analysis.*  
+**max_number_of_assemblies = 1**; *[int] max number of assemblies to take into analysis for each protein. If there are more sequences in the identical protein database then random sampling will be used. (can be overriden by '-mna' cmd parameter).*
 
 
 ***;[blastp homologous searching]***  
 **blastp_evalue_cutoff = 1e-5**; *[float] blastp e-value cutoff during the searching for homologs against the RefSeq database.*  
-**blastp_hit_list_size = 500**; *[int] max number of blastp hits to take in the analysis.*  
+**blastp_hit_list_size = 200**; *[int] max number of blastp hits to take in the analysis.*  
 **blastp_max_number_of_alignments = 1000**; *[int] max number of alignments during the searching (there could be several alignments for 1 hit, see blastp documentation)*    
 **blastp_pident_to_query_length_cutoff = 0.5**; *[float: 0-1] cutoff for hit's identity to your query protein.*  
 
@@ -39,12 +39,12 @@ uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u
 **orf_length_group_range = 0.25**; *[float or int] orf's lengths window within conserved uORFs set can be annotated. If it's a float value [0-1] then the radius of window is a set percentage of the claster's length, while if it's int then the window radius is fixed.*    
 **orfs_presence_cutoff = 0.5**; *[float] a set of ORFs will be returned only if they were found in a fraction of input sequences larger than this cutoff.*    
 **paths_identity_cutoff = 0.5**; *[float] if two sets of found ORFs are ovelapped more than this cutoff, then only a set with a higher. score will be returned. (Helps to remove duplicates).*    
-**max_num_of_initial_genome_iteration = 200**; *[int] similar to the fast_searching_fraction_of_initial_genomes parametr, but used with a normal mode for optimisation.*    
+**max_num_of_initial_genome_iteration = 100**; *[int] similar to the fast_searching_fraction_of_initial_genomes parametr, but used with a normal mode for optimisation.*    
 
 ***;[Pairwise alignment]***  
 **alignment_type = aa**; *[nt or aa] alignment type of uORFs during conservation analysis.*    
 ; *Below listed global alignments parametersduring conservation analysis. uorf4u uses Bio.Align. package to perfome pairwise alignment of uORFs.*    
-**global_match_score = 2**; *[float]*  
+**global_match_score = 1**; *[float]*  
 **global_mismatch_score = -1**; *[float]*    
 **global_open_gap_score = -1**; *[float]*  
 **global_extend_gap_score = -1**; *[float]*    
@@ -61,12 +61,13 @@ uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u
 **muscle_binary = {internal}/bin/muscle5.1.macos_arm64**    
 **maft_binary = {internal}/bin/mafft-mac/mafft.bat**    
 **plot_msa_R_script = {internal}/msa_plot.R**    
-**palette_nt = {internal}/palette_nt.txt**    
-**palette_aa = {internal}/palette_aa.txt**    
+**palette = {internal}/palette.txt**    
+**colors_nt = {internal}/colors_nt.txt**    
+**colors_aa = {internal}/colors_aa.txt**    
 
 ***;[Output]***  
 **sequences_to_write = nt, aa, sd**; *[list] type of sequences results for that (logos, MSAs, fasta files) will writetn. nt - nucleotide seqs of uORFs, aa - amino acid seqs, sd - SD seqs (sd is not available for 'eukaryotes' mode)*    
-**logo_type = probability**; *[str] type of logo, see logomaker package documentation.*       
+**logo_type = both**; *[probability, information or both] type of logo, see logomaker package documentation.*       
 **output_dir = uorf4u_{current_date}**; *[str] default name of the output dir. default: uorf4u_{current_date}; e.g. uorf4u_2022_07_25-20_41. (can be overriden by '-o' cmd parameter).*  
 
 ;------------------------  
@@ -108,3 +109,14 @@ other_uorfs_stroke_color = #CECECE
 other_uorfs_stroke_color_alpha = 1  
 annotated_orf_stroke_color = #3d6f8e  
 annotated_orf_stroke_color_alpha = 1  
+
+
+;------------------------  
+**;MSA plot**  
+;------------------------  
+tile_size = 0.1  
+tile_stroke = 0.05  
+char_size = 0.7  
+label_size = 0.6  
+tile_alpha = 0.8  
+logo_alpha = 0.8  
