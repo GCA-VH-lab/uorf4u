@@ -99,8 +99,10 @@ class RefSeqProtein:
 
         """
         try:
-            handle = Bio.Entrez.efetch(db="protein", rettype="ipg", retmode="xml", id=self.accession_number)
-            xml_output = (handle.read()).decode('utf-8')
+            handle = Bio.Entrez.efetch(db="ipg", rettype="ipg", retmode="xml", id=self.accession_number)
+            xml_output = handle.read().decode('utf-8')
+            with open("test_xml.txt", "w") as test_xml:
+                test_xml.write(xml_output)
             root = xml.etree.ElementTree.fromstring(xml_output)
             list_of_kingdom_taxid = []
             assemblies_coordinates = []
@@ -386,7 +388,7 @@ class Homologues:
                     for assembly in record.assemblies_coordinates:
                         assemblies_table.append(
                             f"{record.accession_number}\t"
-                            f"{assembly['locus_id']}:{assembly['start']}:{assembly['stop']}({assembly['strand']}"
+                            f"{assembly['locus_id']}:{assembly['start']}:{assembly['stop']}({assembly['strand']})"
                             f"\t{assembly['assembly']}"
                             f"\t{assembly['org']}\t{assembly['strain']}\t{assembly['taxid']}")
                 if not os.path.exists(self.parameters.arguments["output_dir"]):
@@ -453,7 +455,7 @@ class Homologues:
                             useq_upstream_region_length = len(locus_record.seq) - assembly["stop"]
                     useq_length = abs(useq_stop - useq_start)
                     if self.parameters.arguments["upstream_region_length"] != 'all':
-                        if self.parameters.arguments["minimal_upstream_region_length"] < self.parameters.arguments[
+                        if self.parameters.arguments["minimal_upstream_region_length"] >= self.parameters.arguments[
                             "upstream_region_length"]:
                             self.parameters.arguments["minimal_upstream_region_length"] = self.parameters.arguments[
                                 "upstream_region_length"]
