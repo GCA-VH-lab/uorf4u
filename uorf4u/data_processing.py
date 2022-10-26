@@ -101,8 +101,6 @@ class RefSeqProtein:
         try:
             handle = Bio.Entrez.efetch(db="ipg", rettype="ipg", retmode="xml", id=self.accession_number)
             xml_output = handle.read().decode('utf-8')
-            with open("test_xml.txt", "w") as test_xml:
-                test_xml.write(xml_output)
             root = xml.etree.ElementTree.fromstring(xml_output)
             list_of_kingdom_taxid = []
             assemblies_coordinates = []

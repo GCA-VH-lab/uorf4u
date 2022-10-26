@@ -11,7 +11,7 @@ uorf4u is a bioinformatics tool for conserved upstream ORF annotation.
 **Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
 **OS-level dependencies:** mafft (v. 7.505 is included in the package)   
 **License:** [WTFPL](http://www.wtfpl.net)  
-**Version:** 0.6.1 (October 2022)
+**Version:** 0.6.2 (October 2022)
 
 ### Data analysis pipeline
 

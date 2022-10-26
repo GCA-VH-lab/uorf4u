@@ -1,7 +1,9 @@
 # Version log
+* **Ver 0.6.2** - 26 October 2022  
+	* A problem with xml file writing is fixed.
 * **Ver 0.6.1** - 25 October 2022
 	* **!** After the NCBI API update all previous version have a bug with identical protein database parsing. The bug was fixed in this version. 
-* **Ver 0.6.0** - 23 October 2022
+* Ver 0.6.0 - 23 October 2022
 	* New implementation of MSA visualisation
 * Ver 0.5.4 - 13 October 2022
 	* Annotation visualisation' bug was fixed 
