@@ -4,7 +4,7 @@
 #
 ## Description
 
-uorf4u is a bioinformatics tool for conserved upstream ORF annotation.    
+**uORF4u** is a bioinformatics tool for conserved upstream ORF annotation.    
 
 **Programming languages:** Python3   
 **OS:** MacOS, Linux  
