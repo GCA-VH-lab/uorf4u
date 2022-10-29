@@ -1,5 +1,5 @@
 
-<img  src="docs/img/uorf4u_logo.png" width="350"/>
+<img  src="docs/img/uorf4u_logo.png" width="300"/>
 
 
 ## Description
