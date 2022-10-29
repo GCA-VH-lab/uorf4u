@@ -31,8 +31,6 @@ import uorf4u.drawing_annotation
 import uorf4u.methods
 import uorf4u.drawing_msa
 
-Bio.Entrez.email = "anonymous@mail.se"
-
 
 class RefSeqProtein:
     """A RefSeqProtein object holds a RefSeq protein and information about it.

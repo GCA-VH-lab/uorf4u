@@ -1,12 +1,13 @@
 """
 This module provides managing classes and methods for the tool.
 """
-import configs
-import traceback
-import argparse
-import sys
 import os
+import sys
 import time
+import configs
+import argparse
+import traceback
+import Bio.Entrez
 import uorf4u.methods
 
 
@@ -54,7 +55,7 @@ class Parameters:
         parser.add_argument("-fast", dest="fast_searching", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="prokaryotes")
-        parser.add_argument("-v", "--version", action='version', version='%(prog)s 0.6.2')
+        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.6.3")
         parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
@@ -98,6 +99,7 @@ class Parameters:
             self.arguments.update(self.cmd_arguments)
             self.load_palette()
             self.load_color_config()
+            Bio.Entrez.email = self.arguments["ncbi_entrez_email"]
         except Exception as error:
             raise uORF4uError(
                 "Unable to parse the specified config file. Please check your config file or written name.") from error
