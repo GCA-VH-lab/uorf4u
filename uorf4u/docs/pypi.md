@@ -1,5 +1,5 @@
 
-<img  src="https://raw.githubusercontent.com/art-egorov/uorf4u/main/docs/img/uorf4u_logo.png" width="250"/>
+<img  src="https://raw.githubusercontent.com/art-egorov/uorf4u/main/docs/img/uorf4u_logo.png" width="350"/>
 
 ## Description
 
