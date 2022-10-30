@@ -6,7 +6,7 @@
 
 **uORF4u** is a bioinformatics tool for conserved upstream ORF annotation.    
 
-**Programming languages:** Python3   
+**Programming language:** Python3   
 **OS:** MacOS, Linux  
 **Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
 **OS-level dependencies:** mafft (v. 7.505 is included in the package)   

@@ -45,8 +45,8 @@ The expression of *ATF4* (activating transcription factor) is regulated by two u
 
 <img  src="img/ATF4_regulation.png" width="400"/>
 
-uORF4u has two modes: *prokaryotes* (set as default) and *eukaryotes* that defined by pre-made configuration files.  
-The main differences between two modes: 1. For eukaryotes there is SD sequence annotation. 2. While sequences retrieving for found homologues we should take only mRNAs (the tool uses regex to perform that, *refseq_sequences_regex* in the config files. For eukaryotes it's set as '^[NX]M\_.*' that means that only sequences with ids that start with NM\_ or XM\_ (mRNAs) will be taken in the analysis).
+uORF4u has two modes: *prokaryotes* (set as default) and *eukaryotes* that defined by pre-made configuration files. Naming can be a bit confusing, archaea mode (no SD sequence annotation + retrieving DNA sequences as well due the absence of mRNAs data) will be presented soon.  
+The main differences between two modes: 1. For eukaryotes there is no SD sequence annotation step and corresponding uORF filtering. 2. While sequences retrieving for found homologues we take only mRNAs (the tool uses regex to perform that which is set by *refseq_sequences_regex* in the config files. For eukaryotes it's set as '^[NX]M\_.*' that means that only sequences with ids that start with NM\_ or XM\_ (mRNAs) will be taken in the analysis).
 
 **Using a single RefSeq protein accession number as input**  
 
