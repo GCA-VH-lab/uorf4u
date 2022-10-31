@@ -1,5 +1,7 @@
 # Version log
-* **Ver 0.6.3** 29 October 2022
+* **Ver 0.6.4.** 31 October 2022
+	* MAFFT version 7.505 was replaced with v. 7.490 since it's more stable. 
+* Ver 0.6.3 29 October 2022
 	* Entrez.email for the NCBI requests was set. 
 * Ver 0.6.2 - 26 October 2022  
 	* A problem with xml file writing was fixed.
