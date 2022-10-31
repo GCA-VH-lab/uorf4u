@@ -9,9 +9,9 @@
 **Programming language:** Python3   
 **OS:** MacOS, Linux  
 **Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
-**OS-level dependencies:** mafft (v. 7.505 is included in the package)   
+**OS-level dependencies:** mafft (v7.490 is included in the package)  
 **License:** [WTFPL](http://www.wtfpl.net)  
-**Version:** 0.6.3 (October 2022)
+**Version:** 0.6.4 (October 2022)
 
 [**Detailed documentation**](https://art-egorov.github.io/uorf4u)
 
