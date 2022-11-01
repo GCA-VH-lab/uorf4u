@@ -15,7 +15,7 @@ extra_files = package_files("uorf4u/uorf4u_data")
 extra_files.append("docs/pypi.md")
 
 setup(name="uorf4u",
-      version="0.6.4",
+      version="0.7.0",
       description="A tool for short uORF annotation.",
       url="https://art-egorov.github.io/uorf4u/",
       author="Artyom Egorov",
@@ -23,7 +23,7 @@ setup(name="uorf4u",
       license="WTFPL",
       packages=["uorf4u"],
       package_data={"uorf4u": extra_files},
-      install_requires=["biopython", "configs", "argparse", "statistics", "logomaker", "matplotlib", "pandas",
+      install_requires=["biopython", "configs", "argparse", "statistics", "logomaker", "matplotlib", "pandas==1.4.0",
                         "reportlab"],
       long_description=long_description,
       long_description_content_type="text/markdown",

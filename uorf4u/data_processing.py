@@ -85,7 +85,7 @@ class RefSeqProtein:
             raise uorf4u.manager.uORF4uError(
                 "Unable to get a SeqRecord of the protein from the ncbi protein database.") from error
 
-    def get_assemblies(self) -> list:
+    def get_assemblies(self, xml_output=None) -> list:
         """Get assemblies (loci) coordinates of a protein.
 
         Note:
@@ -97,46 +97,50 @@ class RefSeqProtein:
 
         """
         try:
-            handle = Bio.Entrez.efetch(db="ipg", rettype="ipg", retmode="xml", id=self.accession_number)
-            xml_output = handle.read().decode('utf-8')
+            if not xml_output:
+                handle = Bio.Entrez.efetch(db="ipg", rettype="ipg", retmode="xml", id=self.accession_number)
+                xml_output = handle.read().decode('utf-8')
             root = xml.etree.ElementTree.fromstring(xml_output)
             list_of_kingdom_taxid = []
             assemblies_coordinates = []
-            for protein in root.iter("Protein"):
-                if protein.attrib["source"] == "RefSeq":
-                    if "name" in protein.attrib.keys():
-                        self.name = protein.attrib["name"]
-                    self.taxid = protein.attrib["taxid"]
-                    self.kingdom_taxid = protein.attrib["kingdom_taxid"]
-                    self.organism = protein.attrib["org"]
-                    list_of_kingdom_taxid.append(self.kingdom_taxid)
-                    for cds in protein.iter("CDS"):
-                        to_add = 1
-                        if self.parameters.arguments["filter_refseq_sequences_by_regex"]:
-                            if not re.search(rf"{self.parameters.arguments['refseq_sequences_regex']}",
-                                             cds.attrib["accver"]):
-                                to_add = 0
-                        if to_add == 1:
-                            if "assembly" not in cds.attrib.keys():
-                                cds.attrib["assembly"] = "NA"
-                            if "strain" not in cds.attrib.keys():
-                                cds.attrib["strain"] = "NA"
-                            try:
-                                assemblies_coordinates.append(dict(locus_id=cds.attrib["accver"],
-                                                                   start=(int(cds.attrib["start"]) - 1),
-                                                                   stop=int(cds.attrib["stop"]),
-                                                                   strand=cds.attrib['strand'],
-                                                                   length=int(cds.attrib["stop"]) - (
-                                                                           int(cds.attrib["start"]) - 1),
-                                                                   assembly=cds.attrib["assembly"],
-                                                                   strain=cds.attrib["strain"], org=cds.attrib["org"],
-                                                                   taxid=cds.attrib["taxid"]))
-                            except:
-                                print(f"❕Attention: {cds.attrib['accver']} record is not completed and"
-                                      f" cannot be processed", file=sys.stderr)
+            for report in root.iter("IPGReport"):
+                if report.attrib["product_acc"] == self.accession_number:
+                    for protein in report.iter("Protein"):
+                        if protein.attrib["source"] == "RefSeq":
+                            if "name" in protein.attrib.keys():
+                                self.name = protein.attrib["name"]
+                            self.taxid = protein.attrib["taxid"]
+                            self.kingdom_taxid = protein.attrib["kingdom_taxid"]
+                            self.organism = protein.attrib["org"]
+                            list_of_kingdom_taxid.append(self.kingdom_taxid)
+                            for cds in protein.iter("CDS"):
+                                to_add = 1
+                                if self.parameters.arguments["filter_refseq_sequences_by_regex"]:
+                                    if not re.search(rf"{self.parameters.arguments['refseq_sequences_regex']}",
+                                                     cds.attrib["accver"]):
+                                        to_add = 0
+                                if to_add == 1:
+                                    if "assembly" not in cds.attrib.keys():
+                                        cds.attrib["assembly"] = "NA"
+                                    if "strain" not in cds.attrib.keys():
+                                        cds.attrib["strain"] = "NA"
+                                    try:
+                                        assemblies_coordinates.append(dict(locus_id=cds.attrib["accver"],
+                                                                           start=(int(cds.attrib["start"]) - 1),
+                                                                           stop=int(cds.attrib["stop"]),
+                                                                           strand=cds.attrib['strand'],
+                                                                           length=int(cds.attrib["stop"]) - (
+                                                                                   int(cds.attrib["start"]) - 1),
+                                                                           assembly=cds.attrib["assembly"],
+                                                                           strain=cds.attrib["strain"],
+                                                                           org=cds.attrib["org"],
+                                                                           taxid=cds.attrib["taxid"]))
+                                    except:
+                                        print(f"❕Attention: {cds.attrib['accver']} record is not completed and"
+                                              f" cannot be processed", file=sys.stderr)
             if len(assemblies_coordinates) == 0:
                 print(f"❗Warning message:\n\tNo assembly was found for the protein "
-                      f"'{self.accession_number}'.\n\tThis protein record can be suppressed by the ncbi\n "
+                      f"'{self.accession_number}'.\n\tThis protein record can be suppressed by the ncbi\n\t"
                       f"or it has no sequence record that satisfies refseq_sequecnes_regex config parameter.",
                       file=sys.stderr)
             self.assemblies_coordinates = assemblies_coordinates
@@ -228,7 +232,7 @@ class RefSeqProtein:
             f = open(output_filename, "w")
             f.write("\n".join(table))
             if self.parameters.arguments["verbose"]:
-                print(f"✅ {len(hits_records_list) - 1} homologues were found. "
+                print(f"✅ {len(hits_records_list) - 1} homologues were found.\n"
                       f"💌 Summary table was saved to: {output_filename}", file=sys.stdout)
             return hits_an_list
         except Exception as error:
@@ -248,7 +252,8 @@ class Locus:
 
     """
 
-    def __init__(self, locus_id: str, start_b: int = 0, stop_b: int = None, target_strand: str = "NA"):
+    def __init__(self, locus_id: str, start_b: int = 0, stop_b: int = None, target_strand: str = "NA",
+                 locus_record=None, xml_output=None):
         """Create a Locus object.
 
         Note:
@@ -263,67 +268,75 @@ class Locus:
         """
         try:
             self.locus_id = locus_id
-            handle = Bio.Entrez.efetch(db="nucleotide", rettype="fasta", retmode="txt", id=locus_id)
-            self.locus_record = Bio.SeqIO.read(handle, "fasta")
+            if not locus_record:
+                handle = Bio.Entrez.efetch(db="nucleotide", rettype="fasta", retmode="txt", id=locus_id)
+                self.locus_record = Bio.SeqIO.read(handle, "fasta")
+            else:
+                self.locus_record = locus_record
             if stop_b is None:
                 stop_b = len(self.locus_record.seq)
-            handle = Bio.Entrez.efetch(db="nucleotide", rettype="gbwithparts", retmode="xml", id=locus_id)
-            xml_output = (handle.read()).decode("utf-8")
+            if not xml_output:
+                handle = Bio.Entrez.efetch(db="nucleotide", rettype="gbwithparts", retmode="xml", id=locus_id)
+                xml_output = (handle.read()).decode("utf-8")
             root = xml.etree.ElementTree.fromstring(xml_output)
             self.CDSs = []
-            for gbfeature in root.iter("GBFeature"):
-                if gbfeature.find("GBFeature_key").text == "CDS":
-                    try:
-                        starts, stops = [], []
-                        for interval in gbfeature.iter("GBInterval"):
+            for gbseq in root.iter("GBSeq"):
+                if gbseq.find("GBSeq_locus").text == self.locus_id:
+                    for gbfeature in gbseq.iter("GBFeature"):
+                        if gbfeature.find("GBFeature_key").text == "CDS":
                             try:
-                                start, stop = int(interval.find("GBInterval_from").text), int(
-                                    interval.find("GBInterval_to").text)
-                                if start > stop:
-                                    start, stop, strand = stop - 1, start, "-"
-                                else:
-                                    start, stop, strand = start - 1, stop, "+"
-                                starts.append(start)
-                                stops.append(stop)
+                                starts, stops = [], []
+                                for interval in gbfeature.iter("GBInterval"):
+                                    try:
+                                        start, stop = int(interval.find("GBInterval_from").text), int(
+                                            interval.find("GBInterval_to").text)
+                                        if start > stop:
+                                            start, stop, strand = stop - 1, start, "-"
+                                        else:
+                                            start, stop, strand = start - 1, stop, "+"
+                                        starts.append(start)
+                                        stops.append(stop)
+                                    except:
+                                        pass
+                                if starts:
+                                    coordinates = list(sorted(zip(starts, stops), key=lambda pair: pair[0]))
+                                    main_start, main_stop = coordinates[0][0], coordinates[-1][-1]
+                                    if strand == "+":
+                                        main_stop = main_stop - 3
+                                    elif strand == "-":
+                                        main_start = main_start + 3
+                                    relative_start, relative_stop = main_start - start_b, main_stop - start_b
+                                    if strand == target_strand:
+                                        relative_strand = "+"
+                                    else:
+                                        relative_strand = "-"
+                                        useq_length = stop_b - start_b
+                                    if target_strand == "-":
+                                        relative_start, relative_stop = useq_length - relative_stop, useq_length - relative_start
+                                    if (start_b <= main_start < stop_b) or (start_b <= main_stop < stop_b):
+                                        cds_seq = self.locus_record.seq[main_start:main_stop]
+                                        if strand == '-':
+                                            cds_seq = cds_seq.reverse_complement()
+                                        protein_id, product_name = 'NA', 'NA'
+                                        for gbqualifier in gbfeature.iter("GBQualifier"):
+                                            if gbqualifier.find("GBQualifier_name").text == "protein_id":
+                                                protein_id = gbqualifier.find("GBQualifier_value").text
+                                            if gbqualifier.find("GBQualifier_name").text == "product":
+                                                product_name = gbqualifier.find("GBQualifier_value").text
+                                        if protein_id != 'NA':
+                                            if product_name != 'NA':
+                                                product_name = f"{protein_id} ({product_name})"
+                                            else:
+                                                product_name = f"{protein_id}"
+                                            self.CDSs.append(dict(protein_id=protein_id, product_name=product_name,
+                                                                  coordinates=coordinates, nt_seq=cds_seq,
+                                                                  main_start=main_start, main_stop=main_stop,
+                                                                  strand=strand,
+                                                                  relative_start=relative_start,
+                                                                  relative_stop=relative_stop,
+                                                                  relative_strand=relative_strand))
                             except:
                                 pass
-                        if starts:
-                            coordinates = list(sorted(zip(starts, stops), key=lambda pair: pair[0]))
-                            main_start, main_stop = coordinates[0][0], coordinates[-1][-1]
-                            if strand == "+":
-                                main_stop = main_stop - 3
-                            elif strand == "-":
-                                main_start = main_start + 3
-                            relative_start, relative_stop = main_start - start_b, main_stop - start_b
-                            if strand == target_strand:
-                                relative_strand = "+"
-                            else:
-                                relative_strand = "-"
-                                useq_length = stop_b - start_b
-                            if target_strand == "-":
-                                relative_start, relative_stop = useq_length - relative_stop, useq_length - relative_start
-                            if (start_b <= main_start < stop_b) or (start_b <= main_stop < stop_b):
-                                cds_seq = self.locus_record.seq[main_start:main_stop]
-                                if strand == '-':
-                                    cds_seq = cds_seq.reverse_complement()
-                                protein_id, product_name = 'NA', 'NA'
-                                for gbqualifier in gbfeature.iter("GBQualifier"):
-                                    if gbqualifier.find("GBQualifier_name").text == "protein_id":
-                                        protein_id = gbqualifier.find("GBQualifier_value").text
-                                    if gbqualifier.find("GBQualifier_name").text == "product":
-                                        product_name = gbqualifier.find("GBQualifier_value").text
-                                if protein_id != 'NA':
-                                    if product_name != 'NA':
-                                        product_name = f"{protein_id} ({product_name})"
-                                    else:
-                                        product_name = f"{protein_id}"
-                                    self.CDSs.append(dict(protein_id=protein_id, product_name=product_name,
-                                                          coordinates=coordinates, nt_seq=cds_seq,
-                                                          main_start=main_start, main_stop=main_stop, strand=strand,
-                                                          relative_start=relative_start, relative_stop=relative_stop,
-                                                          relative_strand=relative_strand))
-                    except:
-                        pass
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to create a Locus class' object.") from error
 
@@ -371,8 +384,13 @@ class Homologues:
             if self.parameters.arguments["verbose"]:
                 print(f"📡 Retrieving upstream sequences...",
                       file=sys.stdout)
-            for record in self.records:
-                record.get_assemblies()
+            for i in range(0, len(self.records), 200):
+                records_subset = self.records[i:i + 200]
+                accession_numbers = [record.accession_number for record in records_subset]
+                handle = Bio.Entrez.efetch(db="ipg", id=accession_numbers, rettype="ipg", retmode="xml")
+                handle_txt = handle.read().decode('utf-8')
+                for record in records_subset:
+                    record.get_assemblies(handle_txt)
             if self.parameters.arguments["assemblies_list"] == 'NA':
                 assemblies_table = [f"accession_number\tlocus_id\tassembly\torganism\tstrain\ttax_id"]
                 list_of_protein_with_multiple_assemblies = []
@@ -410,6 +428,7 @@ class Homologues:
             else:
                 assemblies_table = pandas.read_table(self.parameters.arguments["assemblies_list"], sep="\t")
                 locus_ids = assemblies_table["locus_id"].to_list()
+
             upstream_sequences = []
             an_with_no_annotated_useq = []
             for record in self.records:
@@ -421,10 +440,22 @@ class Homologues:
                 if self.parameters.arguments["assemblies_list"] != "NA":
                     assemblies_filtered = [i for i in assemblies if i["locus_id"] in locus_ids]
                     assemblies = assemblies_filtered
+                record.assemblies_coordinates = assemblies
+
+            lists_of_assemblies = [record.assemblies_coordinates for record in self.records]
+            all_assemblies = [assembly for sublist in lists_of_assemblies for assembly in sublist]
+            for i in range(0, len(all_assemblies), 150):
+                assemblies_subset = all_assemblies[i:i + 150]
+                sequences_ids = [assembly["locus_id"] for assembly in assemblies_subset]
+                handle = Bio.Entrez.efetch(db="nucleotide", rettype="fasta", retmode="txt", id=sequences_ids)
+                records = Bio.SeqIO.parse(handle, "fasta")
+                for record, assembly in zip(records, assemblies_subset):
+                    assembly["record"] = record
+
+            for record in self.records:
                 record_upstream_sequences = []
-                for assembly in assemblies:
-                    handle = Bio.Entrez.efetch(db="nucleotide", rettype="fasta", retmode="txt", id=assembly["locus_id"])
-                    locus_record = Bio.SeqIO.read(handle, "fasta")
+                for assembly in record.assemblies_coordinates:
+                    locus_record = assembly["record"]
                     useq_downstream_region_length = self.parameters.arguments["downstream_region_length"]
                     useq_upstream_region_length = self.parameters.arguments["upstream_region_length"]
                     if assembly["strand"] == "+":
@@ -470,7 +501,8 @@ class Homologues:
                                   f"{record.accession_number}"
                         # useq_id = f"{useq_name}|{assembly['locus_id']}|{record.accession_number}"
                         useq_label = f"{useq_name}|{assembly['locus_id']}|{record.accession_number}"
-                        useq_annotations = dict(RefSeq=True, locus_id=assembly['locus_id'], length=useq_length,
+                        useq_annotations = dict(RefSeq=True, locus_record=locus_record,
+                                                locus_id=assembly['locus_id'], length=useq_length,
                                                 start=useq_start, stop=useq_stop, strand=assembly["strand"],
                                                 accession_number=record.accession_number,
                                                 organism=assembly['org'], label=useq_label,
@@ -558,13 +590,24 @@ class UpstreamSequences:
             else:
                 start_codons_list = [self.parameters.arguments["main_start_codon"]]
 
+            if self.parameters.arguments["check_assembly_annotation"]:
+                for i in range(0, len(self.records), 180):
+                    useq_subset = [record for record in self.records[i:i + 180] if record.annotations["RefSeq"]]
+                    locus_ids = [locus.annotations["locus_id"] for locus in useq_subset]
+                    handle = Bio.Entrez.efetch(db="nucleotide", id=locus_ids, rettype="gbwithparts", retmode="xml")
+                    handle_txt = handle.read().decode('utf-8')
+                    for useq_record in useq_subset:
+                        useq_record.annotations["locus_annotation"] = Locus(useq_record.annotations["locus_id"],
+                                                                            start_b=useq_record.annotations["start"],
+                                                                            stop_b=useq_record.annotations["stop"],
+                                                                            target_strand=useq_record.annotations[
+                                                                                "strand"],
+                                                                            locus_record=useq_record.annotations[
+                                                                                "locus_record"],
+                                                                            xml_output=handle_txt)
+
             for useq_index in range(len(self.records)):
                 useq_record = self.records[useq_index]
-                if self.parameters.arguments["check_assembly_annotation"] and useq_record.annotations["RefSeq"]:
-                    useq_record.annotations["locus_annotation"] = Locus(useq_record.annotations["locus_id"],
-                                                                        start_b=useq_record.annotations["start"],
-                                                                        stop_b=useq_record.annotations["stop"],
-                                                                        target_strand=useq_record.annotations["strand"])
                 useq_record.annotations["ORFs"] = []
                 for first_position in range((useq_record.annotations["length"] - self.parameters.arguments[
                     "downstream_region_length"]) + 1):
@@ -1588,7 +1631,6 @@ class Path:
             pos_specific_dict = {k: v for k, v in pos_specific_dict.items() if
                                  sum(v) > 0 or k in unambiguous_alphabet[seq_type]}
             matrix_fr = pandas.DataFrame(pos_specific_dict, index=pos)
-
             colors = self.parameters.arguments[f"colors_{seq_type}"]
             colors = {k: uorf4u.methods.color_name_to_hex(v, self.parameters.arguments) for k, v in colors.items()}
             fig_size = (max(10, msa_length * 1.3), min(2.5, 2.5 * 10 / (msa_length ** (1 / 5))))
