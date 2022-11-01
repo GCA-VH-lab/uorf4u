@@ -3,11 +3,8 @@ import uorf4u
 
 import traceback
 import sys
-import time
 
 try:
-    start_time = time.time()
-    print('Duration: {}'.format(time.time() - start_time))
     parameters = uorf4u.manager.Parameters()
     parameters.parse_cmd_arguments()
     parameters.load_config(parameters.cmd_arguments["config_file"])
@@ -49,8 +46,6 @@ try:
     upstream_seqs.plot_annotation()
     upstream_seqs.plot_logo_figs()
     upstream_seqs.plot_msa_figs()
-
-    print('Duration: {}'.format(time.time() - start_time))
 
 except Exception as e:
     if parameters.arguments["debug"]:
