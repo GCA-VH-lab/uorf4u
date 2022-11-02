@@ -20,20 +20,19 @@ Expression of 23S rRNA methyltransferase *ermC* is regulated by translational at
 
 To test whether uORF4u will find the *ermCL* we can use only the RefSeq accession number of *ermC* protein as input which is *WP_001003263.1*.  
 `uorf4u -an WP_001003263.1 -ul 400 -o ErmC`,  
-All arguments, except `-an`, were optional. `-ul` was used to overrides the upstream region length to retrieve (default: 500).  
-Output folder name can be set with `-o` parameter (default: uorf4u_{current_date}).  
+All arguments, except `-an`, were optional. `-ul` was used to overrides the upstream region length to retrieve (default: 500). We also used *bacteria* mode by specifying the premade configuration file with `-c` parameter. Output folder name can be set with `-o` parameter (default: uorf4u_{current_date}).  
 
 uORF4u finds the expected *ermCL* and returns one set of conserved uORFs. Output contains [**MSA plot**](img/ermC_msa.pdf), [**annotation plot**](img/ermC_annotation_plot.pdf), and sequence logo:  
 <img  src="img/ermC_logo.png" width="430"/>
 
 **Using a list of homologues as input**
 
-Alternatively, a list of homologues can be used as input. This is important for allowing the user to decide the breadth and depth of the search. In addition, it can be useful for creating compact output figures that can be used in articles. For such demonstration, we have chosen several *ermC* proteins from the previous run and used them as input:  
+Alternatively, a list of homologues can be used as input. This is important for allowing a user to decide the breadth and depth of the search. In addition, it can be useful for creating compact output figures that can be used in articles. For such demonstration, we have chosen several *ermC* proteins from the previous run and used them as input:  
 ```
-uorf4u -hl WP_202338192.1 WP_102227852.1 WP_034984371.1 WP_159316313.1 WP_095341278.1 WP_150861853.1 WP_011382144.1 WP_081624258.1 -c prokaryotes -annot -ul 400
+uorf4u -hl WP_202338192.1 WP_102227852.1 WP_034984371.1 WP_159316313.1 WP_095341278.1 WP_150861853.1 WP_011382144.1 WP_081624258.1 -c bacteria -annot -ul 400
 ```  
-where `-annot` parameter was used to show on annotation plot ORFs annotated in the NCBI (shown with blue outlines).  
-*Note*: List of homologues can be also written in a txt file (one accession per line) and used as input with `-hlf` parameter.
+where `-annot` parameter was used to show on annotation plot known ORFs annotated in the NCBI (shown with blue outlines).  
+***Note***: List of homologues can be also written in a txt file (one accession per line) and used as input with `-hlf` parameter.
 
 Results with annotation plot, MSA visualisation and sequence logos:  
 
@@ -45,7 +44,7 @@ The expression of *ATF4* (activating transcription factor) is regulated by two u
 
 <img  src="img/ATF4_regulation.png" width="400"/>
 
-uORF4u has two modes: *prokaryotes* (set as default) and *eukaryotes* that defined by pre-made configuration files. Naming can be a bit confusing, archaea mode (no SD sequence annotation + retrieving DNA sequences as well due the absence of mRNAs data) will be presented soon.  
+uORF4u has two modes: *bacteria* (set as default) and *eukaryotes* that defined by pre-made configuration files. Archaea mode (no SD sequence annotation + retrieving DNA sequences as well due the absence of mRNAs data) will be presented soon or can be set manually within config files.    
 The main differences between two modes: 1. For eukaryotes there is no SD sequence annotation step and corresponding uORF filtering. 2. While sequences retrieving for found homologues we take only mRNAs (the tool uses regex to perform that which is set by *refseq_sequences_regex* in the config files. For eukaryotes it's set as '^[NX]M\_.*' that means that only sequences with ids that start with NM\_ or XM\_ (mRNAs) will be taken in the analysis).
 
 **Using a single RefSeq protein accession number as input**  
@@ -68,4 +67,10 @@ uorf4u -hl NP_001666.2 XP_036720744.1 XP_024434925.1 XP_034632036.1 XP_008703764
 
 *Note*: unfortunately, animal's emojis were added manually. 
 
+**Using a fasta file with sequences as input**
 
+You can use a fasta file with sequences as input as well.  
+Command example with a fasta file obtained from previous run as input:  
+`uorf4u -fa ATF4/upstream_sequences.fa -c eukaryotes`  
+
+**It is useful to note** that when using nucleotide sequences as input, uORF4u can be used as a general conserved ORF search tool, that is, not necessarily upstream of any particular mORF. But be carefull with this mode, recommended range of sequences' length ~100-1000nt and number of sequences: 10-1000. **uORF4u was not designed to perform conservation analysis on chromosome' size set of sequences.**

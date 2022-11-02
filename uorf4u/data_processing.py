@@ -662,7 +662,9 @@ class UpstreamSequences:
                                 break
             number_of_orfs = sum(len(i.annotations["ORFs"]) for i in self.records)
             if self.parameters.arguments["fast_searching"] == "auto":
-                if (len(self.records) > 150 or number_of_orfs > 1000):
+                if len(self.records) < 5:
+                    self.parameters.arguments["fast_searching"] = False
+                elif (len(self.records) > 150 or number_of_orfs > 1000):
                     self.parameters.arguments["fast_searching"] = True
                 else:
                     self.parameters.arguments["fast_searching"] = False
@@ -759,6 +761,8 @@ class UpstreamSequences:
             if self.parameters.arguments["verbose"]:
                 print(f"🔎 Searching for conserved ORFs in upstream sequences...",
                       file=sys.stdout)
+            if len(self.records) == 1:
+                raise uorf4u.manager.uORF4uError("At least two sequences required to perform conservation analysis")
             lengths = []
             for record in self.records:
                 for orf in record.annotations["ORFs"]:
@@ -887,7 +891,7 @@ class UpstreamSequences:
                                                     the_closest_by_length_orfs_lengths.index(max_length)]
                                         conserved_path.update(selected_orf, max_score)
                             if len(conserved_path) / number_of_useqs >= self.parameters.arguments[
-                                "orfs_presence_cutoff"]:
+                                "orfs_presence_cutoff"] and len(conserved_path) > 1:
                                 to_save_this_path = 1
                                 for old_path in conserved_paths:
                                     fraction_of_identity = conserved_path.calculate_similarity(old_path)
@@ -1446,7 +1450,7 @@ class Path:
                            stderr=subprocess.DEVNULL)
             temp_input.close()
             msa = Bio.AlignIO.read(temp_output.name, "fasta")
-            msa.sort(key=lambda r: r.description)
+            # msa.sort(key=lambda r: r.description)
             msa_info = Bio.Align.AlignInfo.SummaryInfo(msa)
             msa_consensus = msa_info.gap_consensus(threshold=self.parameters.arguments["consensus_threshold"])
             temp_output.close()
@@ -1487,10 +1491,21 @@ class Path:
             temp_input = tempfile.NamedTemporaryFile()
             Bio.SeqIO.write(records, temp_input.name, "fasta")
             temp_output = tempfile.NamedTemporaryFile()
+            temp_stderr = tempfile.NamedTemporaryFile()
             maft = self.parameters.arguments["maft_binary"]
-            subprocess.run([maft, "--auto", temp_input.name], stdout=temp_output, stderr=subprocess.DEVNULL)
-            temp_input.close()
-            msa = Bio.AlignIO.read(temp_output.name, "fasta")
+            try:
+                subprocess.run([maft, "--auto", temp_input.name], stdout=temp_output, stderr=temp_stderr)
+                msa = Bio.AlignIO.read(temp_output.name, "fasta")
+                temp_stderr.close()
+                temp_output.close()
+            except Exception as error:
+                temp_stderr.seek(0)
+                temp_output.seek(0)
+                print(f"🤬 MAFFT error message:\n{temp_stderr.read()}", file = sys.stderr)
+                temp_stderr.close()
+                temp_output.close()
+                raise uorf4u.manager.uORF4uError(f"mafft error. If you work on a linux machine,"
+                                                 f" run uorf4 --linux.") from error
             for record in msa:
                 record.description = " ".join(record.description.split(" ")[1:])
             # msa.sort(key=lambda r: r.description) # add a parameter for order setting

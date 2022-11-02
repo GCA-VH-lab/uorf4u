@@ -65,6 +65,9 @@ Deactivate filtering ORFs by SD sequence presence. [default: True for 'prokaryot
 - `-at` *aa|nt*  
 Alignment type used by uorf4u for conserved ORFs searching [default: aa]. 
 
+- `-pc` *cutoff [0-1]*  
+A cutoff of presence (number of ORFs in a list/number of sequences) for an ORFs set to be called conserved and returned [default: 0.4, set in the config].
+
 - `-fast`  
 Fast searching mode with less accuracy (>~300 sequences or >~2000 ORFs).
 

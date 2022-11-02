@@ -4,14 +4,17 @@
 uorf4u configuration file allows detailed customization of the tool's parameters.
 
 ***Note:***   
-uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u_prokaryotes* located in: ./uorftu/uorf4u_data/ folder (internal). By default, 'prokaryotes' config file is used if no path or name of premade file is specified by a cmd parameter: `-c  prokaryotes|eukaryotes|<file.cfg>`.
+uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u_bacteria* located in: ./uorftu/uorf4u_data/ folder (internal). By default, 'bacteria' config file is used if no path or name of premade file is specified by a cmd parameter: `-c  bacteria|eukaryotes|<file.cfg>`.  
+
+You can copy the *uorf4u_data* folder that contains the config files to your wiking directory with `uorf4u --data` command and safely edit and use them without affecting 'internal' set of configs. If you want to use a copied config file, use `-c path_to_config`.
 
 ---
 
 ***;[General]***  
 **ncbi_genetic_code_name = Bacterial**; *the ncbi genetic code name ('Standard' for eukaryotes' config)*   
-**upstream_region_length = 1000**; *[int or 'all'] Length of upstream region to retrieve. 'all' value is set for eukaryotes config file since by default it uses only mRNAs sequences. (can be overriden by '-ul' cmd parameter).*  
-**minimal_upstream_region_length = 500**; *[int] minimal upstream region length for sequences to retrieve. If available sequence length to retrieve is shorter then this record won't be taken in the analysis*.    
+**ncbi_entrez_email = uorf4u@gmail.com**; *e-mail for the NCBI API.*   
+**upstream_region_length = 500**; *[int or 'all'] Length of upstream region to retrieve. 'all' value is set for eukaryotes config file since by default it uses only mRNAs sequences. (can be overriden by '-ul' cmd parameter).*  
+**minimal_upstream_region_length = 300**; *[int] minimal upstream region length for sequences to retrieve. If available sequence length to retrieve is shorter then this record won't be taken in the analysis*.    
 **downstream_region_length = 100**; *[int] downstream region (overlapped with CDS) length to retrieve. (can be overriden by '-dl' cmd parameter).*  
 **filter_refseq_sequences_by_regex = True**; *[bool] use or not regex parameter (below) for filtering the NCBI RefSeq sequences to retrieve.*    
 **refseq_sequences_regex = ^[N][ZCW]_.***; *[regex] that will be used to filter the NCBI RefSeq sequnces. For eukaryotes set as '^[NX]M_.*' that means that only sequences that start with NM_ or XM_ (mRNAs) will be taken in the analysis.*  
@@ -57,13 +60,11 @@ uorf4u has two pre-made configuration files: *uorf4u_eukaryotes.cfg* and *uorf4u
 
 ***;[Paths]***   
 ;*Pathes to scripts and files used by the tool. {internal} means a folder uorf4u/uorf4u_data in the tool location.*  
-**ref_energies = {internal}/energyRef-CCTCCT.json**; *aSD-SD energy table downloaded from: [Yang et.al, 2016](10.1534/g3.116.032227)*   
-**muscle_binary = {internal}/bin/muscle5.1.macos_arm64**    
-**maft_binary = {internal}/bin/mafft-mac/mafft.bat**    
-**plot_msa_R_script = {internal}/msa_plot.R**    
-**palette = {internal}/palette.txt**    
-**colors_nt = {internal}/colors_nt.txt**    
-**colors_aa = {internal}/colors_aa.txt**    
+**ref_energies = {config_path}/energyRef-CCTCCT.json**; *aSD-SD energy table downloaded from: [Yang et.al, 2016](10.1534/g3.116.032227)*   
+**maft_binary = {config_path}/bin/mafft-mac/mafft.bat**    
+**palette = {config_path}/palette.txt**    
+**colors_nt = {config_path}/colors_nt.txt**    
+**colors_aa = {config_path}/colors_aa.txt**    
 
 ***;[Output]***  
 **sequences_to_write = nt, aa, sd**; *[list] type of sequences results for that (logos, MSAs, fasta files) will writetn. nt - nucleotide seqs of uORFs, aa - amino acid seqs, sd - SD seqs (sd is not available for 'eukaryotes' mode)*    
@@ -80,8 +81,9 @@ label_gap = 0.07
 orf_height = 0.15  
 annotation_width = auto  
 mm_per_nt = 0.04  
-font_regular = {internal}/fonts/Lato-Regular.ttf  
-font_bold = {internal}/fonts/Lato-Bold.ttf  
+font_regular = {config_path}/fonts/Lato-Regular.ttf  
+font_bold = {config_path}/fonts/Lato-Bold.ttf  
+font_mono = {config_path}/fonts/RobotoMono-Regular.ttf  
 
 ***;[Sequence labels]***  
 label_color = #3D3D3D  

@@ -1,4 +1,4 @@
-uorf4u (version 0.7.0):
+uorf4u (version 0.8.0):
 a bioinformatics tool for conserved upstream ORF annotation.
 Home page and documentation:
 art-egorov.github.io/uorf4u
@@ -55,6 +55,9 @@ _____________________________
     [default is True for 'prokaryotes' config and False for 'eukaryotes' config].
 -at <aa|nt>
 	Alignment type used by uorf4u for conserved ORFs searching [default: aa]
+-pc <presence_cutoff>
+    A cutoff of presence (number of ORFs in a list/number of sequences) for an ORFs set
+    to be called conserved and returned [default: 0.4, set in config].
 -fast
     Fast searching mode with less accuracy (>~300 sequences or >~2000 ORFs).
 -c <prokaryotes|eukaryotes|<file.cfg>

@@ -52,10 +52,11 @@ class Parameters:
         parser.add_argument("-asc", dest="alternative_start_codons", action="store_true", default=None)
         parser.add_argument("-nsd", dest="filter_by_sd", action="store_false", default=None)
         parser.add_argument("-at", dest="alignment_type", choices=['nt', 'aa', None], type=str, default=None)
+        parser.add_argument("-pc", dest="orfs_presence_cutoff", type=float, default=None)
         parser.add_argument("-fast", dest="fast_searching", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
-        parser.add_argument("-c", dest="config_file", type=str, default="prokaryotes")
-        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.7.0")
+        parser.add_argument("-c", dest="config_file", type=str, default="bacteria")
+        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.8.0")
         parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
@@ -82,26 +83,25 @@ class Parameters:
         filtered_args = {k: v for k, v in args.items() if v is not None}
         self.cmd_arguments = filtered_args
 
-    def load_config(self, path="prokaryotes"):
+    def load_config(self, path_c="bacteria"):
         try:
-            if path == "prokaryotes" or path == "eukaryotes":
-                path = os.path.join(os.path.dirname(__file__), "uorf4u_data", f"uorf4u_{path}.cfg")
-            config = configs.load(path)
+            if path_c == "bacteria" or path_c == "eukaryotes":
+                path_c = os.path.join(os.path.dirname(__file__), "uorf4u_data", f"uorf4u_{path_c}.cfg")
+            config = configs.load(path_c)
             config = config.get_config()
             internal_dir = os.path.dirname(__file__)
             config["root"]["output_dir"] = config["root"]["output_dir"].replace("{current_date}",
                                                                                 time.strftime("%Y_%m_%d-%H_%M"))
             for key in config["root"].keys():
-                if type(config["root"][key]) is str and "{internal}" in config["root"][key]:
-                    config["root"][key] = config["root"][key].replace("{internal}",
-                                                                      os.path.join(internal_dir, "uorf4u_data"))
+                if type(config["root"][key]) is str and "{config_path}" in config["root"][key]:
+                    config["root"][key] = config["root"][key].replace("{config_path}", os.path.dirname(path_c))
             self.arguments.update(config['root'])
             self.arguments.update(self.cmd_arguments)
             self.load_palette()
             self.load_color_config()
             Bio.Entrez.email = self.arguments["ncbi_entrez_email"]
             Bio.Entrez.tool = "uorf4u"
-            #Bio.Entrez.api_key = "09f9e08fcd7192afdd358d833e565e0f6609"
+            # Bio.Entrez.api_key = "09f9e08fcd7192afdd358d833e565e0f6609"
         except Exception as error:
             raise uORF4uError(
                 "Unable to parse the specified config file. Please check your config file or written name.") from error

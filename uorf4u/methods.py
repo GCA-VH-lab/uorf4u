@@ -18,7 +18,7 @@ def adjust_paths_for_linux() -> None:
 
     """
     internal_dir = os.path.join(os.path.dirname(__file__), "uorf4u_data")
-    config_files = ["uorf4u_eukaryotes.cfg", "uorf4u_prokaryotes.cfg"]
+    config_files = ["uorf4u_eukaryotes.cfg", "uorf4u_bacteria.cfg"]
     for config_file in config_files:
         config_file_path = os.path.join(internal_dir, config_file)
         with open(config_file_path, "r+") as config:
