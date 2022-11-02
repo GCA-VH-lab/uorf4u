@@ -29,7 +29,7 @@ class Parameters:
 
     def __init__(self):
         self.arguments = dict(assemblies_list="NA", debug=False, verbose=False)
-        self.cmd_arguments = {}
+        self.cmd_arguments = {"assemblies_list": "NA", "verbose": True}
 
     def parse_cmd_arguments(self) -> None:
         parser = argparse.ArgumentParser(prog="uorf4u", add_help=False,

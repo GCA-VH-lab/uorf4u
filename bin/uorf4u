@@ -35,7 +35,7 @@ try:
     upstream_seqs.save_upstream_sequences()
     upstream_seqs.annotate_orfs()
     if parameters.arguments["filter_by_sd"]:
-        upstream_seqs.filter_orfs_by_sd_annotation()  # add an argument to control
+        upstream_seqs.filter_orfs_by_sd_annotation()
     upstream_seqs.save_annotated_orfs()
     upstream_seqs.conserved_orf_searching()
     upstream_seqs.filter_out_similar_paths()
