@@ -639,12 +639,14 @@
 <h1 id="configuration-file-parameters">Configuration file parameters</h1>
 <p>uorf4u configuration file allows detailed customization of the tool's parameters.</p>
 <p><strong><em>Note:</em></strong> <br />
-uorf4u has two pre-made configuration files: <em>uorf4u_eukaryotes.cfg</em> and <em>uorf4u_prokaryotes</em> located in: ./uorftu/uorf4u_data/ folder (internal). By default, 'prokaryotes' config file is used if no path or name of premade file is specified by a cmd parameter: <code>-c  prokaryotes|eukaryotes|&lt;file.cfg&gt;</code>.</p>
+uorf4u has two pre-made configuration files: <em>uorf4u_eukaryotes.cfg</em> and <em>uorf4u_bacteria</em> located in: ./uorftu/uorf4u_data/ folder (internal). By default, 'bacteria' config file is used if no path or name of premade file is specified by a cmd parameter: <code>-c  bacteria|eukaryotes|&lt;file.cfg&gt;</code>.  </p>
+<p>You can copy the <em>uorf4u_data</em> folder that contains the config files to your wiking directory with <code>uorf4u --data</code> command and safely edit and use them without affecting 'internal' set of configs. If you want to use a copied config file, use <code>-c path_to_config</code>.</p>
 <hr />
 <p><strong><em>;[General]</em></strong><br />
 <strong>ncbi_genetic_code_name = Bacterial</strong>; <em>the ncbi genetic code name ('Standard' for eukaryotes' config)</em> <br />
-<strong>upstream_region_length = 1000</strong>; <em>[int or 'all'] Length of upstream region to retrieve. 'all' value is set for eukaryotes config file since by default it uses only mRNAs sequences. (can be overriden by '-ul' cmd parameter).</em><br />
-<strong>minimal_upstream_region_length = 500</strong>; <em>[int] minimal upstream region length for sequences to retrieve. If available sequence length to retrieve is shorter then this record won't be taken in the analysis</em>.  <br />
+<strong>ncbi_entrez_email = <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#117;&#111;&#114;&#102;&#52;&#117;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#117;&#111;&#114;&#102;&#52;&#117;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></strong>; <em>e-mail for the NCBI API.</em> <br />
+<strong>upstream_region_length = 500</strong>; <em>[int or 'all'] Length of upstream region to retrieve. 'all' value is set for eukaryotes config file since by default it uses only mRNAs sequences. (can be overriden by '-ul' cmd parameter).</em><br />
+<strong>minimal_upstream_region_length = 300</strong>; <em>[int] minimal upstream region length for sequences to retrieve. If available sequence length to retrieve is shorter then this record won't be taken in the analysis</em>.  <br />
 <strong>downstream_region_length = 100</strong>; <em>[int] downstream region (overlapped with CDS) length to retrieve. (can be overriden by '-dl' cmd parameter).</em><br />
 <strong>filter_refseq_sequences_by_regex = True</strong>; <em>[bool] use or not regex parameter (below) for filtering the NCBI RefSeq sequences to retrieve.</em>  <br />
 <strong>refseq_sequences_regex = ^[N][ZCW]_.</strong><em>; </em>[regex] that will be used to filter the NCBI RefSeq sequnces. For eukaryotes set as '^[NX]M_.<em>' that means that only sequences that start with NM_ or XM_ (mRNAs) will be taken in the analysis.</em><br />
@@ -683,13 +685,11 @@ uorf4u has two pre-made configuration files: <em>uorf4u_eukaryotes.cfg</em> and 
 <strong>consensus_threshold = 0.7</strong>;  <em>[float] treshold for MSA position to consider a nucleotide/amino acid as conserved in consensus sequence building.</em>  </p>
 <p><strong><em>;[Paths]</em></strong> <br />
 ;<em>Pathes to scripts and files used by the tool. {internal} means a folder uorf4u/uorf4u_data in the tool location.</em><br />
-<strong>ref_energies = {internal}/energyRef-CCTCCT.json</strong>; <em>aSD-SD energy table downloaded from: <a href="10.1534/g3.116.032227">Yang et.al, 2016</a></em> <br />
-<strong>muscle_binary = {internal}/bin/muscle5.1.macos_arm64</strong>  <br />
-<strong>maft_binary = {internal}/bin/mafft-mac/mafft.bat</strong>  <br />
-<strong>plot_msa_R_script = {internal}/msa_plot.R</strong>  <br />
-<strong>palette = {internal}/palette.txt</strong>  <br />
-<strong>colors_nt = {internal}/colors_nt.txt</strong>  <br />
-<strong>colors_aa = {internal}/colors_aa.txt</strong>    </p>
+<strong>ref_energies = {config_path}/energyRef-CCTCCT.json</strong>; <em>aSD-SD energy table downloaded from: <a href="10.1534/g3.116.032227">Yang et.al, 2016</a></em> <br />
+<strong>maft_binary = {config_path}/bin/mafft-mac/mafft.bat</strong>  <br />
+<strong>palette = {config_path}/palette.txt</strong>  <br />
+<strong>colors_nt = {config_path}/colors_nt.txt</strong>  <br />
+<strong>colors_aa = {config_path}/colors_aa.txt</strong>    </p>
 <p><strong><em>;[Output]</em></strong><br />
 <strong>sequences_to_write = nt, aa, sd</strong>; <em>[list] type of sequences results for that (logos, MSAs, fasta files) will writetn. nt - nucleotide seqs of uORFs, aa - amino acid seqs, sd - SD seqs (sd is not available for 'eukaryotes' mode)</em>  <br />
 <strong>logo_type = both</strong>; <em>[probability, information or both] type of logo, see logomaker package documentation.</em>     <br />
@@ -704,8 +704,9 @@ label_gap = 0.07<br />
 orf_height = 0.15<br />
 annotation_width = auto<br />
 mm_per_nt = 0.04<br />
-font_regular = {internal}/fonts/Lato-Regular.ttf<br />
-font_bold = {internal}/fonts/Lato-Bold.ttf  </p>
+font_regular = {config_path}/fonts/Lato-Regular.ttf<br />
+font_bold = {config_path}/fonts/Lato-Bold.ttf<br />
+font_mono = {config_path}/fonts/RobotoMono-Regular.ttf  </p>
 <p><strong><em>;[Sequence labels]</em></strong><br />
 label_color = #3D3D3D<br />
 label_color_alpha = 1<br />
