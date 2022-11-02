@@ -60,7 +60,7 @@ _____________________________
     to be called conserved and returned [default: 0.4, set in config].
 -fast
     Fast searching mode with less accuracy (>~300 sequences or >~2000 ORFs).
--c <prokaryotes|eukaryotes|<file.cfg>
+-c <bacteria|eukaryotes|<file.cfg>
 	Path to a configuration file or name of a premade config file
 	[default: prokaryotes].
 -o <name> 
