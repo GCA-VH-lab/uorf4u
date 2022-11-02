@@ -638,6 +638,34 @@
 
 <h1 id="short-example-drived-guide-to-uorf4u-api">Short example-drived guide to uorf4u API.</h1>
 <p>uorf4u has a simple API allowing it programmatic usage from within a python program. Below we descrive several Python snippets that mimic results of command-line calls.</p>
+<p><strong>Using a single RefSeq protein accession number as input in bacteria mode</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">uorf4u</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">()</span>
+<span class="n">parameters</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s2">&quot;bacteria&quot;</span><span class="p">)</span>  <span class="c1"># Load config (bacteria, eukaryotes or path)</span>
+<span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ErmCL&quot;</span>  <span class="c1"># to change parameters</span>
+
+<span class="n">protein</span> <span class="o">=</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">data_processing</span><span class="o">.</span><span class="n">RefSeqProtein</span><span class="p">(</span><span class="n">accession_number</span><span class="o">=</span><span class="s2">&quot;WP_001003263.1&quot;</span><span class="p">,</span>
+                                               <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+<span class="n">homologues_list</span> <span class="o">=</span> <span class="n">protein</span><span class="o">.</span><span class="n">blastp_searching_for_homologues</span><span class="p">()</span>
+<span class="n">homologues</span> <span class="o">=</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">data_processing</span><span class="o">.</span><span class="n">Homologues</span><span class="p">(</span><span class="n">homologues_list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="n">upstream_sequences_records</span> <span class="o">=</span> <span class="n">homologues</span><span class="o">.</span><span class="n">get_upstream_sequences</span><span class="p">()</span>
+
+<span class="n">upstream_seqs</span> <span class="o">=</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">data_processing</span><span class="o">.</span><span class="n">UpstreamSequences</span><span class="p">(</span><span class="n">upstream_sequences_records</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">annotate_orfs</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">filter_orfs_by_sd_annotation</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">save_annotated_orfs</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">conserved_orf_searching</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">filter_out_similar_paths</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">run_msa</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">save_orfs_sequences</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">save_msa</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">save_results_summary_table</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">plot_annotation</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">plot_logo_figs</span><span class="p">()</span>
+<span class="n">upstream_seqs</span><span class="o">.</span><span class="n">plot_msa_figs</span><span class="p">()</span>
+</code></pre></div></p>
+<p><strong>Will be updated with more examples...</strong></p>
 
               
             </article>
