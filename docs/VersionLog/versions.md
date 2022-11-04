@@ -1,12 +1,14 @@
 # Version log
-* **Ver 0.8.0** 2 November 2022
+* **Ver 0.8.1** - 4 November 2022
+	* Large assemblies annotation bug was fixed.
+* Ver 0.8.0 - 2 November 2022
 	* New exceptions control.
 	* New cmd parameter (*-pc*).
-* Ver 0.7.0 1 November 2022
+* Ver 0.7.0 - 1 November 2022
 	* NCBI database parsing was optimised and became ~10 times faster.
-* Ver 0.6.4. 31 October 2022
+* Ver 0.6.4 - 31 October 2022
 	* MAFFT version 7.505 was replaced with v. 7.490 since it's more stable. 
-* Ver 0.6.3 29 October 2022
+* Ver 0.6.3 - 29 October 2022
 	* Entrez.email for the NCBI requests was set. 
 * Ver 0.6.2 - 26 October 2022  
 	* A problem with xml file writing was fixed.

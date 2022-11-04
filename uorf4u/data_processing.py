@@ -3,6 +3,7 @@ This module provides data processing including uORFs annotation and conserved su
 """
 import shutil
 import xml.etree.ElementTree
+import xml.etree.cElementTree
 import Bio.Seq
 import Bio.Align.AlignInfo
 import Bio.Blast.NCBIWWW
@@ -141,7 +142,7 @@ class RefSeqProtein:
             if len(assemblies_coordinates) == 0:
                 print(f"❗Warning message:\n\tNo assembly was found for the protein "
                       f"'{self.accession_number}'.\n\tThis protein record can be suppressed by the ncbi\n\t"
-                      f"or it has no sequence record that satisfies refseq_sequecnes_regex config parameter.",
+                      f"or it has no sequence record that satisfies refseq_sequnces_regex config parameter.",
                       file=sys.stderr)
             self.assemblies_coordinates = assemblies_coordinates
             return assemblies_coordinates
@@ -591,8 +592,10 @@ class UpstreamSequences:
                 start_codons_list = [self.parameters.arguments["main_start_codon"]]
 
             if self.parameters.arguments["check_assembly_annotation"]:
-                for i in range(0, len(self.records), 180):
-                    useq_subset = [record for record in self.records[i:i + 180] if record.annotations["RefSeq"]]
+                if self.parameters.arguments["verbose"]:
+                    print(f"📡 Assemblies' annotation retrieving...", file=sys.stdout)
+                for i in range(0, len(self.records), 50):
+                    useq_subset = [record for record in self.records[i:i + 50] if record.annotations["RefSeq"]]
                     locus_ids = [locus.annotations["locus_id"] for locus in useq_subset]
                     handle = Bio.Entrez.efetch(db="nucleotide", id=locus_ids, rettype="gbwithparts", retmode="xml")
                     handle_txt = handle.read().decode('utf-8')
@@ -605,7 +608,6 @@ class UpstreamSequences:
                                                                             locus_record=useq_record.annotations[
                                                                                 "locus_record"],
                                                                             xml_output=handle_txt)
-
             for useq_index in range(len(self.records)):
                 useq_record = self.records[useq_index]
                 useq_record.annotations["ORFs"] = []
@@ -967,7 +969,7 @@ class UpstreamSequences:
                 path.maft_msa()
             return None
         except Exception as error:
-            raise uorf4u.manager.uORF4uError("Unable to get MSA of conserved uORFS.") from error
+            raise uorf4u.manager.uORF4uError("Unable to get MSA of conserved uORFs.") from error
 
     def save_msa(self) -> None:
         """Save MSA of conserved ORFs as fasta files.

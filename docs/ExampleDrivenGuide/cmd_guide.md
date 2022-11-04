@@ -20,7 +20,7 @@ Expression of 23S rRNA methyltransferase *ermC* is regulated by translational at
 
 To test whether uORF4u will find the *ermCL* we can use only the RefSeq accession number of *ermC* protein as input which is *WP_001003263.1*.  
 `uorf4u -an WP_001003263.1 -ul 400 -o ErmC`,  
-All arguments, except `-an`, were optional. `-ul` was used to overrides the upstream region length to retrieve (default: 500). We also used *bacteria* mode by specifying the premade configuration file with `-c` parameter. Output folder name can be set with `-o` parameter (default: uorf4u_{current_date}).  
+All arguments, except `-an`, were optional. `-ul` was used to overrides the upstream region length to retrieve (default: 500). Output folder name can be set with `-o` parameter (default: uorf4u_{current_date}).  
 
 uORF4u finds the expected *ermCL* and returns one set of conserved uORFs. Output contains [**MSA plot**](img/ermC_msa.pdf), [**annotation plot**](img/ermC_annotation_plot.pdf), and sequence logo:  
 <img  src="img/ermC_logo.png" width="430"/>
@@ -31,7 +31,7 @@ Alternatively, a list of homologues can be used as input. This is important for 
 ```
 uorf4u -hl WP_202338192.1 WP_102227852.1 WP_034984371.1 WP_159316313.1 WP_095341278.1 WP_150861853.1 WP_011382144.1 WP_081624258.1 -c bacteria -annot -ul 400
 ```  
-where `-annot` parameter was used to show on annotation plot known ORFs annotated in the NCBI (shown with blue outlines).  
+where `-annot` parameter was used to show on annotation plot known ORFs annotated in the NCBI (shown with blue outlines). We also used *bacteria* mode by specifying the premade configuration file with `-c` parameter.   
 ***Note***: List of homologues can be also written in a txt file (one accession per line) and used as input with `-hlf` parameter.
 
 Results with annotation plot, MSA visualisation and sequence logos:  
