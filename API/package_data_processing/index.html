@@ -1038,8 +1038,7 @@
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">345</span>
-<span class="normal">346</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
 <span class="normal">347</span>
 <span class="normal">348</span>
 <span class="normal">349</span>
@@ -1221,7 +1220,9 @@
 <span class="normal">525</span>
 <span class="normal">526</span>
 <span class="normal">527</span>
-<span class="normal">528</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Homologues</span><span class="p">:</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Homologues</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A Homologues object holds list of proteins homologues and information about them.</span>
 
 <span class="sd">    Attributes:</span>
@@ -1308,6 +1309,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">assemblies_table</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;assemblies_list&quot;</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">locus_ids</span> <span class="o">=</span> <span class="n">assemblies_table</span><span class="p">[</span><span class="s2">&quot;locus_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+                <span class="n">locus_ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">locus_ids</span><span class="p">]</span>
 
             <span class="n">upstream_sequences</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">an_with_no_annotated_useq</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1458,8 +1460,7 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">355</span>
-<span class="normal">356</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">356</span>
 <span class="normal">357</span>
 <span class="normal">358</span>
 <span class="normal">359</span>
@@ -1475,7 +1476,8 @@
 <span class="normal">369</span>
 <span class="normal">370</span>
 <span class="normal">371</span>
-<span class="normal">372</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+<span class="normal">372</span>
+<span class="normal">373</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a Homologues object.</span>
 
 <span class="sd">    Note:</span>
@@ -1530,8 +1532,7 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">374</span>
-<span class="normal">375</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">375</span>
 <span class="normal">376</span>
 <span class="normal">377</span>
 <span class="normal">378</span>
@@ -1684,7 +1685,9 @@
 <span class="normal">525</span>
 <span class="normal">526</span>
 <span class="normal">527</span>
-<span class="normal">528</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get upstream sequences of proteins&#39; genes.</span>
 
 <span class="sd">    Note:</span>
@@ -1742,6 +1745,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">assemblies_table</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;assemblies_list&quot;</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">locus_ids</span> <span class="o">=</span> <span class="n">assemblies_table</span><span class="p">[</span><span class="s2">&quot;locus_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+            <span class="n">locus_ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">locus_ids</span><span class="p">]</span>
 
         <span class="n">upstream_sequences</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">an_with_no_annotated_useq</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2000,7 +2004,8 @@
 <span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
-<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Locus</span><span class="p">:</span>
+<span class="normal">342</span>
+<span class="normal">343</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Locus</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A Locus object holds sequence and annotation of the corresponding ncbi Reference Sequence.</span>
 
@@ -2042,7 +2047,7 @@
             <span class="n">root</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_output</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">CDSs</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">gbseq</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;GBSeq&quot;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">gbseq</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;GBSeq_locus&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">locus_id</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">gbseq</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;GBSeq_accession-version&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">locus_id</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">gbfeature</span> <span class="ow">in</span> <span class="n">gbseq</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;GBFeature&quot;</span><span class="p">):</span>
                         <span class="k">if</span> <span class="n">gbfeature</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;GBFeature_key&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;CDS&quot;</span><span class="p">:</span>
                             <span class="k">try</span><span class="p">:</span>
@@ -2074,6 +2079,7 @@
                                         <span class="n">useq_length</span> <span class="o">=</span> <span class="n">stop_b</span> <span class="o">-</span> <span class="n">start_b</span>
                                     <span class="k">if</span> <span class="n">target_strand</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
                                         <span class="n">relative_start</span><span class="p">,</span> <span class="n">relative_stop</span> <span class="o">=</span> <span class="n">useq_length</span> <span class="o">-</span> <span class="n">relative_stop</span><span class="p">,</span> <span class="n">useq_length</span> <span class="o">-</span> <span class="n">relative_start</span>
+
                                     <span class="k">if</span> <span class="p">(</span><span class="n">start_b</span> <span class="o">&lt;=</span> <span class="n">main_start</span> <span class="o">&lt;</span> <span class="n">stop_b</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">start_b</span> <span class="o">&lt;=</span> <span class="n">main_stop</span> <span class="o">&lt;</span> <span class="n">stop_b</span><span class="p">):</span>
                                         <span class="n">cds_seq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locus_record</span><span class="o">.</span><span class="n">seq</span><span class="p">[</span><span class="n">main_start</span><span class="p">:</span><span class="n">main_stop</span><span class="p">]</span>
                                         <span class="k">if</span> <span class="n">strand</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
@@ -2248,7 +2254,8 @@
 <span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
-<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">stop_b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_strand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+<span class="normal">342</span>
+<span class="normal">343</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">stop_b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_strand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span><span class="p">,</span>
              <span class="n">locus_record</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xml_output</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a Locus object.</span>
 
@@ -2277,7 +2284,7 @@
         <span class="n">root</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_output</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">CDSs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">gbseq</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;GBSeq&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">gbseq</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;GBSeq_locus&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">locus_id</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">gbseq</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;GBSeq_accession-version&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">locus_id</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">gbfeature</span> <span class="ow">in</span> <span class="n">gbseq</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;GBFeature&quot;</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">gbfeature</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;GBFeature_key&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;CDS&quot;</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
@@ -2309,6 +2316,7 @@
                                     <span class="n">useq_length</span> <span class="o">=</span> <span class="n">stop_b</span> <span class="o">-</span> <span class="n">start_b</span>
                                 <span class="k">if</span> <span class="n">target_strand</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
                                     <span class="n">relative_start</span><span class="p">,</span> <span class="n">relative_stop</span> <span class="o">=</span> <span class="n">useq_length</span> <span class="o">-</span> <span class="n">relative_stop</span><span class="p">,</span> <span class="n">useq_length</span> <span class="o">-</span> <span class="n">relative_start</span>
+
                                 <span class="k">if</span> <span class="p">(</span><span class="n">start_b</span> <span class="o">&lt;=</span> <span class="n">main_start</span> <span class="o">&lt;</span> <span class="n">stop_b</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">start_b</span> <span class="o">&lt;=</span> <span class="n">main_stop</span> <span class="o">&lt;</span> <span class="n">stop_b</span><span class="p">):</span>
                                     <span class="n">cds_seq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locus_record</span><span class="o">.</span><span class="n">seq</span><span class="p">[</span><span class="n">main_start</span><span class="p">:</span><span class="n">main_stop</span><span class="p">]</span>
                                     <span class="k">if</span> <span class="n">strand</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
@@ -2446,10 +2454,7 @@ upstream sequences to the start codon.</p>
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1240</span>
-<span class="normal">1241</span>
-<span class="normal">1242</span>
-<span class="normal">1243</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1243</span>
 <span class="normal">1244</span>
 <span class="normal">1245</span>
 <span class="normal">1246</span>
@@ -2541,7 +2546,10 @@ upstream sequences to the start codon.</p>
 <span class="normal">1332</span>
 <span class="normal">1333</span>
 <span class="normal">1334</span>
-<span class="normal">1335</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ORF</span><span class="p">:</span>
+<span class="normal">1335</span>
+<span class="normal">1336</span>
+<span class="normal">1337</span>
+<span class="normal">1338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ORF</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;An ORF object holds information about an annotated ORF.</span>
 
 <span class="sd">    Note:</span>
@@ -2707,10 +2715,7 @@ upstream sequences to the start codon.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1265</span>
-<span class="normal">1266</span>
-<span class="normal">1267</span>
-<span class="normal">1268</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1268</span>
 <span class="normal">1269</span>
 <span class="normal">1270</span>
 <span class="normal">1271</span>
@@ -2746,7 +2751,10 @@ upstream sequences to the start codon.</p>
 <span class="normal">1301</span>
 <span class="normal">1302</span>
 <span class="normal">1303</span>
-<span class="normal">1304</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nt_sequence</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span>
+<span class="normal">1304</span>
+<span class="normal">1305</span>
+<span class="normal">1306</span>
+<span class="normal">1307</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nt_sequence</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span>
              <span class="n">sd_window_seq</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">distance</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">useq_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
              <span class="n">annotation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create an ORF object.</span>
@@ -2816,10 +2824,7 @@ upstream sequences to the start codon.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1306</span>
-<span class="normal">1307</span>
-<span class="normal">1308</span>
-<span class="normal">1309</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1309</span>
 <span class="normal">1310</span>
 <span class="normal">1311</span>
 <span class="normal">1312</span>
@@ -2845,7 +2850,10 @@ upstream sequences to the start codon.</p>
 <span class="normal">1332</span>
 <span class="normal">1333</span>
 <span class="normal">1334</span>
-<span class="normal">1335</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1335</span>
+<span class="normal">1336</span>
+<span class="normal">1337</span>
+<span class="normal">1338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Calculate energies of putative SD sequences of the upstream sequence.</span>
 
 <span class="sd">    Returns:</span>
@@ -2956,10 +2964,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1338</span>
-<span class="normal">1339</span>
-<span class="normal">1340</span>
-<span class="normal">1341</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1341</span>
 <span class="normal">1342</span>
 <span class="normal">1343</span>
 <span class="normal">1344</span>
@@ -3303,7 +3308,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1682</span>
 <span class="normal">1683</span>
 <span class="normal">1684</span>
-<span class="normal">1685</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Path</span><span class="p">:</span>
+<span class="normal">1685</span>
+<span class="normal">1686</span>
+<span class="normal">1687</span>
+<span class="normal">1688</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Path</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A Path object holds information about a list of conserved ORFs.</span>
 
 <span class="sd">    Note:</span>
@@ -3471,7 +3479,7 @@ for different sequences (nt, aa, sd) as keys.</p>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
                 <span class="n">temp_stderr</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                 <span class="n">temp_output</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🤬 MAFFT error message:</span><span class="se">\n</span><span class="si">{</span><span class="n">temp_stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🤬 MAFFT error message:</span><span class="se">\n</span><span class="si">{</span><span class="n">temp_stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
                 <span class="n">temp_stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="n">temp_output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mafft error. If you work on a linux machine,&quot;</span>
@@ -3691,10 +3699,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1358</span>
-<span class="normal">1359</span>
-<span class="normal">1360</span>
-<span class="normal">1361</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1361</span>
 <span class="normal">1362</span>
 <span class="normal">1363</span>
 <span class="normal">1364</span>
@@ -3704,7 +3709,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1368</span>
 <span class="normal">1369</span>
 <span class="normal">1370</span>
-<span class="normal">1371</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+<span class="normal">1371</span>
+<span class="normal">1372</span>
+<span class="normal">1373</span>
+<span class="normal">1374</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a Path object.</span>
 
 <span class="sd">    Arguments:</span>
@@ -3747,14 +3755,14 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1399</span>
-<span class="normal">1400</span>
-<span class="normal">1401</span>
-<span class="normal">1402</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1402</span>
 <span class="normal">1403</span>
 <span class="normal">1404</span>
 <span class="normal">1405</span>
-<span class="normal">1406</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">1406</span>
+<span class="normal">1407</span>
+<span class="normal">1408</span>
+<span class="normal">1409</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;__len__ magic method for a Path object.</span>
 
 <span class="sd">    Returns:</span>
@@ -3794,10 +3802,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1408</span>
-<span class="normal">1409</span>
-<span class="normal">1410</span>
-<span class="normal">1411</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1411</span>
 <span class="normal">1412</span>
 <span class="normal">1413</span>
 <span class="normal">1414</span>
@@ -3806,7 +3811,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1417</span>
 <span class="normal">1418</span>
 <span class="normal">1419</span>
-<span class="normal">1420</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="normal">1420</span>
+<span class="normal">1421</span>
+<span class="normal">1422</span>
+<span class="normal">1423</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Calculate fraction of identical ORFs between two Path object.</span>
 
 <span class="sd">    __Note:__ If two objects have different length, the fraction will be calculated as a number of identical ORFs</span>
@@ -3856,10 +3864,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1468</span>
-<span class="normal">1469</span>
-<span class="normal">1470</span>
-<span class="normal">1471</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1471</span>
 <span class="normal">1472</span>
 <span class="normal">1473</span>
 <span class="normal">1474</span>
@@ -3911,7 +3916,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1520</span>
 <span class="normal">1521</span>
 <span class="normal">1522</span>
-<span class="normal">1523</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">maft_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1523</span>
+<span class="normal">1524</span>
+<span class="normal">1525</span>
+<span class="normal">1526</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">maft_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Run a multiple sequence alignment tool (MAFT) for the ORFs nucleotide and amino acid sequences.</span>
 
 <span class="sd">    Note:</span>
@@ -3949,7 +3957,7 @@ for different sequences (nt, aa, sd) as keys.</p>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="n">temp_stderr</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">temp_output</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🤬 MAFFT error message:</span><span class="se">\n</span><span class="si">{</span><span class="n">temp_stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🤬 MAFFT error message:</span><span class="se">\n</span><span class="si">{</span><span class="n">temp_stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
             <span class="n">temp_stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">temp_output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mafft error. If you work on a linux machine,&quot;</span>
@@ -4004,10 +4012,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1422</span>
-<span class="normal">1423</span>
-<span class="normal">1424</span>
-<span class="normal">1425</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1425</span>
 <span class="normal">1426</span>
 <span class="normal">1427</span>
 <span class="normal">1428</span>
@@ -4048,7 +4053,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1463</span>
 <span class="normal">1464</span>
 <span class="normal">1465</span>
-<span class="normal">1466</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">muscle_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1466</span>
+<span class="normal">1467</span>
+<span class="normal">1468</span>
+<span class="normal">1469</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">muscle_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Run a multiple sequence alignment tool (muscle) for the ORFs nucleotide and amino acid sequences.</span>
 
 <span class="sd">    Note:</span>
@@ -4135,10 +4143,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1554</span>
-<span class="normal">1555</span>
-<span class="normal">1556</span>
-<span class="normal">1557</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1557</span>
 <span class="normal">1558</span>
 <span class="normal">1559</span>
 <span class="normal">1560</span>
@@ -4181,7 +4186,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1597</span>
 <span class="normal">1598</span>
 <span class="normal">1599</span>
-<span class="normal">1600</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ggmsa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1600</span>
+<span class="normal">1601</span>
+<span class="normal">1602</span>
+<span class="normal">1603</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ggmsa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot MSA of conserved ORFs saved as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -4265,10 +4273,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1602</span>
-<span class="normal">1603</span>
-<span class="normal">1604</span>
-<span class="normal">1605</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1605</span>
 <span class="normal">1606</span>
 <span class="normal">1607</span>
 <span class="normal">1608</span>
@@ -4348,7 +4353,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1682</span>
 <span class="normal">1683</span>
 <span class="normal">1684</span>
-<span class="normal">1685</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1685</span>
+<span class="normal">1686</span>
+<span class="normal">1687</span>
+<span class="normal">1688</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot sequence Logo of conserved ORFs MSA saved as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -4462,10 +4470,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1525</span>
-<span class="normal">1526</span>
-<span class="normal">1527</span>
-<span class="normal">1528</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1528</span>
 <span class="normal">1529</span>
 <span class="normal">1530</span>
 <span class="normal">1531</span>
@@ -4489,7 +4494,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1549</span>
 <span class="normal">1550</span>
 <span class="normal">1551</span>
-<span class="normal">1552</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1552</span>
+<span class="normal">1553</span>
+<span class="normal">1554</span>
+<span class="normal">1555</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot MSA of conserved ORFs.</span>
 
 <span class="sd">    Returns:</span>
@@ -4547,17 +4555,17 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1387</span>
-<span class="normal">1388</span>
-<span class="normal">1389</span>
-<span class="normal">1390</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1390</span>
 <span class="normal">1391</span>
 <span class="normal">1392</span>
 <span class="normal">1393</span>
 <span class="normal">1394</span>
 <span class="normal">1395</span>
 <span class="normal">1396</span>
-<span class="normal">1397</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1397</span>
+<span class="normal">1398</span>
+<span class="normal">1399</span>
+<span class="normal">1400</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Sort list of ORFs by their names.</span>
 
 <span class="sd">    Returns:</span>
@@ -4611,10 +4619,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1373</span>
-<span class="normal">1374</span>
-<span class="normal">1375</span>
-<span class="normal">1376</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1376</span>
 <span class="normal">1377</span>
 <span class="normal">1378</span>
 <span class="normal">1379</span>
@@ -4623,7 +4628,10 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1382</span>
 <span class="normal">1383</span>
 <span class="normal">1384</span>
-<span class="normal">1385</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orf</span><span class="p">:</span> <span class="n">ORF</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="normal">1385</span>
+<span class="normal">1386</span>
+<span class="normal">1387</span>
+<span class="normal">1388</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orf</span><span class="p">:</span> <span class="n">ORF</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Update a Path with a new ORF.</span>
 
 <span class="sd">    Arguments:</span>
@@ -4991,7 +4999,7 @@ the protein obtained from ipg ncbi database.</p>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">xml_output</span><span class="p">:</span>
                 <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;ipg&quot;</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;ipg&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="p">)</span>
                 <span class="n">xml_output</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-            <span class="n">root</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_output</span><span class="p">)</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">cElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_output</span><span class="p">)</span>
             <span class="n">list_of_kingdom_taxid</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">assemblies_coordinates</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">report</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;IPGReport&quot;</span><span class="p">):</span>
@@ -5505,7 +5513,7 @@ from the ipg ncbi database.</p>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">xml_output</span><span class="p">:</span>
             <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;ipg&quot;</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;ipg&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="p">)</span>
             <span class="n">xml_output</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_output</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">cElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_output</span><span class="p">)</span>
         <span class="n">list_of_kingdom_taxid</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">assemblies_coordinates</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">report</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;IPGReport&quot;</span><span class="p">):</span>
@@ -5676,9 +5684,7 @@ sequences and information about them).</p>
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 531</span>
-<span class="normal"> 532</span>
-<span class="normal"> 533</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 533</span>
 <span class="normal"> 534</span>
 <span class="normal"> 535</span>
 <span class="normal"> 536</span>
@@ -6356,7 +6362,10 @@ sequences and information about them).</p>
 <span class="normal">1208</span>
 <span class="normal">1209</span>
 <span class="normal">1210</span>
-<span class="normal">1211</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UpstreamSequences</span><span class="p">:</span>
+<span class="normal">1211</span>
+<span class="normal">1212</span>
+<span class="normal">1213</span>
+<span class="normal">1214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UpstreamSequences</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;An UpstreamSequences object holds list of upstream sequences records and information about them.</span>
 
 <span class="sd">    Attributes:</span>
@@ -6419,13 +6428,14 @@ sequences and information about them).</p>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">start_codons_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;main_start_codon&quot;</span><span class="p">]]</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;check_assembly_annotation&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;check_assembly_annotation&quot;</span><span class="p">]</span> <span class="ow">and</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;RefSeq&quot;</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📡 Assemblies&#39; annotation retrieving...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">),</span> <span class="mi">50</span><span class="p">):</span>
-                    <span class="n">useq_subset</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">50</span><span class="p">]</span> <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;RefSeq&quot;</span><span class="p">]]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">),</span> <span class="mi">100</span><span class="p">):</span>
+                    <span class="n">useq_subset</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">100</span><span class="p">]</span> <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;RefSeq&quot;</span><span class="p">]]</span>
                     <span class="n">locus_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">locus</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;locus_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">locus</span> <span class="ow">in</span> <span class="n">useq_subset</span><span class="p">]</span>
-                    <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">locus_ids</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;gbwithparts&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
+                    <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">locus_ids</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;gb&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
                     <span class="n">handle_txt</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">useq_record</span> <span class="ow">in</span> <span class="n">useq_subset</span><span class="p">:</span>
                         <span class="n">useq_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;locus_annotation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Locus</span><span class="p">(</span><span class="n">useq_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;locus_id&quot;</span><span class="p">],</span>
@@ -7082,9 +7092,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">543</span>
-<span class="normal">544</span>
-<span class="normal">545</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">545</span>
 <span class="normal">546</span>
 <span class="normal">547</span>
 <span class="normal">548</span>
@@ -7094,7 +7102,9 @@ sequences and information about them).</p>
 <span class="normal">552</span>
 <span class="normal">553</span>
 <span class="normal">554</span>
-<span class="normal">555</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create an UpstreamSequences object.</span>
 
 <span class="sd">    Arguments:</span>
@@ -7144,9 +7154,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">576</span>
-<span class="normal">577</span>
-<span class="normal">578</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">578</span>
 <span class="normal">579</span>
 <span class="normal">580</span>
 <span class="normal">581</span>
@@ -7249,7 +7257,10 @@ sequences and information about them).</p>
 <span class="normal">678</span>
 <span class="normal">679</span>
 <span class="normal">680</span>
-<span class="normal">681</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">annotate_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">681</span>
+<span class="normal">682</span>
+<span class="normal">683</span>
+<span class="normal">684</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">annotate_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Annotate ORFs in upstream sequences.</span>
 
 <span class="sd">    Note:</span>
@@ -7267,13 +7278,14 @@ sequences and information about them).</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">start_codons_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;main_start_codon&quot;</span><span class="p">]]</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;check_assembly_annotation&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;check_assembly_annotation&quot;</span><span class="p">]</span> <span class="ow">and</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;RefSeq&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📡 Assemblies&#39; annotation retrieving...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">),</span> <span class="mi">50</span><span class="p">):</span>
-                <span class="n">useq_subset</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">50</span><span class="p">]</span> <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;RefSeq&quot;</span><span class="p">]]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">),</span> <span class="mi">100</span><span class="p">):</span>
+                <span class="n">useq_subset</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">100</span><span class="p">]</span> <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;RefSeq&quot;</span><span class="p">]]</span>
                 <span class="n">locus_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">locus</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;locus_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">locus</span> <span class="ow">in</span> <span class="n">useq_subset</span><span class="p">]</span>
-                <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">locus_ids</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;gbwithparts&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
+                <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">locus_ids</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;gb&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
                 <span class="n">handle_txt</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">useq_record</span> <span class="ow">in</span> <span class="n">useq_subset</span><span class="p">:</span>
                     <span class="n">useq_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;locus_annotation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Locus</span><span class="p">(</span><span class="n">useq_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;locus_id&quot;</span><span class="p">],</span>
@@ -7392,10 +7404,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">752</span>
-<span class="normal">753</span>
-<span class="normal">754</span>
-<span class="normal">755</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">755</span>
 <span class="normal">756</span>
 <span class="normal">757</span>
 <span class="normal">758</span>
@@ -7559,7 +7568,10 @@ sequences and information about them).</p>
 <span class="normal">916</span>
 <span class="normal">917</span>
 <span class="normal">918</span>
-<span class="normal">919</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">conserved_orf_searching</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">919</span>
+<span class="normal">920</span>
+<span class="normal">921</span>
+<span class="normal">922</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">conserved_orf_searching</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Search for sets of conserved ORFs in upstream sequences.</span>
 
 <span class="sd">    Note:</span>
@@ -7757,10 +7769,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">683</span>
-<span class="normal">684</span>
-<span class="normal">685</span>
-<span class="normal">686</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">686</span>
 <span class="normal">687</span>
 <span class="normal">688</span>
 <span class="normal">689</span>
@@ -7785,7 +7794,10 @@ sequences and information about them).</p>
 <span class="normal">708</span>
 <span class="normal">709</span>
 <span class="normal">710</span>
-<span class="normal">711</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter_orfs_by_sd_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">711</span>
+<span class="normal">712</span>
+<span class="normal">713</span>
+<span class="normal">714</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter_orfs_by_sd_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Filter annotated ORFs by presence the Shine-Dalgarno sequence.</span>
 
 <span class="sd">    Returns:</span>
@@ -7853,10 +7865,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">921</span>
-<span class="normal">922</span>
-<span class="normal">923</span>
-<span class="normal">924</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">924</span>
 <span class="normal">925</span>
 <span class="normal">926</span>
 <span class="normal">927</span>
@@ -7887,7 +7896,10 @@ sequences and information about them).</p>
 <span class="normal">952</span>
 <span class="normal">953</span>
 <span class="normal">954</span>
-<span class="normal">955</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter_out_similar_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">955</span>
+<span class="normal">956</span>
+<span class="normal">957</span>
+<span class="normal">958</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter_out_similar_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Filter out duplicates in sets of annotated conserved ORFs.</span>
 
 <span class="sd">    Note:</span>
@@ -7952,10 +7964,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1184</span>
-<span class="normal">1185</span>
-<span class="normal">1186</span>
-<span class="normal">1187</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1187</span>
 <span class="normal">1188</span>
 <span class="normal">1189</span>
 <span class="normal">1190</span>
@@ -7979,7 +7988,10 @@ sequences and information about them).</p>
 <span class="normal">1208</span>
 <span class="normal">1209</span>
 <span class="normal">1210</span>
-<span class="normal">1211</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1211</span>
+<span class="normal">1212</span>
+<span class="normal">1213</span>
+<span class="normal">1214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot loci&#39; annotations figures with conserved ORFs highlighting.</span>
 
 <span class="sd">    Returns:</span>
@@ -8050,10 +8062,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1116</span>
-<span class="normal">1117</span>
-<span class="normal">1118</span>
-<span class="normal">1119</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1119</span>
 <span class="normal">1120</span>
 <span class="normal">1121</span>
 <span class="normal">1122</span>
@@ -8083,7 +8092,10 @@ sequences and information about them).</p>
 <span class="normal">1146</span>
 <span class="normal">1147</span>
 <span class="normal">1148</span>
-<span class="normal">1149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ggmsa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1149</span>
+<span class="normal">1150</span>
+<span class="normal">1151</span>
+<span class="normal">1152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ggmsa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot MSA plots of conserved ORFs saved as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -8155,10 +8167,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1151</span>
-<span class="normal">1152</span>
-<span class="normal">1153</span>
-<span class="normal">1154</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1154</span>
 <span class="normal">1155</span>
 <span class="normal">1156</span>
 <span class="normal">1157</span>
@@ -8186,7 +8195,10 @@ sequences and information about them).</p>
 <span class="normal">1179</span>
 <span class="normal">1180</span>
 <span class="normal">1181</span>
-<span class="normal">1182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_logo_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1182</span>
+<span class="normal">1183</span>
+<span class="normal">1184</span>
+<span class="normal">1185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_logo_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot sequence Logo figures of conserved ORFs saved as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -8248,10 +8260,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1090</span>
-<span class="normal">1091</span>
-<span class="normal">1092</span>
-<span class="normal">1093</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1093</span>
 <span class="normal">1094</span>
 <span class="normal">1095</span>
 <span class="normal">1096</span>
@@ -8272,7 +8281,10 @@ sequences and information about them).</p>
 <span class="normal">1111</span>
 <span class="normal">1112</span>
 <span class="normal">1113</span>
-<span class="normal">1114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_msa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1114</span>
+<span class="normal">1115</span>
+<span class="normal">1116</span>
+<span class="normal">1117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_msa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot MSA plots of  conserved ORFs</span>
 
 <span class="sd">    Returns:</span>
@@ -8327,10 +8339,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">957</span>
-<span class="normal">958</span>
-<span class="normal">959</span>
-<span class="normal">960</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">960</span>
 <span class="normal">961</span>
 <span class="normal">962</span>
 <span class="normal">963</span>
@@ -8342,7 +8351,10 @@ sequences and information about them).</p>
 <span class="normal">969</span>
 <span class="normal">970</span>
 <span class="normal">971</span>
-<span class="normal">972</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">972</span>
+<span class="normal">973</span>
+<span class="normal">974</span>
+<span class="normal">975</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Run msa tool (muscle) for each path object (set of conserved ORFs).</span>
 
 <span class="sd">    Returns:</span>
@@ -8395,10 +8407,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">713</span>
-<span class="normal">714</span>
-<span class="normal">715</span>
-<span class="normal">716</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">716</span>
 <span class="normal">717</span>
 <span class="normal">718</span>
 <span class="normal">719</span>
@@ -8432,7 +8441,10 @@ sequences and information about them).</p>
 <span class="normal">747</span>
 <span class="normal">748</span>
 <span class="normal">749</span>
-<span class="normal">750</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_annotated_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">750</span>
+<span class="normal">751</span>
+<span class="normal">752</span>
+<span class="normal">753</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_annotated_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save information about annotated ORFs as a set of tsv files.</span>
 
 <span class="sd">    Note:</span>
@@ -8509,10 +8521,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 974</span>
-<span class="normal"> 975</span>
-<span class="normal"> 976</span>
-<span class="normal"> 977</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 977</span>
 <span class="normal"> 978</span>
 <span class="normal"> 979</span>
 <span class="normal"> 980</span>
@@ -8544,7 +8553,10 @@ sequences and information about them).</p>
 <span class="normal">1006</span>
 <span class="normal">1007</span>
 <span class="normal">1008</span>
-<span class="normal">1009</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1009</span>
+<span class="normal">1010</span>
+<span class="normal">1011</span>
+<span class="normal">1012</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save MSA of conserved ORFs as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -8619,10 +8631,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1011</span>
-<span class="normal">1012</span>
-<span class="normal">1013</span>
-<span class="normal">1014</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1014</span>
 <span class="normal">1015</span>
 <span class="normal">1016</span>
 <span class="normal">1017</span>
@@ -8659,7 +8668,10 @@ sequences and information about them).</p>
 <span class="normal">1048</span>
 <span class="normal">1049</span>
 <span class="normal">1050</span>
-<span class="normal">1051</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_orfs_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1051</span>
+<span class="normal">1052</span>
+<span class="normal">1053</span>
+<span class="normal">1054</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_orfs_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save sequences of conserved ORFs as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -8737,10 +8749,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1053</span>
-<span class="normal">1054</span>
-<span class="normal">1055</span>
-<span class="normal">1056</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1056</span>
 <span class="normal">1057</span>
 <span class="normal">1058</span>
 <span class="normal">1059</span>
@@ -8772,7 +8781,10 @@ sequences and information about them).</p>
 <span class="normal">1085</span>
 <span class="normal">1086</span>
 <span class="normal">1087</span>
-<span class="normal">1088</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_results_summary_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1088</span>
+<span class="normal">1089</span>
+<span class="normal">1090</span>
+<span class="normal">1091</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_results_summary_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save results summary table.</span>
 
 <span class="sd">    Note:</span>
@@ -8838,9 +8850,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">557</span>
-<span class="normal">558</span>
-<span class="normal">559</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">559</span>
 <span class="normal">560</span>
 <span class="normal">561</span>
 <span class="normal">562</span>
@@ -8855,7 +8865,9 @@ sequences and information about them).</p>
 <span class="normal">571</span>
 <span class="normal">572</span>
 <span class="normal">573</span>
-<span class="normal">574</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save upstream sequences as a fasta file.</span>
 
 <span class="sd">    Returns:</span>
