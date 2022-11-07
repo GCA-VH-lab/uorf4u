@@ -101,7 +101,7 @@ class RefSeqProtein:
             if not xml_output:
                 handle = Bio.Entrez.efetch(db="ipg", rettype="ipg", retmode="xml", id=self.accession_number)
                 xml_output = handle.read().decode('utf-8')
-            root = xml.etree.ElementTree.fromstring(xml_output)
+            root = xml.etree.cElementTree.fromstring(xml_output)
             list_of_kingdom_taxid = []
             assemblies_coordinates = []
             for report in root.iter("IPGReport"):
@@ -282,7 +282,7 @@ class Locus:
             root = xml.etree.ElementTree.fromstring(xml_output)
             self.CDSs = []
             for gbseq in root.iter("GBSeq"):
-                if gbseq.find("GBSeq_locus").text == self.locus_id:
+                if gbseq.find("GBSeq_accession-version").text == self.locus_id:
                     for gbfeature in gbseq.iter("GBFeature"):
                         if gbfeature.find("GBFeature_key").text == "CDS":
                             try:
@@ -314,6 +314,7 @@ class Locus:
                                         useq_length = stop_b - start_b
                                     if target_strand == "-":
                                         relative_start, relative_stop = useq_length - relative_stop, useq_length - relative_start
+
                                     if (start_b <= main_start < stop_b) or (start_b <= main_stop < stop_b):
                                         cds_seq = self.locus_record.seq[main_start:main_stop]
                                         if strand == '-':
@@ -429,6 +430,7 @@ class Homologues:
             else:
                 assemblies_table = pandas.read_table(self.parameters.arguments["assemblies_list"], sep="\t")
                 locus_ids = assemblies_table["locus_id"].to_list()
+                locus_ids = [id.split(":")[0] for id in locus_ids]
 
             upstream_sequences = []
             an_with_no_annotated_useq = []
@@ -591,13 +593,14 @@ class UpstreamSequences:
             else:
                 start_codons_list = [self.parameters.arguments["main_start_codon"]]
 
-            if self.parameters.arguments["check_assembly_annotation"]:
+            if self.parameters.arguments["check_assembly_annotation"] and \
+                    self.records[0].annotations["RefSeq"]:
                 if self.parameters.arguments["verbose"]:
                     print(f"📡 Assemblies' annotation retrieving...", file=sys.stdout)
-                for i in range(0, len(self.records), 50):
-                    useq_subset = [record for record in self.records[i:i + 50] if record.annotations["RefSeq"]]
+                for i in range(0, len(self.records), 100):
+                    useq_subset = [record for record in self.records[i:i + 100] if record.annotations["RefSeq"]]
                     locus_ids = [locus.annotations["locus_id"] for locus in useq_subset]
-                    handle = Bio.Entrez.efetch(db="nucleotide", id=locus_ids, rettype="gbwithparts", retmode="xml")
+                    handle = Bio.Entrez.efetch(db="nucleotide", id=locus_ids, rettype="gb", retmode="xml")
                     handle_txt = handle.read().decode('utf-8')
                     for useq_record in useq_subset:
                         useq_record.annotations["locus_annotation"] = Locus(useq_record.annotations["locus_id"],
@@ -1503,7 +1506,7 @@ class Path:
             except Exception as error:
                 temp_stderr.seek(0)
                 temp_output.seek(0)
-                print(f"🤬 MAFFT error message:\n{temp_stderr.read()}", file = sys.stderr)
+                print(f"🤬 MAFFT error message:\n{temp_stderr.read()}", file=sys.stderr)
                 temp_stderr.close()
                 temp_output.close()
                 raise uorf4u.manager.uORF4uError(f"mafft error. If you work on a linux machine,"
