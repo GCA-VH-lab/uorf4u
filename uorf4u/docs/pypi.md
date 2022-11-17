@@ -12,7 +12,7 @@
 **License:** [WTFPL](http://www.wtfpl.net)  
 **Version:** 0.8.1 (November 2022)
 
-[**Detailed documentation**](https://art-egorov.github.io/uorf4u)
+### [**Detailed documentation**](https://GCA-VH-lab.github.io/uorf4u)
 
 ## Installation 🛠️
 
