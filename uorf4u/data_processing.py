@@ -106,7 +106,13 @@ class RefSeqProtein:
             assemblies_coordinates = []
             for report in root.iter("IPGReport"):
                 product = report.find("Product")
-                if product.attrib["accver"] == self.accession_number:  # be careful
+                if "product_acc" in report.attrib.keys():
+                    report_accession_number = report.attrib["product_acc"]
+                elif "accver" in product.attrib.keys():
+                    report_accession_number = product.attrib["accver"]
+                else:
+                    report_accession_number = ""
+                if report_accession_number == self.accession_number:  # be careful
                     for protein in report.iter("Protein"):
                         if protein.attrib["source"] == "RefSeq":
                             if "name" in protein.attrib.keys():
