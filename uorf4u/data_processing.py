@@ -79,8 +79,8 @@ class RefSeqProtein:
 
         """
         try:
-            handle = Bio.Entrez.efetch(db="protein", id=self.accession_number, rettype="gbwithparts", retmode="text")
-            self.record = Bio.SeqIO.read(handle, "gb")
+            handle = Bio.Entrez.efetch(db="protein", id=self.accession_number, rettype="fasta", retmode="text")
+            self.record = Bio.SeqIO.read(handle, "fasta")
             return self.record
         except Exception as error:
             raise uorf4u.manager.uORF4uError(
@@ -99,13 +99,14 @@ class RefSeqProtein:
         """
         try:
             if not xml_output:
-                handle = Bio.Entrez.efetch(db="ipg", rettype="ipg", retmode="xml", id=self.accession_number)
+                handle = Bio.Entrez.efetch(db="protein", rettype="ipg", retmode="xml", id=self.accession_number)
                 xml_output = handle.read().decode('utf-8')
             root = xml.etree.cElementTree.fromstring(xml_output)
             list_of_kingdom_taxid = []
             assemblies_coordinates = []
             for report in root.iter("IPGReport"):
-                if report.attrib["product_acc"] == self.accession_number:
+                product = report.find("Product")
+                if product.attrib["accver"] == self.accession_number:  # be careful
                     for protein in report.iter("Protein"):
                         if protein.attrib["source"] == "RefSeq":
                             if "name" in protein.attrib.keys():
@@ -139,11 +140,13 @@ class RefSeqProtein:
                                     except:
                                         print(f"❕Attention: {cds.attrib['accver']} record is not completed and"
                                               f" cannot be processed", file=sys.stderr)
+            '''
             if len(assemblies_coordinates) == 0:
                 print(f"❗Warning message:\n\tNo assembly was found for the protein "
                       f"'{self.accession_number}'.\n\tThis protein record can be suppressed by the ncbi\n\t"
                       f"or it has no sequence record that satisfies refseq_sequnces_regex config parameter.",
                       file=sys.stderr)
+            '''
             self.assemblies_coordinates = assemblies_coordinates
             return assemblies_coordinates
         except Exception as error:
@@ -208,20 +211,26 @@ class RefSeqProtein:
                     pident_to_seq_length = hsp_identity_sum / subject_length
                     pident_to_alignment_length = hsp_identity_sum / hsp_align_length
                     if pident_to_query_length >= self.parameters.arguments["blastp_pident_to_query_length_cutoff"]:
-                        blastp_stat_dict[hit_id] = dict(pident_to_query_length=str(round(pident_to_query_length, 2)),
-                                                        pident_to_sequence_length=str(round(pident_to_seq_length, 2)),
+                        blastp_stat_dict[hit_id] = dict(pident_to_query_length=str(round(pident_to_query_length, 4)),
+                                                        pident_to_sequence_length=str(round(pident_to_seq_length, 4)),
                                                         pident_to_alignment_length=str(
-                                                            round(pident_to_alignment_length, 2)),
+                                                            round(pident_to_alignment_length, 4)),
                                                         evalue=",".join(evalue))
                         if hit_id not in hits_an_list:
                             hits_an_list.append(hit_id)
-
             columns = "\t".join(["accession_number", "name", "pident_to_query_length", "pident_to_sequence_length",
                                  "pident_to_alignment_length", "e-value"])
             table = [columns]
             hits_records_list = [RefSeqProtein(i, self.parameters) for i in hits_an_list]
+            for i in range(0, len(hits_records_list), 200):
+                records_subset = hits_records_list[i:i + 200]
+                accession_numbers = [record.accession_number for record in records_subset]
+                handle_fasta = Bio.Entrez.efetch(db="protein", id=accession_numbers, rettype="fasta", retmode="text")
+                fasta_records = Bio.SeqIO.parse(handle_fasta, "fasta")
+                for f_record in fasta_records:
+                    record_index = accession_numbers.index(f_record.id)
+                    records_subset[record_index].name = f_record.description.replace(f_record.id, "").strip()
             for rec in hits_records_list:
-                rec.get_assemblies()
                 table.append("\t".join([rec.accession_number, rec.name,
                                         blastp_stat_dict[rec.accession_number]["pident_to_query_length"],
                                         blastp_stat_dict[rec.accession_number]["pident_to_sequence_length"],
@@ -389,18 +398,27 @@ class Homologues:
             for i in range(0, len(self.records), 200):
                 records_subset = self.records[i:i + 200]
                 accession_numbers = [record.accession_number for record in records_subset]
-                handle = Bio.Entrez.efetch(db="ipg", id=accession_numbers, rettype="ipg", retmode="xml")
+                handle = Bio.Entrez.efetch(db="protein", id=accession_numbers, rettype="ipg", retmode="xml")
                 handle_txt = handle.read().decode('utf-8')
                 for record in records_subset:
                     record.get_assemblies(handle_txt)
+                handle_fasta = Bio.Entrez.efetch(db="protein", id=accession_numbers, rettype="fasta", retmode="text")
+                fasta_records = Bio.SeqIO.parse(handle_fasta, "fasta")
+                for f_record in fasta_records:
+                    record_index = accession_numbers.index(f_record.id)
+                    records_subset[record_index].record = f_record
+
+            proteins_wo_assemblies = []
             if self.parameters.arguments["assemblies_list"] == 'NA':
                 assemblies_table = [f"accession_number\tlocus_id\tassembly\torganism\tstrain\ttax_id"]
                 list_of_protein_with_multiple_assemblies = []
                 numbers_of_assemblies = []
                 for record in self.records:
+                    numbers_of_assemblies.append(len(record.assemblies_coordinates))
+                    if len(record.assemblies_coordinates) == 0:
+                        proteins_wo_assemblies.append(record.accession_number)
                     if len(record.assemblies_coordinates) > 1:
                         list_of_protein_with_multiple_assemblies.append(record.accession_number)
-                        numbers_of_assemblies.append(len(record.assemblies_coordinates))
                     for assembly in record.assemblies_coordinates:
                         assemblies_table.append(
                             f"{record.accession_number}\t"
@@ -410,9 +428,25 @@ class Homologues:
                 if not os.path.exists(self.parameters.arguments["output_dir"]):
                     os.mkdir(self.parameters.arguments["output_dir"])
                 assemblies_table_path = os.path.join(self.parameters.arguments["output_dir"], "assemblies_list.tsv")
+                assemblies_selected_table_path = os.path.join(self.parameters.arguments["output_dir"],
+                                                              "selected_assemblies_list.tsv")
                 assemblies_table_file = open(assemblies_table_path, "w")
                 assemblies_table_file.write("\n".join(assemblies_table))
                 assemblies_table_file.close()
+
+                proteins_wo_assemblies_txt = "\n".join(proteins_wo_assemblies) + "\n"
+                proteins_wo_assemblies_path = os.path.join(self.parameters.arguments["output_dir"],
+                                                           "proteins_wo_assembly.txt")
+                proteins_wo_assemblies_file = open(proteins_wo_assemblies_path, "w")
+                proteins_wo_assemblies_file.write(proteins_wo_assemblies_txt)
+
+                if numbers_of_assemblies.count(0) > 0:
+                    print(f"❗️Warning message:\n\tFor {numbers_of_assemblies.count(0)} proteins "
+                          f"no assembly was found.\n"
+                          f"\tThese proteins' records can be suppressed by the ncbi\n\t"
+                          f"or they don't have loci that satisfies refseq_sequnces_regex config parameter.\n\t"
+                          f"List of these proteins was saved as: {proteins_wo_assemblies_path}",
+                          file=sys.stderr)
                 if len(list_of_protein_with_multiple_assemblies) > 0:
                     print(f"❗️Warning message:\n\tFor {len(list_of_protein_with_multiple_assemblies)} proteins "
                           f"multiple assemblies were found in identical protein database\n"
@@ -426,7 +460,8 @@ class Homologues:
                           f"by uorf4u to limit max number of assemblies included in the analysis;\n"
                           f"\tand it works only if '-al' option is not provided. In case number of assemblies is more than "
                           f"the cutoff,\n\trandom sampling 🎲 will be used to take only subset of them.\n\t"
-                          f"See documentation 📖 for details.", file=sys.stderr)
+                          f"Selected assemblies information was savead as a tsv file: {assemblies_selected_table_path}"
+                          f"\n\tSee documentation 📖 for details.", file=sys.stderr)
             else:
                 assemblies_table = pandas.read_table(self.parameters.arguments["assemblies_list"], sep="\t")
                 locus_ids = assemblies_table["locus_id"].to_list()
@@ -445,6 +480,18 @@ class Homologues:
                     assemblies = assemblies_filtered
                 record.assemblies_coordinates = assemblies
 
+            assemblies_table = [f"accession_number\tlocus_id\tassembly\torganism\tstrain\ttax_id"]
+            for record in self.records:
+                for assembly in record.assemblies_coordinates:
+                    assemblies_table.append(
+                        f"{record.accession_number}\t"
+                        f"{assembly['locus_id']}:{assembly['start']}:{assembly['stop']}({assembly['strand']})"
+                        f"\t{assembly['assembly']}"
+                        f"\t{assembly['org']}\t{assembly['strain']}\t{assembly['taxid']}")
+            assemblies_table_file = open(assemblies_selected_table_path, "w")
+            assemblies_table_file.write("\n".join(assemblies_table))
+            assemblies_table_file.close()
+
             lists_of_assemblies = [record.assemblies_coordinates for record in self.records]
             all_assemblies = [assembly for sublist in lists_of_assemblies for assembly in sublist]
             for i in range(0, len(all_assemblies), 150):
@@ -459,7 +506,11 @@ class Homologues:
                 record_upstream_sequences = []
                 for assembly in record.assemblies_coordinates:
                     locus_record = assembly["record"]
-                    useq_downstream_region_length = self.parameters.arguments["downstream_region_length"]
+                    try:
+                        useq_downstream_region_length = min(self.parameters.arguments["downstream_region_length"],
+                                                            len(record.record.seq) * 3)
+                    except:
+                        useq_downstream_region_length = self.parameters.arguments["downstream_region_length"]
                     useq_upstream_region_length = self.parameters.arguments["upstream_region_length"]
                     if assembly["strand"] == "+":
                         if self.parameters.arguments["upstream_region_length"] == "all":
@@ -627,6 +678,9 @@ class UpstreamSequences:
                                 orf_length = stop_codon_position - start_codon_position
                                 distance = (useq_record.annotations["length"] - self.parameters.arguments[
                                     "downstream_region_length"]) - stop_codon_position
+                                distance_sc = (useq_record.annotations["length"] - self.parameters.arguments[
+                                    "downstream_region_length"]) - start_codon_position
+
                                 if useq_record.annotations["RefSeq"]:
                                     orf_id = f"{useq_record.annotations['locus_id']}|" \
                                              f"{useq_record.annotations['accession_number']}|" \
@@ -646,7 +700,8 @@ class UpstreamSequences:
                                                   stop=stop_codon_position, useq_index=useq_index,
                                                   nt_sequence=useq_record.seq[start_codon_position:stop_codon_position],
                                                   sd_window_seq=useq_record.seq[sd_window_start:start_codon_position])
-                                if current_orf.length >= self.parameters.arguments["min_orf_length"]:
+                                if current_orf.length >= self.parameters.arguments[
+                                    "min_orf_length"] and distance_sc != 0:
                                     useq_record.annotations["ORFs"].append(current_orf)
                                     if self.parameters.arguments["check_assembly_annotation"] and \
                                             useq_record.annotations["RefSeq"]:
@@ -669,7 +724,7 @@ class UpstreamSequences:
             if self.parameters.arguments["fast_searching"] == "auto":
                 if len(self.records) < 5:
                     self.parameters.arguments["fast_searching"] = False
-                elif (len(self.records) > 150 or number_of_orfs > 1000):
+                elif (len(self.records) >= 100 or number_of_orfs > 1000):
                     self.parameters.arguments["fast_searching"] = True
                 else:
                     self.parameters.arguments["fast_searching"] = False
@@ -1653,7 +1708,7 @@ class Path:
             matrix_fr = pandas.DataFrame(pos_specific_dict, index=pos)
             colors = self.parameters.arguments[f"colors_{seq_type}"]
             colors = {k: uorf4u.methods.color_name_to_hex(v, self.parameters.arguments) for k, v in colors.items()}
-            fig_size = (max(10, msa_length * 1.3), min(2.5, 2.5 * 10 / (msa_length ** (1 / 5))))
+            fig_size = (min(max(10, msa_length * 1.3), (2 ** 16) - 1), min(2.5, 2.5 * 10 / (msa_length ** (1 / 5))))
 
             if self.parameters.arguments["logo_type"] == "probability" or \
                     self.parameters.arguments["logo_type"] == "both":

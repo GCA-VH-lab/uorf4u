@@ -1,5 +1,9 @@
 # Version log
-* **Ver 0.8.2** - 7 November 2022
+* **Ver 0.8.3** - 30 November 2022
+	* Minor bugs were fixed.
+	* Warning messages were updated.
+	* NCBI database parsing was optimised.
+* Ver 0.8.2 - 7 November 2022
 	* xml files and assemblies annotation bugs were fixed.
 	* Annotation parsing was optimised.
 * Ver 0.8.1 - 4 November 2022
