@@ -1720,7 +1720,8 @@ class Path:
             matrix_fr = pandas.DataFrame(pos_specific_dict, index=pos)
             colors = self.parameters.arguments[f"colors_{seq_type}"]
             colors = {k: uorf4u.methods.color_name_to_hex(v, self.parameters.arguments) for k, v in colors.items()}
-            fig_size = (min(max(10, msa_length * 1.3), (2 ** 16) - 1), min(2.5, 2.5 * 10 / (msa_length ** (1 / 5))))
+            fig_size = (min(max(10, msa_length * 1.3), ((2 ** 16) - 1) / 100),
+                        min(2.5, 2.5 * 10 / (msa_length ** (1 / 5))))
 
             if self.parameters.arguments["logo_type"] == "probability" or \
                     self.parameters.arguments["logo_type"] == "both":
