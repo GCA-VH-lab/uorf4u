@@ -1,5 +1,7 @@
 # Version log
-* **Ver 0.8.3** - 30 November 2022
+* **Ver 0.8.4** - 30 November 2022
+	* Report files were updated.
+* Ver 0.8.3 - 30 November 2022
 	* Minor bugs were fixed.
 	* Warning messages were updated.
 	* NCBI database parsing was optimised.

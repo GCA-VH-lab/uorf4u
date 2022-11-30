@@ -11,7 +11,7 @@
 **Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
 **OS-level dependencies:** mafft (v7.490 is included in the package)    
 **License:** [WTFPL](http://www.wtfpl.net)  
-**Version:** 0.8.3 (November 2022)
+**Version:** 0.8.4 (November 2022)
 
 ### Data analysis pipeline
 

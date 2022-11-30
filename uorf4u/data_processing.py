@@ -731,6 +731,10 @@ class UpstreamSequences:
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF was annotated in upstream sequences."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
+                if not os.path.exists(self.parameters.arguments["output_dir"]):
+                    os.mkdir(self.parameters.arguments["output_dir"])
+                with open(os.path.join(self.parameters.arguments["output_dir"], "report.txt"), "w") as report_f:
+                    report_f.write("Termination:\nNo ORF was annotated in upstream sequences.")
                 sys.exit()
             if self.parameters.arguments["verbose"]:
                 print(f"✅ {number_of_orfs} ORFs were annotated.", file=sys.stdout)
@@ -759,6 +763,10 @@ class UpstreamSequences:
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF left after filtering by SD annotation."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
+                if not os.path.exists(self.parameters.arguments["output_dir"]):
+                    os.mkdir(self.parameters.arguments["output_dir"])
+                with open(os.path.join(self.parameters.arguments["output_dir"], "report.txt"), "w") as report_f:
+                    report_f.write("Termination:\nNo ORF left after filtering by SD annotation.")
                 sys.exit()
             if self.parameters.arguments["verbose"]:
                 print(
@@ -968,6 +976,10 @@ class UpstreamSequences:
             if number_of_paths == 0:
                 print(f"⛔Termination:\n\tNo conserved ORFs set was found."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
+                if not os.path.exists(self.parameters.arguments["output_dir"]):
+                    os.mkdir(self.parameters.arguments["output_dir"])
+                with open(os.path.join(self.parameters.arguments["output_dir"], "report.txt"), "w") as report_f:
+                    report_f.write("Termination:\nNo conserved ORFs set was found.")
                 sys.exit()
             if self.parameters.arguments["verbose"]:
                 print(f"✅ {number_of_paths} sets of conserved ORFs were found.",
