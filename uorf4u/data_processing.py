@@ -16,6 +16,9 @@ import Bio.Data.IUPACData
 import Bio.Data.CodonTable
 import logomaker
 import matplotlib.pyplot as plt
+import matplotlib
+
+matplotlib.use('agg')
 import pandas
 import subprocess
 import tempfile
@@ -249,7 +252,7 @@ class RefSeqProtein:
             f.write("\n".join(table))
             if self.parameters.arguments["verbose"]:
                 print(f"✅ {len(hits_records_list) - 1} homologues were found.\n"
-                      f"💌 Summary table was saved to: {output_filename}", file=sys.stdout)
+                      f"💌 Summary table was saved to: {os.path.basename(output_filename)}", file=sys.stdout)
             return hits_an_list
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to perform searching for homologues with blastp.") from error
@@ -399,8 +402,7 @@ class Homologues:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"📡 Retrieving upstream sequences...",
-                      file=sys.stdout)
+                print(f"📡 Retrieving upstream sequences...", file=sys.stdout)
             for i in range(0, len(self.records), 200):
                 records_subset = self.records[i:i + 200]
                 accession_numbers = [record.accession_number for record in records_subset]
@@ -451,14 +453,14 @@ class Homologues:
                           f"no assembly was found.\n"
                           f"\tThese proteins' records can be suppressed by the ncbi\n\t"
                           f"or they don't have loci that satisfies refseq_sequnces_regex config parameter.\n\t"
-                          f"List of these proteins was saved as: {proteins_wo_assemblies_path}",
+                          f"List of these proteins was saved as: {os.path.basename(proteins_wo_assemblies_path)}",
                           file=sys.stderr)
                 if len(list_of_protein_with_multiple_assemblies) > 0:
                     print(f"❗️Warning message:\n\tFor {len(list_of_protein_with_multiple_assemblies)} proteins "
                           f"multiple assemblies were found in identical protein database\n"
                           f"\twith max number of assemblies per one protein as {max(numbers_of_assemblies)} 😱.\n\t"
                           f"A table with information about the assemblies was saved as a tsv file: "
-                          f"{assemblies_table_path}.\n\tYou can edit it and remove lines with assemblies "
+                          f"{os.path.basename(assemblies_table_path)}.\n\tYou can edit it and remove lines with assemblies "
                           f"you do not want to include in your analysis.\n"
                           f"\tAfter filtering, you can use -al cmd parameter with your table as an argument.\n"
                           f"\tIn addition, config file has 'max_number_of_assemblies' parameter "
@@ -466,7 +468,8 @@ class Homologues:
                           f"by uorf4u to limit max number of assemblies included in the analysis;\n"
                           f"\tand it works only if '-al' option is not provided. In case number of assemblies is more than "
                           f"the cutoff,\n\trandom sampling 🎲 will be used to take only subset of them.\n\t"
-                          f"Selected assemblies information was savead as a tsv file: {assemblies_selected_table_path}"
+                          f"Selected assemblies information was savead as a tsv file: "
+                          f"{os.path.basename(assemblies_selected_table_path)}"
                           f"\n\tSee documentation 📖 for details.", file=sys.stderr)
             else:
                 assemblies_table = pandas.read_table(self.parameters.arguments["assemblies_list"], sep="\t")
@@ -580,8 +583,7 @@ class Homologues:
                       f"\tSee 'minimal_upstream_region_length' config parameter description in the documentation.",
                       file=sys.stderr)
             if self.parameters.arguments["verbose"]:
-                print(f"✅ {len(upstream_sequences)} upstream sequences were obtained.",
-                      file=sys.stdout)
+                print(f"✅ {len(upstream_sequences)} upstream sequences were obtained.", file=sys.stdout)
             return upstream_sequences
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to retrieve upstream sequences.") from error
@@ -626,7 +628,7 @@ class UpstreamSequences:
                 os.mkdir(self.parameters.arguments["output_dir"])
             Bio.SeqIO.write(self.records, output_file, "fasta")
             if self.parameters.arguments["verbose"]:
-                print(f"💌 Fasta file with upstream sequences was saved to {output_file}.",
+                print(f"💌 Fasta file with upstream sequences was saved to {os.path.basename(output_file)}.",
                       file=sys.stdout)
             return None
         except Exception as error:
@@ -775,9 +777,8 @@ class UpstreamSequences:
                     report_f.write("Termination:\nNo ORF left after filtering by SD annotation.")
                 sys.exit()
             if self.parameters.arguments["verbose"]:
-                print(
-                    f"🧹 {number_of_orfs} ORFs remained in the analysis after filtering by presence of the SD sequence."
-                    , file=sys.stdout)
+                print(f"🧹 {number_of_orfs} ORFs remained in the analysis after filtering by presence "
+                      f"of the SD sequence.", file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to filter uORFs by SD sequence presence.") from error
@@ -795,7 +796,7 @@ class UpstreamSequences:
         try:
             colnames = "\t".join(
                 ["id", "name", "length", "nt_sequence", "aa_sequence", "sd_sequence_window", "SD-aSD energy",
-                 "extended_orfs", "annotation"])
+                 "SD-aSD energies list", "extended_orfs", "annotation"])
             if not os.path.exists(self.parameters.arguments["output_dir"]):
                 os.mkdir(self.parameters.arguments["output_dir"])
             output_dir_path = os.path.join(self.parameters.arguments["output_dir"], "annotated_ORFs")
@@ -811,11 +812,13 @@ class UpstreamSequences:
                         extented_orfs_value = ';'.join(orf.extended_orfs)
                     lines.append("\t".join(
                         [orf.id, orf.name, str(orf.length), str(orf.nt_sequence), str(orf.aa_sequence),
-                         str(orf.sd_window_seq_str), str(orf.min_energy), extented_orfs_value, orf.annotation]))
+                         str(orf.sd_window_seq_str), str(orf.min_energy),";".join(orf.sd_window_energies),
+                         extented_orfs_value, orf.annotation]))
                 with open(os.path.join(output_dir_path, f"{file_name}.tsv"), "w") as output:
                     output.write("\n".join(lines))
             if self.parameters.arguments["verbose"]:
-                print(f"💌 tsv files with information about annotated ORFs were saved to {output_dir_path} folder.",
+                print(f"💌 tsv files with information about annotated ORFs were saved to "
+                      f"{os.path.basename(output_dir_path)} folder.",
                       file=sys.stdout)
             return None
         except Exception as error:
@@ -1039,8 +1042,7 @@ class UpstreamSequences:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🧮 Running MSA for conserved ORFs.",
-                      file=sys.stdout)
+                print(f"🧮 Running MSA for conserved ORFs.", file=sys.stdout)
             for path in self.conserved_paths:
                 path.maft_msa()
             return None
@@ -1077,9 +1079,10 @@ class UpstreamSequences:
                     Bio.AlignIO.write(msa, output, "fasta")
 
             if self.parameters.arguments["verbose"]:
+                output_dirs_v = [os.path.basename(i) for i in output_dirs.values()]
                 delimiter = ",\n\t"
                 print(f"💌 MSA fasta files of conserved ORFs were saved to the folders:\n"
-                      f"\t{delimiter.join(output_dirs.values())} folders.", file=sys.stdout)
+                      f"\t{delimiter.join(output_dirs_v)} folders.", file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to save MSA of conserved uORFs.") from error
@@ -1120,8 +1123,9 @@ class UpstreamSequences:
                     Bio.SeqIO.write(records, output, "fasta")
             if self.parameters.arguments["verbose"]:
                 delimiter = ",\n\t"
+                output_dirs_v = [os.path.basename(i) for i in output_dirs.values()]
                 print(f"💌 Sequences fasta files of conserved ORFs were saved to the folders: \n"
-                      f"\t{delimiter.join(output_dirs.values())}.", file=sys.stdout)
+                      f"\t{delimiter.join(output_dirs_v)}.", file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to save sequences of conserved uORFs.") from error
@@ -1158,7 +1162,7 @@ class UpstreamSequences:
             f = open(output_file_path, "w")
             f.write("\n".join(rows))
             if self.parameters.arguments["verbose"]:
-                print(f"💌 Results summary tsv table saved to: {output_file_path}.", file=sys.stdout)
+                print(f"💌 Results summary tsv table saved to: {os.path.basename(output_file_path)}.", file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to save results summary table.") from error
@@ -1182,8 +1186,9 @@ class UpstreamSequences:
                                        [os.path.join(self.parameters.arguments["output_dir"],
                                                      f"{rename_dict[i]}_msa_visualisation") for i in
                                         self.parameters.arguments['sequences_to_write']]))
+                output_dirs_v = [os.path.basename(i) for i in output_dirs.values()]
                 delimiter = ",\n\t"
-                print(f"💌 MSA figures were saved to the folders: \n\t{delimiter.join(output_dirs.values())}",
+                print(f"💌 MSA figures were saved to the folders: \n\t{delimiter.join(output_dirs_v)}",
                       file=sys.stdout)
             return None
         except Exception as error:
@@ -1217,8 +1222,9 @@ class UpstreamSequences:
                                        [os.path.join(self.parameters.arguments["output_dir"],
                                                      f"{rename_dict[i]}_msa_visualisation") for i in
                                         self.parameters.arguments['sequences_to_write']]))
+                output_dirs_v = [os.path.basename(i) for i in output_dirs.values()]
                 delimiter = ",\n\t"
-                print(f"💌 MSA figures were saved to the folders:\n\t{delimiter.join(output_dirs.values())}.",
+                print(f"💌 MSA figures were saved to the folders:\n\t{delimiter.join(output_dirs_v)}.",
                       file=sys.stdout)
             return None
         except Exception as error:
@@ -1250,8 +1256,9 @@ class UpstreamSequences:
                                        [os.path.join(self.parameters.arguments["output_dir"],
                                                      f"{rename_dict[i]}_seqlogo_visualisation") for i in
                                         self.parameters.arguments['sequences_to_write']]))
+                output_dirs_v = [os.path.basename(i) for i in output_dirs.values()]
                 delimiter = ",\n\t"
-                print(f"💌 Sequence logo figures were saved to the folders: \n\t{delimiter.join(output_dirs.values())}",
+                print(f"💌 Sequence logo figures were saved to the folders: \n\t{delimiter.join(output_dirs_v)}",
                       file=sys.stdout)
             return None
         except Exception as error:
@@ -1281,7 +1288,7 @@ class UpstreamSequences:
                 annotation_plot_manager.create_tracks()
                 annotation_plot_manager.plot(output_file_name)
             if self.parameters.arguments["verbose"]:
-                print(f"💌 Annotation figures were saved to the folder: {output_dir}",
+                print(f"💌 Annotation figures were saved to the folder: {os.path.basename(output_dir)}",
                       file=sys.stdout)
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to plot loci' annotations figures.") from error
@@ -1378,6 +1385,7 @@ class ORF:
         self.min_energy = 0
         self.putative_sd_sequence = "NA"
         self.sd_window_seq_str = "NA"
+        self.sd_window_energies = []
 
     def calculate_energies(self) -> None:
         """Calculate energies of putative SD sequences of the upstream sequence.
@@ -1401,6 +1409,7 @@ class ORF:
                     energies.append(0)
             if energies:
                 self.min_energy = min(energies)
+                self.sd_window_energies = [str(i) for i in energies]
                 if self.min_energy < self.parameters.arguments["sd_energy_cutoff"]:
                     sd_start_position = energies.index(self.min_energy)  # Be careful, it could be more than one!
                     self.putative_sd_sequence = self.sd_window_seq[sd_start_position:sd_start_position + sd_seq_length]

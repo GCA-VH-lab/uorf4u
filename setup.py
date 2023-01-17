@@ -17,7 +17,7 @@ extra_files = package_files("uorf4u/uorf4u_data")
 extra_files.append("docs/pypi.md")
 
 setup(name="uorf4u",
-      version="0.8.4.2",
+      version="0.8.5",
       description="A tool for short uORF annotation.",
       python_requires='>=3.7',
       url="https://art-egorov.github.io/uorf4u/",

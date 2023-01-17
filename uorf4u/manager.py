@@ -56,7 +56,7 @@ class Parameters:
         parser.add_argument("-fast", dest="fast_searching", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="bacteria")
-        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.8.4")
+        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.8.5")
         parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
@@ -99,8 +99,10 @@ class Parameters:
             self.arguments.update(self.cmd_arguments)
             self.load_palette()
             self.load_color_config()
-            Bio.Entrez.email = self.arguments["ncbi_entrez_email"]
             Bio.Entrez.tool = "uorf4u"
+            Bio.Entrez.email = self.arguments["ncbi_entrez_email"]
+            if "ncbi_entrez_api_key" in self.arguments.keys():
+                Bio.Entrez.api_key = self.arguments["ncbi_entrez_api_key"]
             # Bio.Entrez.api_key = "09f9e08fcd7192afdd358d833e565e0f6609"
         except Exception as error:
             raise uORF4uError(
