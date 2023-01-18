@@ -17,7 +17,6 @@ import Bio.Data.CodonTable
 import logomaker
 import matplotlib.pyplot as plt
 import matplotlib
-
 matplotlib.use('agg')
 import pandas
 import subprocess
@@ -978,7 +977,7 @@ class UpstreamSequences:
                                         elif conserved_path.score <= old_path.score:
                                             to_save_this_path = 0
                                 if to_save_this_path == 1:
-                                    conserved_path.sort()
+                                    #conserved_path.sort() # NOT SORTING!
                                     conserved_paths.append(conserved_path)
             self.conserved_paths = conserved_paths
             number_of_paths = len(conserved_paths)
@@ -1581,7 +1580,7 @@ class Path:
             temp_stderr = tempfile.NamedTemporaryFile()
             maft = self.parameters.arguments["maft_binary"]
             try:
-                subprocess.run([maft, "--auto", temp_input.name], stdout=temp_output, stderr=temp_stderr)
+                subprocess.run([maft, "--auto", "--reorder", temp_input.name], stdout=temp_output, stderr=temp_stderr)
                 msa = Bio.AlignIO.read(temp_output.name, "fasta")
                 temp_stderr.close()
                 temp_output.close()
