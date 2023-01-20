@@ -1,7 +1,9 @@
 # Version log
-* **Ver 0.8.6** - 18 Kanuary 2023
+* **Ver 0.8.7** - 20 January 2023
+	* Logs messages were updated.
+* Ver 0.8.6 - 18 January 2023
 	* Sequences in MSA plot now are ordered according to their similarity. (--reorder MAFFT parameter)
-* **Ver 0.8.5** - 17 January 2023
+* Ver 0.8.5 - 17 January 2023
 	* Update for web version
 * Ver 0.8.4 - 30 November 2022
 	* Report files were updated.

@@ -645,7 +645,7 @@ class UpstreamSequences:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🔎 ORFs annotating in the upstream sequences...", file=sys.stdout)
+                print(f"🔎 Annotating ORFs in the upstream sequences...", file=sys.stdout)
             if self.parameters.arguments["alternative_start_codons"]:
                 start_codons_list = self.codon_table.start_codons
             else:
@@ -654,7 +654,7 @@ class UpstreamSequences:
             if self.parameters.arguments["check_assembly_annotation"] and \
                     self.records[0].annotations["RefSeq"]:
                 if self.parameters.arguments["verbose"]:
-                    print(f"📡 Assemblies' annotation retrieving...", file=sys.stdout)
+                    print(f"📡 Retrieving assemblies' annotation...", file=sys.stdout)
                 for i in range(0, len(self.records), 100):
                     useq_subset = [record for record in self.records[i:i + 100] if record.annotations["RefSeq"]]
                     locus_ids = [locus.annotations["locus_id"] for locus in useq_subset]
@@ -1175,7 +1175,7 @@ class UpstreamSequences:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🎨 MSA figures plotting...", file=sys.stdout)
+                print(f"🎨 Plotting MSA figures...", file=sys.stdout)
             for path in self.conserved_paths:
                 path.plot_msa()
 
@@ -1211,7 +1211,7 @@ class UpstreamSequences:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🎨 MSA figures plotting...", file=sys.stdout)
+                print(f"🎨 Plotting MSA figures...", file=sys.stdout)
             for path in self.conserved_paths:
                 path.plot_ggmsa()
 
@@ -1243,7 +1243,7 @@ class UpstreamSequences:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🎨 Sequence logo figures plotting...",
+                print(f"🎨 Plotting sequence logo figures ...",
                       file=sys.stdout)
 
             for path in self.conserved_paths:
@@ -1272,7 +1272,7 @@ class UpstreamSequences:
         """
         try:
             if self.parameters.arguments["verbose"]:
-                print(f"🎨 Loci annotations figures plotting...",
+                print(f"🎨 Plotting loci annotations figures...",
                       file=sys.stdout)
             if not os.path.exists(self.parameters.arguments["output_dir"]):
                 os.mkdir(self.parameters.arguments["output_dir"])

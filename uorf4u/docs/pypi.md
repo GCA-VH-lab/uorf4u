@@ -1,5 +1,5 @@
 
-<img  src="https://raw.githubusercontent.com/art-egorov/uorf4u/main/docs/img/uorf4u_logo.png" width="310"/>
+<img  src="https://raw.githubusercontent.com/GCA-VH-lab/uorf4u/main/docs/img/uorf4u_logo.png" width="310"/>
 
 ## Description
 
@@ -10,7 +10,7 @@
 **Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
 **OS-level dependencies:** mafft (v7.490 is included in the package)  
 **License:** [WTFPL](http://www.wtfpl.net)  
-**Version:** 0.8.6 (January 2022)
+**Version:** 0.8.7 (January 2022)
 
 ### [**Detailed documentation**](https://GCA-VH-lab.github.io/uorf4u)
 
