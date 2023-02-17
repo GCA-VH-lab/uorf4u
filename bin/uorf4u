@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import uorf4u
-
+import time
 import traceback
 import sys
 
@@ -46,7 +46,6 @@ try:
     upstream_seqs.plot_annotation()
     upstream_seqs.plot_logo_figs()
     upstream_seqs.plot_msa_figs()
-
 except Exception as e:
     if parameters.arguments["debug"]:
         traceback.print_exc()

@@ -1,5 +1,9 @@
 # Version log
-* **Ver 0.8.7** - 20 January 2023
+* **Ver 0.9.0** - 17 February 2023
+	* Conservation analysis algorithm was updated.
+	* -c parameter is now always required.
+	* Logs messages were updated.
+* Ver 0.8.7 - 20 January 2023
 	* Logs messages were updated.
 * Ver 0.8.6 - 18 January 2023
 	* Sequences in MSA plot now are ordered according to their similarity. (--reorder MAFFT parameter)

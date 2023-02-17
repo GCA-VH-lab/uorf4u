@@ -4,14 +4,17 @@
 #
 ## Description
 
-**uORF4u** is a bioinformatics tool for conserved upstream ORF annotation.    
+**uORF4u** is a bioinformatics tool for conserved upstream ORF annotation.   
 
 **Programming language:** Python3   
 **OS:** MacOS, Linux  
 **Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
-**OS-level dependencies:** mafft (v7.490 is included in the package)    
-**License:** [WTFPL](http://www.wtfpl.net)  
-**Version:** 0.8.7 (January 2022)
+**Python version:** >= 3.7  
+**OS-level dependencies:** mafft (v7.490 is included in the package)  
+**License:** CC0  
+**Version:** 0.9.0 (February 2023)
+
+**Web version is available at the Atkinson Lab Server Portal: [server.atkinson-lab.com/uorf4u](https://server.atkinson-lab.com)**
 
 ### Data analysis pipeline
 
@@ -20,7 +23,7 @@
 
 ---
 
-## Installation 🛠️
+## Installation
 
 - The most stable release of uorf4u can be installed directly from pypi:
 
@@ -43,16 +46,21 @@ python3 -m pip install -e .
 
 
 
-## Reference 📃
+## Reference
 
 If you find uorf4u useful, please cite:  
 Artyom. A. Egorov, Gemma C. Atkinson, **uORF4u: a tool for annotation of conserved upstream open reading frames**, *bioRxiv 2022.10.27.514069; doi: [10.1101/2022.10.27.514069](https://doi.org/10.1101/2022.10.27.514069)*
 
-## Contact 📇
+## Conservation analysis algorithm
+
+<img  src="img/consrvation_analysis_uORF4u.png" width="650"/>
+
+## Contact
 
 Please contact us by e-mail _artem**dot**egorov**AT**med**dot**lu**dot**se_ or use [Issues](https://github.com/GCA-VH-lab/uorf4u/issues?q=) to report any technical problems.  
 You can also use [Discussions section](https://github.com/GCA-VH-lab/uorf4u/discussions) for sharing your ideas or feature requests! 
 
-## Authors 👨🏻‍💻
+## Authors
 
-uORF4u is developed by Artyom Egorov at [the Atkinson Lab](https://atkinson-lab.com), Department of Experimental Medical Science, Lund University, Sweden 🇸🇪. We are open for suggestions to extend and improve svist4get functionality. Please don't hesitate to share your ideas or feature requests.
+uORF4u is developed by Artyom Egorov at [the Atkinson Lab](https://atkinson-lab.com), Department of Experimental Medical Science, Lund University, Sweden 🇸🇪.  
+We are open for suggestions to extend and improve uorf4u functionality. Please don't hesitate to share your ideas or feature requests.

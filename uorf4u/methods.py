@@ -125,7 +125,7 @@ def parse_fasta_file(path: str, parameters) -> list:
                                          upstream_region_length=length - parameters.arguments[
                                              "downstream_region_length"],
                                          downstream_region_length=parameters.arguments["downstream_region_length"],
-                                         label=label)
+                                         label=label, start=0, stop=length, strand="+")
                 record.annotations = record_annotation
                 processed_records.append(record)
         return processed_records

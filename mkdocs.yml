@@ -8,7 +8,7 @@ edit_uri: ''  #disables edit button
 theme:
     name: material
     custom_dir: docs/material
-    favicon: assets/images/uorf4u_favicon.png
+    favicon: assets/images/favicon.png
     palette:
     # Palette toggle for light mode
       - scheme: default

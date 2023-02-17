@@ -55,14 +55,13 @@ class Parameters:
         parser.add_argument("-pc", dest="orfs_presence_cutoff", type=float, default=None)
         parser.add_argument("-fast", dest="fast_searching", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
-        parser.add_argument("-c", dest="config_file", type=str, default="bacteria")
-        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.8.7")
+        parser.add_argument("-c", dest="config_file", type=str, default="Not selected")
+        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.9.0")
         parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
         args = parser.parse_args()
         args = vars(args)
-
         if len(sys.argv[1:]) == 0:
             args["help"] = True
 
@@ -83,7 +82,11 @@ class Parameters:
         filtered_args = {k: v for k, v in args.items() if v is not None}
         self.cmd_arguments = filtered_args
 
-    def load_config(self, path_c="bacteria"):
+    def load_config(self, path_c):
+        if path_c == "Not selected":
+            raise uORF4uError("Please, specify -c argument <bacteria|eukaryotes|<file.cfg>. "
+                              "It can be either a path to a configuration file or name of a premade config file "
+                              "(bacteria or eukaryotes)")
         try:
             if path_c == "bacteria" or path_c == "eukaryotes":
                 path_c = os.path.join(os.path.dirname(__file__), "uorf4u_data", f"uorf4u_{path_c}.cfg")
@@ -103,7 +106,6 @@ class Parameters:
             Bio.Entrez.email = self.arguments["ncbi_entrez_email"]
             if "ncbi_entrez_api_key" in self.arguments.keys():
                 Bio.Entrez.api_key = self.arguments["ncbi_entrez_api_key"]
-            # Bio.Entrez.api_key = "09f9e08fcd7192afdd358d833e565e0f6609"
         except Exception as error:
             raise uORF4uError(
                 "Unable to parse the specified config file. Please check your config file or written name.") from error

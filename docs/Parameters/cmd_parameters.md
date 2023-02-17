@@ -32,6 +32,11 @@ Path to a file with list of accession numbers. File format: one accession number
 - `-fa` *file.fa*  
     Path to a fasta file with upstream sequences.
 
+
+- `-c` *prokaryotes|eukaryotes|file.cfg*  
+Path to a configuration file [default: internal].
+
+
 **OPTIONAL ARGUMENTS**
 
 - `-bh` *number_of_hits*  
@@ -73,9 +78,6 @@ Fast searching mode with less accuracy (>~300 sequences or >~2000 ORFs).
 
 - `-o` *dirname*  
 Output dirname. It will be created if it's not exist. All output dirs will be then created in this folder [default: uorf4u_{current_date}; e.g. uorf4u_2022_07_25-20_41].
-
-- `-c` *prokaryotes|eukaryotes|file.cfg*  
-Path to a configuration file [default: internal].
 
 
 **MISCELLANEOUS ARGUMENTS**

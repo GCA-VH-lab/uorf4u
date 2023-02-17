@@ -8,6 +8,11 @@ Here we show several usage examples of the uorf4u command-line interface for two
 **If you work on a Linux machine** after installation you should run: `uorf4u --linux`  
 This command replaces the tools paths (maft) in the pre-made config files from the MacOS' version (default) to the Linux'. 
 
+
+#### Output folder structure
+
+<img  src="img/output_folder_uorf4u.png" width="500"/>
+
 ---
 
 ## Bacteria: *ermCL*

@@ -17,6 +17,7 @@ import Bio.Data.CodonTable
 import logomaker
 import matplotlib.pyplot as plt
 import matplotlib
+
 matplotlib.use('agg')
 import pandas
 import subprocess
@@ -204,7 +205,7 @@ class RefSeqProtein:
             root = xml.etree.ElementTree.fromstring(xml_output)
             query_length = int(root.find("BlastOutput_query-len").text)
             for hit in root.iter("Hit"):
-                hit_id = hit.find("Hit_id").text.strip("ref").strip("|")
+                hit_id = hit.find("Hit_id").text.strip("ref").strip("|-")
                 if hit_id != self.accession_number:
                     hit_description = hit.find("Hit_def").text
                     subject_length = int(hit.find("Hit_len").text)
@@ -543,7 +544,7 @@ class Homologues:
                         if useq_stop == len(locus_record.seq):
                             useq_upstream_region_length = len(locus_record.seq) - assembly["stop"]
                     useq_length = abs(useq_stop - useq_start)
-                    if self.parameters.arguments["upstream_region_length"] != 'all':
+                    if self.parameters.arguments["upstream_region_length"] != "all":
                         if self.parameters.arguments["minimal_upstream_region_length"] >= self.parameters.arguments[
                             "upstream_region_length"]:
                             self.parameters.arguments["minimal_upstream_region_length"] = self.parameters.arguments[
@@ -559,10 +560,10 @@ class Homologues:
                             useq_name = f"{assembly['org'].replace(assembly['strain'], '')}{assembly['strain']}"
                         else:
                             useq_name = f"{assembly['org']} {assembly['strain']}"
-                        useq_id = f"{assembly['locus_id']}|{useq_start}-{useq_stop}({assembly['strand']})|" \
+                        useq_id = f"{assembly['locus_id']},{useq_start}-{useq_stop}({assembly['strand']})," \
                                   f"{record.accession_number}"
-                        # useq_id = f"{useq_name}|{assembly['locus_id']}|{record.accession_number}"
-                        useq_label = f"{useq_name}|{assembly['locus_id']}|{record.accession_number}"
+                        # useq_id = f"{useq_name}_{assembly['locus_id']}_{record.accession_number}"
+                        useq_label = f"{useq_name},{assembly['locus_id']},{record.accession_number}"
                         useq_annotations = dict(RefSeq=True, locus_record=locus_record,
                                                 locus_id=assembly['locus_id'], length=useq_length,
                                                 start=useq_start, stop=useq_stop, strand=assembly["strand"],
@@ -689,21 +690,32 @@ class UpstreamSequences:
                                     "downstream_region_length"]) - start_codon_position
 
                                 if useq_record.annotations["RefSeq"]:
-                                    orf_id = f"{useq_record.annotations['locus_id']}|" \
-                                             f"{useq_record.annotations['accession_number']}|" \
-                                             f"{distance}"
-                                    orf_name = f"{useq_record.annotations['label']}|{distance}"
+                                    orf_id = f"{useq_record.annotations['locus_id']}," \
+                                             f"{useq_record.annotations['accession_number']}," \
+                                             f"{distance_sc}"
+                                    orf_name = f"{useq_record.annotations['label']},{distance_sc}"
+                                    contig_id = useq_record.annotations['locus_id']
                                 else:
-                                    distance = useq_record.annotations["length"] - stop_codon_position
-                                    orf_id = f"{useq_record.id}|{distance}"
+                                    distance_sc = useq_record.annotations["length"] - start_codon_position
+                                    orf_id = f"{useq_record.id},{distance_sc}"
                                     if useq_record.description:
-                                        orf_name = f"{useq_record.description}|{orf_id}"
+                                        orf_name = f"{useq_record.description}_{orf_id}"
                                     else:
                                         orf_name = orf_id
+                                    contig_id = useq_record.description
+                                if useq_record.annotations["strand"] == "+":
+                                    contig_start = start_codon_position + useq_record.annotations["start"]
+                                    contig_stop = contig_start + orf_length
+                                elif useq_record.annotations["strand"] == "-":
+                                    contig_stop = useq_record.annotations["stop"] - start_codon_position
+                                    contig_start = contig_stop - orf_length
+                                contig_coordinates = f"{contig_id}:{contig_start}:{contig_stop}" \
+                                                     f"({useq_record.annotations['strand']})"
                                 sd_window_start = max(
                                     [0, (start_codon_position - self.parameters.arguments["sd_window_length"])])
                                 current_orf = ORF(parameters=self.parameters, id=orf_id, name=orf_name,
                                                   distance=distance, start=start_codon_position,
+                                                  contig_coordinates=contig_coordinates,
                                                   stop=stop_codon_position, useq_index=useq_index,
                                                   nt_sequence=useq_record.seq[start_codon_position:stop_codon_position],
                                                   sd_window_seq=useq_record.seq[sd_window_start:start_codon_position])
@@ -735,6 +747,11 @@ class UpstreamSequences:
                     self.parameters.arguments["fast_searching"] = True
                 else:
                     self.parameters.arguments["fast_searching"] = False
+            if self.parameters.arguments["fast_searching"]:
+                if number_of_orfs > 500:
+                    self.parameters.arguments["fast_searching_skip"] = True
+                else:
+                    self.parameters.arguments["fast_searching_skip"] = False
             if number_of_orfs == 0:
                 print(f"⛔Termination:\n\tNo ORF was annotated in upstream sequences."
                       f"\n\tThis run will be terminated.", file=sys.stderr)
@@ -777,7 +794,8 @@ class UpstreamSequences:
                 sys.exit()
             if self.parameters.arguments["verbose"]:
                 print(f"🧹 {number_of_orfs} ORFs remained in the analysis after filtering by presence "
-                      f"of the SD sequence.", file=sys.stdout)
+                      f"of the SD sequence.\n\tYou can deactivate filtering by -nsd parameter "
+                      f"or by changing the config file.", file=sys.stdout)
             return None
         except Exception as error:
             raise uorf4u.manager.uORF4uError("Unable to filter uORFs by SD sequence presence.") from error
@@ -793,26 +811,32 @@ class UpstreamSequences:
 
         """
         try:
-            colnames = "\t".join(
-                ["id", "name", "length", "nt_sequence", "aa_sequence", "sd_sequence_window", "SD-aSD energy",
-                 "SD-aSD energies list", "extended_orfs", "annotation"])
+
+            colnames_list = ["id", "name", "length", "distance_to_the_mORF", "contig_coordinates", "nt_sequence",
+                             "aa_sequence"]
+            if self.parameters.arguments["filter_by_sd"]:
+                colnames_list += ["sd_sequence_window", "SD-aSD energy", "SD-aSD energies list"]
+            colnames_list += ["extended_orfs", "annotation"]
+            colnames = "\t".join(colnames_list)
             if not os.path.exists(self.parameters.arguments["output_dir"]):
                 os.mkdir(self.parameters.arguments["output_dir"])
             output_dir_path = os.path.join(self.parameters.arguments["output_dir"], "annotated_ORFs")
             if not os.path.exists(output_dir_path):
                 os.mkdir(output_dir_path)
             for useq_record in self.records:
-                file_name = f"{useq_record.description}|{useq_record.id}".replace(' ', '_').replace('/', '_')
+                file_name = f"{useq_record.description},{useq_record.id}".replace(' ', '_').replace('/', '_')
                 lines = [colnames]
                 for orf in useq_record.annotations["ORFs"]:
                     if not orf.extended_orfs:
                         extented_orfs_value = "NA"
                     else:
                         extented_orfs_value = ';'.join(orf.extended_orfs)
-                    lines.append("\t".join(
-                        [orf.id, orf.name, str(orf.length), str(orf.nt_sequence), str(orf.aa_sequence),
-                         str(orf.sd_window_seq_str), str(orf.min_energy),";".join(orf.sd_window_energies),
-                         extented_orfs_value, orf.annotation]))
+                    line = [orf.id, orf.name, str(orf.length), str(orf.distance), orf.contig_coordinates,
+                            str(orf.nt_sequence), str(orf.aa_sequence)]
+                    if self.parameters.arguments["filter_by_sd"]:
+                        line += [str(orf.sd_window_seq_str), str(orf.min_energy), ";".join(orf.sd_window_energies)]
+                    line += [extented_orfs_value, orf.annotation]
+                    lines.append("\t".join(line))
                 with open(os.path.join(output_dir_path, f"{file_name}.tsv"), "w") as output:
                     output.write("\n".join(lines))
             if self.parameters.arguments["verbose"]:
@@ -876,7 +900,7 @@ class UpstreamSequences:
                             num_of_identical_elements = len(set(filtered_orfs) & set(filtered_orfs_dict[added_length]))
                             fraction = num_of_identical_elements / min(len(filtered_orfs),
                                                                        len(filtered_orfs_dict[added_length]))
-                            if fraction > 0.8:  # to add as a config parameter
+                            if fraction > 0.95:  # to add as a config parameter
                                 if len(filtered_orfs) >= len(filtered_orfs_dict[added_length]):
                                     keys_to_remove.append(added_length)
                                 else:
@@ -923,62 +947,71 @@ class UpstreamSequences:
                         genome_iterator = filtered_orfs.keys()
                     for initial_useq in genome_iterator:
                         for initial_orf in filtered_orfs[initial_useq]:
-                            conserved_path = Path(self.parameters)
-                            conserved_path.update(initial_orf)
-                            for useq in random.sample(filtered_orfs.keys(), len(filtered_orfs.keys())):
-                                if useq != initial_useq and filtered_orfs[useq] != []:
-                                    score_sums = []
-                                    for orf in filtered_orfs[useq]:
-                                        score_sum = 0
-                                        for path_orf in conserved_path.path:
-                                            if self.parameters.arguments["alignment_type"] == "nt":
-                                                current_alignment = global_aligner.align(orf.nt_sequence,
-                                                                                         path_orf.nt_sequence)
-                                            elif self.parameters.arguments["alignment_type"] == "aa":
-                                                current_alignment = global_aligner.align(orf.aa_sequence,
-                                                                                         path_orf.aa_sequence)
-                                            score_sum += current_alignment.score
-                                        score_sums.append(score_sum)
-                                    max_score = max(score_sums)
-                                    if max_score > self.parameters.arguments["alignment_score_cutoff"]:
-                                        if score_sums.count(max_score) == 1:
-                                            selected_orf = filtered_orfs[useq][score_sums.index(max_score)]
-                                        else:
-                                            num_of_candidates = len(filtered_orfs[useq])
-                                            highest_score_orfs = [filtered_orfs[useq][k] for k in
-                                                                  range(num_of_candidates)
-                                                                  if score_sums[k] == max_score]
-                                            highest_score_orfs_length_dists = [orf_it.length - length for orf_it in
-                                                                               highest_score_orfs]
-                                            min_length_dist = min(highest_score_orfs_length_dists)
-                                            if highest_score_orfs_length_dists.count(min_length_dist) == 1:
-                                                selected_orf = highest_score_orfs[
-                                                    highest_score_orfs_length_dists.index(min_length_dist)]
+                            already_conserved_orfs = []
+                            for already_conserved_path in conserved_paths:
+                                already_conserved_orfs += already_conserved_path.path
+                            if initial_orf not in already_conserved_orfs:
+                                conserved_path = Path(self.parameters)
+                                conserved_path.update(initial_orf)
+                                for useq in random.sample(filtered_orfs.keys(), len(filtered_orfs.keys())):
+                                    useq_candidates = filtered_orfs[useq]
+                                    if self.parameters.arguments["fast_searching"]:
+                                        if self.parameters.arguments["fast_searching_skip"]:
+                                            useq_candidates = [orf_useq for orf_useq in filtered_orfs[useq] if
+                                                               orf_useq not in already_conserved_orfs]
+                                    if useq != initial_useq and useq_candidates != []:
+                                        score_sums = []
+                                        for orf in useq_candidates:
+                                            score_sum = 0
+                                            for path_orf in conserved_path.path:
+                                                if self.parameters.arguments["alignment_type"] == "nt":
+                                                    current_alignment = global_aligner.align(orf.nt_sequence,
+                                                                                             path_orf.nt_sequence)
+                                                elif self.parameters.arguments["alignment_type"] == "aa":
+                                                    current_alignment = global_aligner.align(orf.aa_sequence,
+                                                                                             path_orf.aa_sequence)
+                                                score_sum += current_alignment.score
+                                            score_sums.append(score_sum)
+                                        max_score = max(score_sums)
+                                        if max_score > self.parameters.arguments["alignment_score_cutoff"]:
+                                            if score_sums.count(max_score) == 1:
+                                                selected_orf = filtered_orfs[useq][score_sums.index(max_score)]
                                             else:
-                                                num_of_candidates = len(highest_score_orfs)
-                                                the_closest_by_length_orfs = [highest_score_orfs[k] for k in
-                                                                              range(num_of_candidates) if
-                                                                              highest_score_orfs_length_dists[
-                                                                                  k] == min_length_dist]
-                                                the_closest_by_length_orfs_lengths = [orf_it.length for orf_it in
-                                                                                      the_closest_by_length_orfs]
-                                                max_length = max(the_closest_by_length_orfs_lengths)
-                                                selected_orf = the_closest_by_length_orfs[
-                                                    the_closest_by_length_orfs_lengths.index(max_length)]
-                                        conserved_path.update(selected_orf, max_score)
-                            if len(conserved_path) / number_of_useqs >= self.parameters.arguments[
-                                "orfs_presence_cutoff"] and len(conserved_path) > 1:
-                                to_save_this_path = 1
-                                for old_path in conserved_paths:
-                                    fraction_of_identity = conserved_path.calculate_similarity(old_path)
-                                    if fraction_of_identity >= self.parameters.arguments["paths_identity_cutoff"]:
-                                        if conserved_path.score > old_path.score:
-                                            conserved_paths.remove(old_path)
-                                        elif conserved_path.score <= old_path.score:
-                                            to_save_this_path = 0
-                                if to_save_this_path == 1:
-                                    #conserved_path.sort() # NOT SORTING!
-                                    conserved_paths.append(conserved_path)
+                                                num_of_candidates = len(useq_candidates)
+                                                highest_score_orfs = [useq_candidates[k] for k in
+                                                                      range(num_of_candidates)
+                                                                      if score_sums[k] == max_score]
+                                                highest_score_orfs_length_dists = [orf_it.length - length for orf_it in
+                                                                                   highest_score_orfs]
+                                                min_length_dist = min(highest_score_orfs_length_dists)
+                                                if highest_score_orfs_length_dists.count(min_length_dist) == 1:
+                                                    selected_orf = highest_score_orfs[
+                                                        highest_score_orfs_length_dists.index(min_length_dist)]
+                                                else:
+                                                    num_of_candidates = len(highest_score_orfs)
+                                                    the_closest_by_length_orfs = [highest_score_orfs[k] for k in
+                                                                                  range(num_of_candidates) if
+                                                                                  highest_score_orfs_length_dists[
+                                                                                      k] == min_length_dist]
+                                                    the_closest_by_length_orfs_lengths = [orf_it.length for orf_it in
+                                                                                          the_closest_by_length_orfs]
+                                                    max_length = max(the_closest_by_length_orfs_lengths)
+                                                    selected_orf = the_closest_by_length_orfs[
+                                                        the_closest_by_length_orfs_lengths.index(max_length)]
+                                            conserved_path.update(selected_orf, max_score)
+                        if len(conserved_path) / number_of_useqs >= self.parameters.arguments[
+                            "orfs_presence_cutoff"] and len(conserved_path) > 1:
+                            to_save_this_path = 1
+                            for old_path in conserved_paths:
+                                fraction_of_identity = conserved_path.calculate_similarity(old_path)
+                                if fraction_of_identity >= self.parameters.arguments["paths_identity_cutoff"]:
+                                    if conserved_path.score > old_path.score:
+                                        conserved_paths.remove(old_path)
+                                    elif conserved_path.score <= old_path.score:
+                                        to_save_this_path = 0
+                            if to_save_this_path == 1:
+                                # conserved_path.sort() # NOT SORTING!
+                                conserved_paths.append(conserved_path)
             self.conserved_paths = conserved_paths
             number_of_paths = len(conserved_paths)
             if number_of_paths == 0:
@@ -1328,8 +1361,8 @@ class ORF:
 
     Attributes:
         parameters (uorf4u.manager.Parameters): Parameters' class object.
-        id (str): identifier of the ORF. Format: locus_id|accession_number|distance_from_the_start_codon_to_the_main_orf
-        name (str): name of the ORF. Format: useq_name|distance_from_the_start_codon_to_the_main_orf
+        id (str): identifier of the ORF. Format: locus_id_accession_number_distance_from_the_start_codon_to_the_main_orf
+        name (str): name of the ORF. Format: useq_name_distance_from_the_start_codon_to_the_main_orf
         sequence_id (str): identifier of the ORF's sequence (locus id from the ncbi database).
         start (int): start position of the ORF on the locus (0-based).
         stop (int): stop position of the ORF on the locus (0-based).
@@ -1345,8 +1378,8 @@ class ORF:
     """
 
     def __init__(self, parameters: uorf4u.manager.Parameters, id: str, name: str, nt_sequence: Bio.Seq.Seq,
-                 sd_window_seq: Bio.Seq.Seq, start: int, stop: int, distance: int, useq_index: int,
-                 annotation: str = "NA"):
+                 contig_coordinates: str, sd_window_seq: Bio.Seq.Seq, start: int, stop: int, distance: int,
+                 useq_index: int, annotation: str = "NA"):
         """Create an ORF object.
 
         Arguments:
@@ -1354,6 +1387,7 @@ class ORF:
             id (str): identifier of the ORF. Format: locus_id:distance_from_the_start_codon_to_the_proteins_orf:length.
             nt_sequence (Bio.Seq.Seq): a Seq object of nucleotide sequence of the ORF.
             sd_window_seq (Bio.Seq.Seq): a Seq object of upstream sequence to the start codon of the ORF.
+            contig_coordinates (str): coordinates on the corresponding contig/transcript
             start (int): start position of the ORF on the locus (0-based).
             stop (int): stop position of the ORF on the locus (0-based).
             distance (int): distance to the main ORF.
@@ -1375,6 +1409,7 @@ class ORF:
         self.nt_sequence = nt_sequence
         self.annotation = annotation
         self.useq_index = useq_index
+        self.contig_coordinates = contig_coordinates
         try:
             self.aa_sequence = self.nt_sequence.translate(table=codon_table)
         except:
@@ -1435,7 +1470,7 @@ class Path:
         msa_consensus (dict): Dict with consensus sequence (Bio.Seq.Seq object) as values
             for different sequences (nt, aa, sd) as keys.
         length: length of the nucleotide sequence alignment.
-        id (str): Path's id (format: length|score|num_of_orfs|average_distance_to_the_main_ORF
+        id (str): Path's id (format: length_score_num_of_orfs_average_distance_to_the_main_ORF
 
     """
 
@@ -1518,7 +1553,7 @@ class Path:
             records = []
             for orf in self.path:
                 # record_id = f"{orf.id}"
-                # record_description = f"{(orf.name.split('|')[0])}"
+                # record_description = f"{(orf.name.split('_')[0])}"
                 record_id = f"{orf.name}"
                 record_description = ""
                 if seq_type == "nt":
@@ -1545,8 +1580,8 @@ class Path:
             self.msa[seq_type], self.msa_consensus[seq_type] = msa, msa_consensus
 
             avr_distance = str(round(statistics.mean([i.distance for i in self.path])))
-            self.id = f"length-{self.msa['nt'].get_alignment_length()}|score–{round(self.score)}|" \
-                      f"num_of_orfs-{len(self.path)}|avr_dist-{avr_distance}"
+            self.id = f"length-{self.msa['nt'].get_alignment_length()},score–{round(self.score)}," \
+                      f"num-of-orfs-{len(self.path)},avr_dist-{avr_distance}"
         return None
 
     def maft_msa(self) -> None:
@@ -1564,7 +1599,7 @@ class Path:
             records = []
             for orf in self.path:
                 # record_id = f"{orf.id}"
-                # record_description = f"{(orf.name.split('|')[0])}"
+                # record_description = f"{(orf.name.split('_')[0])}"
                 record_id = f"{orf.id}"
                 record_description = orf.name
                 if seq_type == "nt":
@@ -1602,8 +1637,8 @@ class Path:
                 self.length = msa.get_alignment_length()
             self.msa[seq_type], self.msa_consensus[seq_type] = msa, msa_consensus
             avr_distance = str(round(statistics.mean([i.distance for i in self.path])))
-            self.id = f"length-{self.msa['nt'].get_alignment_length()}|score–{round(self.score)}|" \
-                      f"num_of_orfs-{len(self.path)}|avr_dist-{avr_distance}"
+            self.id = f"length-{self.msa['nt'].get_alignment_length()},score–{round(self.score)}," \
+                      f"num_of_orfs-{len(self.path)},avr_dist-{avr_distance}"
         return None
 
     def plot_msa(self) -> None:
