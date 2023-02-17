@@ -10,10 +10,10 @@
 **Python dependencies:** biopython, configs, argparse, pandas, statistics, logomaker, matplotlib, reportlab.  
 **Python version:** >= 3.7  
 **OS-level dependencies:** mafft (v7.490 is included in the package)  
-**License:** CC0
+**License:** CC0  
 **Version:** 0.9.0 (February 2023)
 
-**Web version is available at the Atkinson Lab Server Portal: [server.atkinson-lab.com/uorf4u](server.atkinson-lab.com/uorf4u)**
+**Web version is available at the Atkinson Lab Server Portal: [server.atkinson-lab.com/uorf4u](https://server.atkinson-lab.com)**
 
 ### [**Detailed documentation**](https://GCA-VH-lab.github.io/uorf4u)
 
