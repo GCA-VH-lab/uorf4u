@@ -70,6 +70,25 @@ class RefSeqProtein:
         self.organism = None
         self.assemblies_coordinates = None
         self.loci = None
+        self.isrefseq = True
+
+    def add_record(self, record: Bio.SeqRecord.SeqRecord) -> None:
+        """For create a record attribute with your own sequence.
+
+        Arguments:
+            record (Bio.SeqRecord.SeqRecord): a SeqRecord of the protein db.
+
+        Returns:
+            None
+
+        """
+        try:
+            self.record = record
+            self.isrefseq = False
+            return None
+        except Exception as error:
+            raise uorf4u.manager.uORF4uError(
+                "Unable to get a SeqRecord of the protein from the ncbi protein database.") from error
 
     def get_record(self) -> Bio.SeqRecord.SeqRecord:
         """Get a SeqRecord object of a protein from the ncbi protein database.
@@ -192,7 +211,11 @@ class RefSeqProtein:
                 print(
                     f"👀 Searching for homologues of {self.accession_number} with blastp against the RefSeq database...",
                     file=sys.stdout)
-            handle = Bio.Blast.NCBIWWW.qblast("blastp", "refseq_protein", self.accession_number,
+            if self.isrefseq:
+                request = self.accession_number
+            else:
+                request = self.record.seq
+            handle = Bio.Blast.NCBIWWW.qblast("blastp", "refseq_protein", request,
                                               expect=self.parameters.arguments["blastp_evalue_cutoff"],
                                               hitlist_size=self.parameters.arguments["blastp_hit_list_size"],
                                               alignments=self.parameters.arguments["blastp_max_number_of_alignments"])
@@ -1001,8 +1024,6 @@ class UpstreamSequences:
                                             conserved_path.update(selected_orf, max_score)
                                 if len(conserved_path) / number_of_useqs >= self.parameters.arguments[
                                     "orfs_presence_cutoff"] and len(conserved_path) > 1:
-                                    #print([i.distance for i in conserved_path.path])
-                                    #print(len(conserved_path))
                                     to_save_this_path = 1
                                     for old_path in conserved_paths:
                                         fraction_of_identity = conserved_path.calculate_similarity(old_path)
@@ -1014,7 +1035,6 @@ class UpstreamSequences:
                                     if to_save_this_path == 1:
                                         # conserved_path.sort() # NOT SORTING!
                                         conserved_paths.append(conserved_path)
-
 
             self.conserved_paths = conserved_paths
             number_of_paths = len(conserved_paths)
