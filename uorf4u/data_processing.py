@@ -748,7 +748,7 @@ class UpstreamSequences:
                 else:
                     self.parameters.arguments["fast_searching"] = False
             if self.parameters.arguments["fast_searching"]:
-                if number_of_orfs > 500:
+                if number_of_orfs > 1000:
                     self.parameters.arguments["fast_searching_skip"] = True
                 else:
                     self.parameters.arguments["fast_searching_skip"] = False
@@ -975,7 +975,7 @@ class UpstreamSequences:
                                         max_score = max(score_sums)
                                         if max_score > self.parameters.arguments["alignment_score_cutoff"]:
                                             if score_sums.count(max_score) == 1:
-                                                selected_orf = filtered_orfs[useq][score_sums.index(max_score)]
+                                                selected_orf = useq_candidates[score_sums.index(max_score)]
                                             else:
                                                 num_of_candidates = len(useq_candidates)
                                                 highest_score_orfs = [useq_candidates[k] for k in
@@ -999,19 +999,23 @@ class UpstreamSequences:
                                                     selected_orf = the_closest_by_length_orfs[
                                                         the_closest_by_length_orfs_lengths.index(max_length)]
                                             conserved_path.update(selected_orf, max_score)
-                        if len(conserved_path) / number_of_useqs >= self.parameters.arguments[
-                            "orfs_presence_cutoff"] and len(conserved_path) > 1:
-                            to_save_this_path = 1
-                            for old_path in conserved_paths:
-                                fraction_of_identity = conserved_path.calculate_similarity(old_path)
-                                if fraction_of_identity >= self.parameters.arguments["paths_identity_cutoff"]:
-                                    if conserved_path.score > old_path.score:
-                                        conserved_paths.remove(old_path)
-                                    elif conserved_path.score <= old_path.score:
-                                        to_save_this_path = 0
-                            if to_save_this_path == 1:
-                                # conserved_path.sort() # NOT SORTING!
-                                conserved_paths.append(conserved_path)
+                                if len(conserved_path) / number_of_useqs >= self.parameters.arguments[
+                                    "orfs_presence_cutoff"] and len(conserved_path) > 1:
+                                    #print([i.distance for i in conserved_path.path])
+                                    #print(len(conserved_path))
+                                    to_save_this_path = 1
+                                    for old_path in conserved_paths:
+                                        fraction_of_identity = conserved_path.calculate_similarity(old_path)
+                                        if fraction_of_identity >= self.parameters.arguments["paths_identity_cutoff"]:
+                                            if conserved_path.score > old_path.score:
+                                                conserved_paths.remove(old_path)
+                                            elif conserved_path.score <= old_path.score:
+                                                to_save_this_path = 0
+                                    if to_save_this_path == 1:
+                                        # conserved_path.sort() # NOT SORTING!
+                                        conserved_paths.append(conserved_path)
+
+
             self.conserved_paths = conserved_paths
             number_of_paths = len(conserved_paths)
             if number_of_paths == 0:

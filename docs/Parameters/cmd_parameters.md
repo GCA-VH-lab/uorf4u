@@ -33,7 +33,7 @@ Path to a file with list of accession numbers. File format: one accession number
     Path to a fasta file with upstream sequences.
 
 
-- `-c` *prokaryotes|eukaryotes|file.cfg*  
+- `-c` *bacteria|eukaryotes|file.cfg*  
 Path to a configuration file [default: internal].
 
 

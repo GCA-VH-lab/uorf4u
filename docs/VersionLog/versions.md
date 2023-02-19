@@ -1,5 +1,7 @@
 # Version log
-* **Ver 0.9.0** - 17 February 2023
+* **Ver 0.9.1** - 19 February 2023
+	* A major bug of 0.9.0 version in conservation analysis was fixed.
+* Ver 0.9.0 - 17 February 2023
 	* Conservation analysis algorithm was updated.
 	* -c parameter is now always required.
 	* Logs messages were updated.

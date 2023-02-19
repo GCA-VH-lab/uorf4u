@@ -29,8 +29,7 @@ COMMAND-LINE PARAMETERS
 -fa <file.fa>
     Path to a fasta file with upstream sequences.
 -c <bacteria|eukaryotes|<file.cfg>
-	Path to a configuration file or name of a premade config file
-	[default: prokaryotes].
+	Path to a configuration file or name of a premade config file.
 -----------------------------
 [OPTIONAL ARGUMENTS]
 -bh <number_of_hits>
