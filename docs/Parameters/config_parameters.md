@@ -13,15 +13,16 @@ You can copy the *uorf4u_data* folder that contains the config files to your wik
 ***;[General]***  
 **ncbi_genetic_code_name = Bacterial**; *the ncbi genetic code name ('Standard' for eukaryotes' config)*   
 **ncbi_entrez_email = uorf4u@gmail.com**; *e-mail for the NCBI API.*   
-**upstream_region_length = 500**; *[int or 'all'] Length of upstream region to retrieve. 'all' value is set for eukaryotes config file since by default it uses only mRNAs sequences. (can be overriden by '-ul' cmd parameter).*  
+**upstream_region_length = 500**; *[int or 'all'] Length of upstream region to retrieve. 'all' value is set for eukaryotes config file since by default it uses only mRNAs sequences. (can be overriden by `-ul` cmd parameter).*  
 **minimal_upstream_region_length = 300**; *[int] minimal upstream region length for sequences to retrieve. If available sequence length to retrieve is shorter then this record won't be taken in the analysis*.    
-**downstream_region_length = 100**; *[int] downstream region (overlapped with CDS) length to retrieve. (can be overriden by '-dl' cmd parameter).*  
+**downstream_region_length = 100**; *[int] downstream region (overlapped with CDS) length to retrieve. (can be overriden by `-dl` cmd parameter).*  
 **filter_refseq_sequences_by_regex = True**; *[bool] use or not regex parameter (below) for filtering the NCBI RefSeq sequences to retrieve.*    
 **refseq_sequences_regex = ^[N][ZCW]_.***; *[regex] that will be used to filter the NCBI RefSeq sequnces. For eukaryotes set as '^[NX]M_.*' that means that only sequences that start with NM_ or XM_ (mRNAs) will be taken in the analysis.*  
-**max_number_of_assemblies = 1**; *[int] max number of assemblies to take into analysis for each protein. If there are more sequences in the identical protein database then random sampling will be used. (can be overriden by '-mna' cmd parameter).*
+**max_number_of_assemblies = 1**; *[int] max number of assemblies to take into analysis for each protein. If there are more sequences in the identical protein database then random sampling will be used. (can be overriden by `-mna` cmd parameter).*
 
 
 ***;[blastp homologous searching]***  
+**blastp_database = refseq_select**; *[refseq_select or refseq_protein] Online blastp database to perform blastp searching for homologues. (can be overriden by `-bdb` cmd parameter).*  
 **blastp_evalue_cutoff = 1e-5**; *[float] blastp e-value cutoff during the searching for homologs against the RefSeq database.*  
 **blastp_hit_list_size = 200**; *[int] max number of blastp hits to take in the analysis.*  
 **blastp_max_number_of_alignments = 1000**; *[int] max number of alignments during the searching (there could be several alignments for 1 hit, see blastp documentation)*    
@@ -34,10 +35,10 @@ You can copy the *uorf4u_data* folder that contains the config files to your wik
 **filter_by_sd = True**; *[bool] filter annotated ORFs by Shine-Dalgarno sequence prersence. Filtering based on calculation of binding energy between aSD sequence (UCCUCC) and putative SD sequence in an upstream to uAUG window. Energy calculation performed as described here: [Yang et.al, 2016](10.1534/g3.116.032227)*  
 **sd_energy_cutoff = -3**; *[float] cutoff for aSD-SD binding energy.*    
 **sd_window_length = 20**; *[int] length of a region for SD sequence search.*    
-**check_assembly_annotation = False**; [bool] retrieve or not the NCBI sequences annotation to be sure that annotated uORFs are not overlapped with known CDSs (can be overriden by '-annot' cmd parameter).
+**check_assembly_annotation = False**; [bool] retrieve or not the NCBI sequences annotation to be sure that annotated uORFs are not overlapped with known CDSs (can be overriden by `-annot` cmd parameter).
 
 ***;[conserved ORFs searching]***  
-**fast_searching = auto**; *[bool(true or false) or 'auto'] use or not fast searching mode with less accuracy (needed for >~200 sequences or >~2000 ORFs). Can be also set as auto [default]. (can be overriden by '-fast' cmd parameter).*  
+**fast_searching = auto**; *[bool(true or false) or 'auto'] use or not fast searching mode with less accuracy (needed for >~200 sequences or >~2000 ORFs). Can be also set as auto [default]. (can be overriden by `-fast` cmd parameter).*  
 **fast_searching_fraction_of_initial_genomes = 0.3**; *[bool] fraction of input sequences that will be used as initial step in algorithm searching. Applied only if the fast_searching parameter is True.*    
 **orf_length_group_range = 0.25**; *[float or int] orf's lengths window within conserved uORFs set can be annotated. If it's a float value [0-1] then the radius of window is a set percentage of the claster's length, while if it's int then the window radius is fixed.*    
 **orfs_presence_cutoff = 0.5**; *[float] a set of ORFs will be returned only if they were found in a fraction of input sequences larger than this cutoff.*    
@@ -69,7 +70,7 @@ You can copy the *uorf4u_data* folder that contains the config files to your wik
 ***;[Output]***  
 **sequences_to_write = nt, aa, sd**; *[list] type of sequences results for that (logos, MSAs, fasta files) will writetn. nt - nucleotide seqs of uORFs, aa - amino acid seqs, sd - SD seqs (sd is not available for 'eukaryotes' mode)*    
 **logo_type = both**; *[probability, information or both] type of logo, see logomaker package documentation.*       
-**output_dir = uorf4u_{current_date}**; *[str] default name of the output dir. default: uorf4u_{current_date}; e.g. uorf4u_2022_07_25-20_41. (can be overriden by '-o' cmd parameter).*  
+**output_dir = uorf4u_{current_date}**; *[str] default name of the output dir. default: uorf4u_{current_date}; e.g. uorf4u_2022_07_25-20_41. (can be overriden by `-o` cmd parameter).*  
 
 ;------------------------  
 ***;Annotation visualisation***  

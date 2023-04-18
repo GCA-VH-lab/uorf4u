@@ -42,6 +42,10 @@ class Parameters:
         mutually_exclusive_group.add_argument("-fa", dest="fasta", type=str, default=None)
         parser.add_argument("-data", "--data", dest="uorf4u_data", action="store_true")
         parser.add_argument("-linux", "--linux", dest="linux", action="store_true", default=None)
+        parser.add_argument("-blastp_path", "--blastp_path", dest="blastp_path", type=str, default=None)
+        parser.add_argument("-bdb", dest="blastp_database", choices=["refseq_protein", "refseq_select", None], type=str,
+                            default=None)
+        parser.add_argument("-lbdb", dest="local_blastp_database", type=str, default=None)
         parser.add_argument("-bh", dest="blastp_hit_list_size", type=int, default=None)
         parser.add_argument("-bid", dest="blastp_pident_to_query_length_cutoff", type=float, default=None)
         parser.add_argument("-mna", dest="max_number_of_assemblies", type=int, default=None)
@@ -56,14 +60,21 @@ class Parameters:
         parser.add_argument("-fast", dest="fast_searching", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="Not selected")
-        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.9.2")
+        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.9.3")
         parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
         args = parser.parse_args()
         args = vars(args)
+
         if len(sys.argv[1:]) == 0:
             args["help"] = True
+
+        if args["help"]:
+            help_message_path = os.path.join(os.path.dirname(__file__), "uorf4u_data", "help.txt")
+            with open(help_message_path, "r") as help_message:
+                print(help_message.read(), file=sys.stdout)
+                sys.exit()
 
         if args["uorf4u_data"]:
             uorf4u.methods.copy_package_data()
@@ -73,11 +84,9 @@ class Parameters:
             uorf4u.methods.adjust_paths_for_linux()
             sys.exit()
 
-        if args["help"]:
-            help_message_path = os.path.join(os.path.dirname(__file__), 'uorf4u_data', "help.txt")
-            with open(help_message_path, "r") as help_message:
-                print(help_message.read(), file=sys.stdout)
-                sys.exit()
+        if args["blastp_path"]:
+            uorf4u.methods.set_blastp_path(args["blastp_path"])
+            sys.exit()
 
         filtered_args = {k: v for k, v in args.items() if v is not None}
         self.cmd_arguments = filtered_args
@@ -98,7 +107,11 @@ class Parameters:
             for key in config["root"].keys():
                 if type(config["root"][key]) is str and "{config_path}" in config["root"][key]:
                     config["root"][key] = config["root"][key].replace("{config_path}", os.path.dirname(path_c))
-            self.arguments.update(config['root'])
+            if config["root"]["blastp_database"] not in ["refseq_select", "refseq_protein"]:
+                raise uORF4uError("Config's parameter 'blastp_database' should be either refseq_select or "
+                                  "refseq_protein. ")
+
+            self.arguments.update(config["root"])
             self.arguments.update(self.cmd_arguments)
             self.load_palette()
             self.load_color_config()

@@ -13,7 +13,12 @@ try:
             refseq_protein = uorf4u.data_processing.RefSeqProtein(
                 accession_number=parameters.arguments['accession_number'],
                 parameters=parameters)
-            homologues_list = refseq_protein.blastp_searching_for_homologues()
+            if "local_blastp_database" in parameters.cmd_arguments.keys():
+                refseq_protein.get_record()
+                homologues_list = refseq_protein.local_blastp_searching_for_homologues(db =
+                    parameters.arguments['local_blastp_database'])
+            else:
+                homologues_list = refseq_protein.blastp_searching_for_homologues()
         if "homologues_list_file" in parameters.cmd_arguments.keys():
             try:
                 with open(parameters.arguments["homologues_list_file"]) as hlf:

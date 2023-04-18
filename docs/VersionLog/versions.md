@@ -1,5 +1,8 @@
 # Version log
-* **Ver 0.9.2** - 19 February 2023
+* Ver 0.9.3 - 18 April 2023
+	* New cmd parameter `-pdb` for choosing an online blastp database.
+	* New cmd parameter `-lpdb` for using local blastp database.
+* Ver 0.9.2 - 19 February 2023
 	* Blastp searching is now available for protein sequences. 
 * Ver 0.9.1 - 19 February 2023
 	* A major bug of 0.9.0 version in conservation analysis was fixed.

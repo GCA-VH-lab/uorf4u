@@ -30,6 +30,30 @@ def adjust_paths_for_linux() -> None:
     return None
 
 
+def set_blastp_path(blastp_path) -> None:
+    """Set a path to blastp.
+
+    Returns:
+        None
+
+    """
+    if blastp_path[0] != "/":
+        raise uorf4u.manager.uORF4uError(f"You have to specify the absolute path (starts with /) to blastp.")
+    if not os.path.exists(blastp_path):
+        raise uorf4u.manager.uORF4uError(f"A file with path you provided does not exist.")
+    internal_dir = os.path.join(os.path.dirname(__file__), "uorf4u_data")
+    config_files = ["uorf4u_eukaryotes.cfg", "uorf4u_bacteria.cfg"]
+    for config_file in config_files:
+        config_file_path = os.path.join(internal_dir, config_file)
+        with open(config_file_path, "r+") as config:
+            config_txt = re.sub(r"(blastp\s*=\s*).*", r"\1{}".format(blastp_path), config.read())
+            config.seek(0)
+            config.truncate()
+            config.write(config_txt)
+    print("✨ blastp path was successfuly updated.")
+    return None
+
+
 def copy_package_data() -> None:
     """Copy the uorf4u package data folder to your current dir.
 

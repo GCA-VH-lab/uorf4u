@@ -195,8 +195,8 @@ class RefSeqProtein:
         return self.loci
     '''
 
-    def blastp_searching_for_homologues(self) -> list:
-        """Search for a protein's homologues with blastp against the 'refseq_protein' database.
+    def local_blastp_searching_for_homologues(self, db) -> list:
+        """Search for a protein's homologues with blastp against the local database.
 
         Note:
             This function does not create a new object's attribute; It only returns a list of accession numbers.
@@ -206,16 +206,61 @@ class RefSeqProtein:
                 protein's accession number.
 
         """
+        if not os.path.exists(self.parameters.arguments["blastp"]):
+            raise uorf4u.manager.uORF4uError("You have to specify a path to your local blastp with --blastp_path "
+                                             "parameter before using local blastp database.")
+        try:
+            if self.parameters.arguments["verbose"]:
+                print(f"👀 Searching for homologues of {self.accession_number} with blastp against your local"
+                      f" database...", file=sys.stdout)
+
+            temp_input = tempfile.NamedTemporaryFile()
+            Bio.SeqIO.write(self.record, temp_input.name, "fasta")
+            temp_output = tempfile.NamedTemporaryFile()
+            subprocess.run([self.parameters.arguments["blastp"], "-num_threads", "7", "-outfmt", "6", "-query",
+                            temp_input.name, "-db", db,
+                            "-evalue", str(self.parameters.arguments["blastp_evalue_cutoff"]),
+                            "-max_target_seqs", str(self.parameters.arguments["blastp_hit_list_size"]),
+                            "-out", temp_output.name])
+            temp_input.close()
+            blastp_out = pandas.read_table(temp_output.name, sep="\t",
+                                           names=["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen",
+                                                  "qstart", "qend", "sstart", "send", "evalue", "bitscore"])
+            temp_output.close()
+            blastp_out = blastp_out[
+                blastp_out["pident"] >= self.parameters.arguments["blastp_pident_to_query_length_cutoff"] * 100]
+            if not os.path.exists(self.parameters.arguments["output_dir"]):
+                os.mkdir(self.parameters.arguments["output_dir"])
+            output_filename = os.path.join(self.parameters.arguments["output_dir"], "found_homologues.tsv")
+            blastp_out.to_csv(output_filename, sep='\t', index=False, na_rep='NA')
+
+            hits_an_list = blastp_out["sseqid"].to_list()
+
+            return hits_an_list
+        except Exception as error:
+            raise uorf4u.manager.uORF4uError("Unable to perform searching for homologues with blastp.") from error
+
+    def blastp_searching_for_homologues(self) -> list:
+        """Search for a protein's homologues with blastp against the 'refseq_protein' database.
+        Note:
+            This function does not create a new object's attribute; It only returns a list of accession numbers.
+        Returns:
+            list: List of proteins' accession numbers obtained with blastp searching. This list also contains the query
+                protein's accession number.
+        """
         try:
             if self.parameters.arguments["verbose"]:
                 print(
-                    f"👀 Searching for homologues of {self.accession_number} with blastp against the RefSeq database...",
+                    f"👀 Searching for homologues of {self.accession_number} with blastp against the"
+                    f" {self.parameters.arguments['blastp_database']} database...\n"
+                    f"\tNote: you can choose between refseq_select (contains representative records)\n\t"
+                    f"and refseq_protein (full). To switch between them use -bdb parameter.",
                     file=sys.stdout)
             if self.isrefseq:
                 request = self.accession_number
             else:
                 request = self.record.seq
-            handle = Bio.Blast.NCBIWWW.qblast("blastp", "refseq_protein", request,
+            handle = Bio.Blast.NCBIWWW.qblast("blastp", self.parameters.arguments['blastp_database'], request,
                                               expect=self.parameters.arguments["blastp_evalue_cutoff"],
                                               hitlist_size=self.parameters.arguments["blastp_hit_list_size"],
                                               alignments=self.parameters.arguments["blastp_max_number_of_alignments"])
@@ -228,7 +273,9 @@ class RefSeqProtein:
             root = xml.etree.ElementTree.fromstring(xml_output)
             query_length = int(root.find("BlastOutput_query-len").text)
             for hit in root.iter("Hit"):
-                hit_id = hit.find("Hit_id").text.strip("ref").strip("|-")
+                an_pattern = re.compile(r"[ANYXW]P_\d+\.\d")
+                hit_id_l = an_pattern.findall(hit.find("Hit_id").text)
+                hit_id = hit_id_l[0]
                 if hit_id != self.accession_number:
                     hit_description = hit.find("Hit_def").text
                     subject_length = int(hit.find("Hit_len").text)

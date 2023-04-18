@@ -11,6 +11,10 @@ The folder will contain the adjustable configuration file templates, palettes, t
 **All Linux user should run it only once after installation.**  
 Replaces the tools paths in the premade config files from the MacOS' version [default] to the Linux'.
  
+- `--blastp_path`  
+Update the blastp path in the pre-made config files.  
+**Required for using local blastp databases with** `-lbdb` **parameter.**  
+
 
 **MANDATORY ARGUMENTS**
 
@@ -38,6 +42,14 @@ Path to a configuration file [default: internal].
 
 
 **OPTIONAL ARGUMENTS**
+
+- `-bdb` *<efseq_select|refseq_protein*  
+Online blastp database to perform blastp searching for homologues.  
+[default: from config; *refseq_select* for bacteria, *refseq_protein* for eukaryotes]
+
+- `-lbdb` *path to a database*  
+Local blastp database to perform blastp searching for homologues.  
+Note: You have to specify path to a blastp with --blastp_path command before using this argument.
 
 - `-bh` *number_of_hits*  
 Max number of blastp hits in homologous searching.
