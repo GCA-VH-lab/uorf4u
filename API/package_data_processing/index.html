@@ -777,6 +777,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#uorf4u.data_processing.RefSeqProtein.local_blastp_searching_for_homologues" class="md-nav__link">
+    local_blastp_searching_for_homologues()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1045,54 +1052,7 @@
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">387</span>
-<span class="normal">388</span>
-<span class="normal">389</span>
-<span class="normal">390</span>
-<span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
-<span class="normal">395</span>
-<span class="normal">396</span>
-<span class="normal">397</span>
-<span class="normal">398</span>
-<span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
-<span class="normal">402</span>
-<span class="normal">403</span>
-<span class="normal">404</span>
-<span class="normal">405</span>
-<span class="normal">406</span>
-<span class="normal">407</span>
-<span class="normal">408</span>
-<span class="normal">409</span>
-<span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span>
-<span class="normal">422</span>
-<span class="normal">423</span>
-<span class="normal">424</span>
-<span class="normal">425</span>
-<span class="normal">426</span>
-<span class="normal">427</span>
-<span class="normal">428</span>
-<span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span>
-<span class="normal">433</span>
-<span class="normal">434</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">434</span>
 <span class="normal">435</span>
 <span class="normal">436</span>
 <span class="normal">437</span>
@@ -1270,7 +1230,54 @@
 <span class="normal">609</span>
 <span class="normal">610</span>
 <span class="normal">611</span>
-<span class="normal">612</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Homologues</span><span class="p">:</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span>
+<span class="normal">625</span>
+<span class="normal">626</span>
+<span class="normal">627</span>
+<span class="normal">628</span>
+<span class="normal">629</span>
+<span class="normal">630</span>
+<span class="normal">631</span>
+<span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
+<span class="normal">636</span>
+<span class="normal">637</span>
+<span class="normal">638</span>
+<span class="normal">639</span>
+<span class="normal">640</span>
+<span class="normal">641</span>
+<span class="normal">642</span>
+<span class="normal">643</span>
+<span class="normal">644</span>
+<span class="normal">645</span>
+<span class="normal">646</span>
+<span class="normal">647</span>
+<span class="normal">648</span>
+<span class="normal">649</span>
+<span class="normal">650</span>
+<span class="normal">651</span>
+<span class="normal">652</span>
+<span class="normal">653</span>
+<span class="normal">654</span>
+<span class="normal">655</span>
+<span class="normal">656</span>
+<span class="normal">657</span>
+<span class="normal">658</span>
+<span class="normal">659</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Homologues</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A Homologues object holds list of proteins homologues and information about them.</span>
 
 <span class="sd">    Attributes:</span>
@@ -1549,24 +1556,24 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">397</span>
-<span class="normal">398</span>
-<span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
-<span class="normal">402</span>
-<span class="normal">403</span>
-<span class="normal">404</span>
-<span class="normal">405</span>
-<span class="normal">406</span>
-<span class="normal">407</span>
-<span class="normal">408</span>
-<span class="normal">409</span>
-<span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a Homologues object.</span>
 
 <span class="sd">    Note:</span>
@@ -1621,54 +1628,7 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span>
-<span class="normal">422</span>
-<span class="normal">423</span>
-<span class="normal">424</span>
-<span class="normal">425</span>
-<span class="normal">426</span>
-<span class="normal">427</span>
-<span class="normal">428</span>
-<span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span>
-<span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span>
-<span class="normal">443</span>
-<span class="normal">444</span>
-<span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
-<span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span>
-<span class="normal">451</span>
-<span class="normal">452</span>
-<span class="normal">453</span>
-<span class="normal">454</span>
-<span class="normal">455</span>
-<span class="normal">456</span>
-<span class="normal">457</span>
-<span class="normal">458</span>
-<span class="normal">459</span>
-<span class="normal">460</span>
-<span class="normal">461</span>
-<span class="normal">462</span>
-<span class="normal">463</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">463</span>
 <span class="normal">464</span>
 <span class="normal">465</span>
 <span class="normal">466</span>
@@ -1817,7 +1777,54 @@
 <span class="normal">609</span>
 <span class="normal">610</span>
 <span class="normal">611</span>
-<span class="normal">612</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span>
+<span class="normal">625</span>
+<span class="normal">626</span>
+<span class="normal">627</span>
+<span class="normal">628</span>
+<span class="normal">629</span>
+<span class="normal">630</span>
+<span class="normal">631</span>
+<span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
+<span class="normal">636</span>
+<span class="normal">637</span>
+<span class="normal">638</span>
+<span class="normal">639</span>
+<span class="normal">640</span>
+<span class="normal">641</span>
+<span class="normal">642</span>
+<span class="normal">643</span>
+<span class="normal">644</span>
+<span class="normal">645</span>
+<span class="normal">646</span>
+<span class="normal">647</span>
+<span class="normal">648</span>
+<span class="normal">649</span>
+<span class="normal">650</span>
+<span class="normal">651</span>
+<span class="normal">652</span>
+<span class="normal">653</span>
+<span class="normal">654</span>
+<span class="normal">655</span>
+<span class="normal">656</span>
+<span class="normal">657</span>
+<span class="normal">658</span>
+<span class="normal">659</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get upstream sequences of proteins&#39; genes.</span>
 
 <span class="sd">    Note:</span>
@@ -2076,54 +2083,7 @@
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">331</span>
 <span class="normal">332</span>
 <span class="normal">333</span>
 <span class="normal">334</span>
@@ -2176,7 +2136,54 @@
 <span class="normal">381</span>
 <span class="normal">382</span>
 <span class="normal">383</span>
-<span class="normal">384</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Locus</span><span class="p">:</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Locus</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A Locus object holds sequence and annotation of the corresponding ncbi Reference Sequence.</span>
 
@@ -2339,54 +2346,7 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span>
-<span class="normal">344</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">344</span>
 <span class="normal">345</span>
 <span class="normal">346</span>
 <span class="normal">347</span>
@@ -2426,7 +2386,54 @@
 <span class="normal">381</span>
 <span class="normal">382</span>
 <span class="normal">383</span>
-<span class="normal">384</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">stop_b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_strand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locus_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">stop_b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_strand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span><span class="p">,</span>
              <span class="n">locus_record</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xml_output</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a Locus object.</span>
 
@@ -2625,54 +2632,7 @@ upstream sequences to the start codon.</p>
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1379</span>
-<span class="normal">1380</span>
-<span class="normal">1381</span>
-<span class="normal">1382</span>
-<span class="normal">1383</span>
-<span class="normal">1384</span>
-<span class="normal">1385</span>
-<span class="normal">1386</span>
-<span class="normal">1387</span>
-<span class="normal">1388</span>
-<span class="normal">1389</span>
-<span class="normal">1390</span>
-<span class="normal">1391</span>
-<span class="normal">1392</span>
-<span class="normal">1393</span>
-<span class="normal">1394</span>
-<span class="normal">1395</span>
-<span class="normal">1396</span>
-<span class="normal">1397</span>
-<span class="normal">1398</span>
-<span class="normal">1399</span>
-<span class="normal">1400</span>
-<span class="normal">1401</span>
-<span class="normal">1402</span>
-<span class="normal">1403</span>
-<span class="normal">1404</span>
-<span class="normal">1405</span>
-<span class="normal">1406</span>
-<span class="normal">1407</span>
-<span class="normal">1408</span>
-<span class="normal">1409</span>
-<span class="normal">1410</span>
-<span class="normal">1411</span>
-<span class="normal">1412</span>
-<span class="normal">1413</span>
-<span class="normal">1414</span>
-<span class="normal">1415</span>
-<span class="normal">1416</span>
-<span class="normal">1417</span>
-<span class="normal">1418</span>
-<span class="normal">1419</span>
-<span class="normal">1420</span>
-<span class="normal">1421</span>
-<span class="normal">1422</span>
-<span class="normal">1423</span>
-<span class="normal">1424</span>
-<span class="normal">1425</span>
-<span class="normal">1426</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1426</span>
 <span class="normal">1427</span>
 <span class="normal">1428</span>
 <span class="normal">1429</span>
@@ -2724,7 +2684,54 @@ upstream sequences to the start codon.</p>
 <span class="normal">1475</span>
 <span class="normal">1476</span>
 <span class="normal">1477</span>
-<span class="normal">1478</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ORF</span><span class="p">:</span>
+<span class="normal">1478</span>
+<span class="normal">1479</span>
+<span class="normal">1480</span>
+<span class="normal">1481</span>
+<span class="normal">1482</span>
+<span class="normal">1483</span>
+<span class="normal">1484</span>
+<span class="normal">1485</span>
+<span class="normal">1486</span>
+<span class="normal">1487</span>
+<span class="normal">1488</span>
+<span class="normal">1489</span>
+<span class="normal">1490</span>
+<span class="normal">1491</span>
+<span class="normal">1492</span>
+<span class="normal">1493</span>
+<span class="normal">1494</span>
+<span class="normal">1495</span>
+<span class="normal">1496</span>
+<span class="normal">1497</span>
+<span class="normal">1498</span>
+<span class="normal">1499</span>
+<span class="normal">1500</span>
+<span class="normal">1501</span>
+<span class="normal">1502</span>
+<span class="normal">1503</span>
+<span class="normal">1504</span>
+<span class="normal">1505</span>
+<span class="normal">1506</span>
+<span class="normal">1507</span>
+<span class="normal">1508</span>
+<span class="normal">1509</span>
+<span class="normal">1510</span>
+<span class="normal">1511</span>
+<span class="normal">1512</span>
+<span class="normal">1513</span>
+<span class="normal">1514</span>
+<span class="normal">1515</span>
+<span class="normal">1516</span>
+<span class="normal">1517</span>
+<span class="normal">1518</span>
+<span class="normal">1519</span>
+<span class="normal">1520</span>
+<span class="normal">1521</span>
+<span class="normal">1522</span>
+<span class="normal">1523</span>
+<span class="normal">1524</span>
+<span class="normal">1525</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ORF</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;An ORF object holds information about an annotated ORF.</span>
 
 <span class="sd">    Note:</span>
@@ -2899,49 +2906,49 @@ upstream sequences to the start codon.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1404</span>
-<span class="normal">1405</span>
-<span class="normal">1406</span>
-<span class="normal">1407</span>
-<span class="normal">1408</span>
-<span class="normal">1409</span>
-<span class="normal">1410</span>
-<span class="normal">1411</span>
-<span class="normal">1412</span>
-<span class="normal">1413</span>
-<span class="normal">1414</span>
-<span class="normal">1415</span>
-<span class="normal">1416</span>
-<span class="normal">1417</span>
-<span class="normal">1418</span>
-<span class="normal">1419</span>
-<span class="normal">1420</span>
-<span class="normal">1421</span>
-<span class="normal">1422</span>
-<span class="normal">1423</span>
-<span class="normal">1424</span>
-<span class="normal">1425</span>
-<span class="normal">1426</span>
-<span class="normal">1427</span>
-<span class="normal">1428</span>
-<span class="normal">1429</span>
-<span class="normal">1430</span>
-<span class="normal">1431</span>
-<span class="normal">1432</span>
-<span class="normal">1433</span>
-<span class="normal">1434</span>
-<span class="normal">1435</span>
-<span class="normal">1436</span>
-<span class="normal">1437</span>
-<span class="normal">1438</span>
-<span class="normal">1439</span>
-<span class="normal">1440</span>
-<span class="normal">1441</span>
-<span class="normal">1442</span>
-<span class="normal">1443</span>
-<span class="normal">1444</span>
-<span class="normal">1445</span>
-<span class="normal">1446</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nt_sequence</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1451</span>
+<span class="normal">1452</span>
+<span class="normal">1453</span>
+<span class="normal">1454</span>
+<span class="normal">1455</span>
+<span class="normal">1456</span>
+<span class="normal">1457</span>
+<span class="normal">1458</span>
+<span class="normal">1459</span>
+<span class="normal">1460</span>
+<span class="normal">1461</span>
+<span class="normal">1462</span>
+<span class="normal">1463</span>
+<span class="normal">1464</span>
+<span class="normal">1465</span>
+<span class="normal">1466</span>
+<span class="normal">1467</span>
+<span class="normal">1468</span>
+<span class="normal">1469</span>
+<span class="normal">1470</span>
+<span class="normal">1471</span>
+<span class="normal">1472</span>
+<span class="normal">1473</span>
+<span class="normal">1474</span>
+<span class="normal">1475</span>
+<span class="normal">1476</span>
+<span class="normal">1477</span>
+<span class="normal">1478</span>
+<span class="normal">1479</span>
+<span class="normal">1480</span>
+<span class="normal">1481</span>
+<span class="normal">1482</span>
+<span class="normal">1483</span>
+<span class="normal">1484</span>
+<span class="normal">1485</span>
+<span class="normal">1486</span>
+<span class="normal">1487</span>
+<span class="normal">1488</span>
+<span class="normal">1489</span>
+<span class="normal">1490</span>
+<span class="normal">1491</span>
+<span class="normal">1492</span>
+<span class="normal">1493</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nt_sequence</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span>
              <span class="n">contig_coordinates</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sd_window_seq</span><span class="p">:</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Seq</span><span class="o">.</span><span class="n">Seq</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">distance</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
              <span class="n">useq_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create an ORF object.</span>
@@ -3014,37 +3021,37 @@ upstream sequences to the start codon.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1448</span>
-<span class="normal">1449</span>
-<span class="normal">1450</span>
-<span class="normal">1451</span>
-<span class="normal">1452</span>
-<span class="normal">1453</span>
-<span class="normal">1454</span>
-<span class="normal">1455</span>
-<span class="normal">1456</span>
-<span class="normal">1457</span>
-<span class="normal">1458</span>
-<span class="normal">1459</span>
-<span class="normal">1460</span>
-<span class="normal">1461</span>
-<span class="normal">1462</span>
-<span class="normal">1463</span>
-<span class="normal">1464</span>
-<span class="normal">1465</span>
-<span class="normal">1466</span>
-<span class="normal">1467</span>
-<span class="normal">1468</span>
-<span class="normal">1469</span>
-<span class="normal">1470</span>
-<span class="normal">1471</span>
-<span class="normal">1472</span>
-<span class="normal">1473</span>
-<span class="normal">1474</span>
-<span class="normal">1475</span>
-<span class="normal">1476</span>
-<span class="normal">1477</span>
-<span class="normal">1478</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1495</span>
+<span class="normal">1496</span>
+<span class="normal">1497</span>
+<span class="normal">1498</span>
+<span class="normal">1499</span>
+<span class="normal">1500</span>
+<span class="normal">1501</span>
+<span class="normal">1502</span>
+<span class="normal">1503</span>
+<span class="normal">1504</span>
+<span class="normal">1505</span>
+<span class="normal">1506</span>
+<span class="normal">1507</span>
+<span class="normal">1508</span>
+<span class="normal">1509</span>
+<span class="normal">1510</span>
+<span class="normal">1511</span>
+<span class="normal">1512</span>
+<span class="normal">1513</span>
+<span class="normal">1514</span>
+<span class="normal">1515</span>
+<span class="normal">1516</span>
+<span class="normal">1517</span>
+<span class="normal">1518</span>
+<span class="normal">1519</span>
+<span class="normal">1520</span>
+<span class="normal">1521</span>
+<span class="normal">1522</span>
+<span class="normal">1523</span>
+<span class="normal">1524</span>
+<span class="normal">1525</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Calculate energies of putative SD sequences of the upstream sequence.</span>
 
 <span class="sd">    Returns:</span>
@@ -3156,54 +3163,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1481</span>
-<span class="normal">1482</span>
-<span class="normal">1483</span>
-<span class="normal">1484</span>
-<span class="normal">1485</span>
-<span class="normal">1486</span>
-<span class="normal">1487</span>
-<span class="normal">1488</span>
-<span class="normal">1489</span>
-<span class="normal">1490</span>
-<span class="normal">1491</span>
-<span class="normal">1492</span>
-<span class="normal">1493</span>
-<span class="normal">1494</span>
-<span class="normal">1495</span>
-<span class="normal">1496</span>
-<span class="normal">1497</span>
-<span class="normal">1498</span>
-<span class="normal">1499</span>
-<span class="normal">1500</span>
-<span class="normal">1501</span>
-<span class="normal">1502</span>
-<span class="normal">1503</span>
-<span class="normal">1504</span>
-<span class="normal">1505</span>
-<span class="normal">1506</span>
-<span class="normal">1507</span>
-<span class="normal">1508</span>
-<span class="normal">1509</span>
-<span class="normal">1510</span>
-<span class="normal">1511</span>
-<span class="normal">1512</span>
-<span class="normal">1513</span>
-<span class="normal">1514</span>
-<span class="normal">1515</span>
-<span class="normal">1516</span>
-<span class="normal">1517</span>
-<span class="normal">1518</span>
-<span class="normal">1519</span>
-<span class="normal">1520</span>
-<span class="normal">1521</span>
-<span class="normal">1522</span>
-<span class="normal">1523</span>
-<span class="normal">1524</span>
-<span class="normal">1525</span>
-<span class="normal">1526</span>
-<span class="normal">1527</span>
-<span class="normal">1528</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1528</span>
 <span class="normal">1529</span>
 <span class="normal">1530</span>
 <span class="normal">1531</span>
@@ -3504,7 +3464,54 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1826</span>
 <span class="normal">1827</span>
 <span class="normal">1828</span>
-<span class="normal">1829</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Path</span><span class="p">:</span>
+<span class="normal">1829</span>
+<span class="normal">1830</span>
+<span class="normal">1831</span>
+<span class="normal">1832</span>
+<span class="normal">1833</span>
+<span class="normal">1834</span>
+<span class="normal">1835</span>
+<span class="normal">1836</span>
+<span class="normal">1837</span>
+<span class="normal">1838</span>
+<span class="normal">1839</span>
+<span class="normal">1840</span>
+<span class="normal">1841</span>
+<span class="normal">1842</span>
+<span class="normal">1843</span>
+<span class="normal">1844</span>
+<span class="normal">1845</span>
+<span class="normal">1846</span>
+<span class="normal">1847</span>
+<span class="normal">1848</span>
+<span class="normal">1849</span>
+<span class="normal">1850</span>
+<span class="normal">1851</span>
+<span class="normal">1852</span>
+<span class="normal">1853</span>
+<span class="normal">1854</span>
+<span class="normal">1855</span>
+<span class="normal">1856</span>
+<span class="normal">1857</span>
+<span class="normal">1858</span>
+<span class="normal">1859</span>
+<span class="normal">1860</span>
+<span class="normal">1861</span>
+<span class="normal">1862</span>
+<span class="normal">1863</span>
+<span class="normal">1864</span>
+<span class="normal">1865</span>
+<span class="normal">1866</span>
+<span class="normal">1867</span>
+<span class="normal">1868</span>
+<span class="normal">1869</span>
+<span class="normal">1870</span>
+<span class="normal">1871</span>
+<span class="normal">1872</span>
+<span class="normal">1873</span>
+<span class="normal">1874</span>
+<span class="normal">1875</span>
+<span class="normal">1876</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Path</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A Path object holds information about a list of conserved ORFs.</span>
 
 <span class="sd">    Note:</span>
@@ -3893,20 +3900,20 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1501</span>
-<span class="normal">1502</span>
-<span class="normal">1503</span>
-<span class="normal">1504</span>
-<span class="normal">1505</span>
-<span class="normal">1506</span>
-<span class="normal">1507</span>
-<span class="normal">1508</span>
-<span class="normal">1509</span>
-<span class="normal">1510</span>
-<span class="normal">1511</span>
-<span class="normal">1512</span>
-<span class="normal">1513</span>
-<span class="normal">1514</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1548</span>
+<span class="normal">1549</span>
+<span class="normal">1550</span>
+<span class="normal">1551</span>
+<span class="normal">1552</span>
+<span class="normal">1553</span>
+<span class="normal">1554</span>
+<span class="normal">1555</span>
+<span class="normal">1556</span>
+<span class="normal">1557</span>
+<span class="normal">1558</span>
+<span class="normal">1559</span>
+<span class="normal">1560</span>
+<span class="normal">1561</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a Path object.</span>
 
 <span class="sd">    Arguments:</span>
@@ -3949,14 +3956,14 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1542</span>
-<span class="normal">1543</span>
-<span class="normal">1544</span>
-<span class="normal">1545</span>
-<span class="normal">1546</span>
-<span class="normal">1547</span>
-<span class="normal">1548</span>
-<span class="normal">1549</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1589</span>
+<span class="normal">1590</span>
+<span class="normal">1591</span>
+<span class="normal">1592</span>
+<span class="normal">1593</span>
+<span class="normal">1594</span>
+<span class="normal">1595</span>
+<span class="normal">1596</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;__len__ magic method for a Path object.</span>
 
 <span class="sd">    Returns:</span>
@@ -3996,19 +4003,19 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1551</span>
-<span class="normal">1552</span>
-<span class="normal">1553</span>
-<span class="normal">1554</span>
-<span class="normal">1555</span>
-<span class="normal">1556</span>
-<span class="normal">1557</span>
-<span class="normal">1558</span>
-<span class="normal">1559</span>
-<span class="normal">1560</span>
-<span class="normal">1561</span>
-<span class="normal">1562</span>
-<span class="normal">1563</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1598</span>
+<span class="normal">1599</span>
+<span class="normal">1600</span>
+<span class="normal">1601</span>
+<span class="normal">1602</span>
+<span class="normal">1603</span>
+<span class="normal">1604</span>
+<span class="normal">1605</span>
+<span class="normal">1606</span>
+<span class="normal">1607</span>
+<span class="normal">1608</span>
+<span class="normal">1609</span>
+<span class="normal">1610</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Calculate fraction of identical ORFs between two Path object.</span>
 
 <span class="sd">    __Note:__ If two objects have different length, the fraction will be calculated as a number of identical ORFs</span>
@@ -4058,54 +4065,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1611</span>
-<span class="normal">1612</span>
-<span class="normal">1613</span>
-<span class="normal">1614</span>
-<span class="normal">1615</span>
-<span class="normal">1616</span>
-<span class="normal">1617</span>
-<span class="normal">1618</span>
-<span class="normal">1619</span>
-<span class="normal">1620</span>
-<span class="normal">1621</span>
-<span class="normal">1622</span>
-<span class="normal">1623</span>
-<span class="normal">1624</span>
-<span class="normal">1625</span>
-<span class="normal">1626</span>
-<span class="normal">1627</span>
-<span class="normal">1628</span>
-<span class="normal">1629</span>
-<span class="normal">1630</span>
-<span class="normal">1631</span>
-<span class="normal">1632</span>
-<span class="normal">1633</span>
-<span class="normal">1634</span>
-<span class="normal">1635</span>
-<span class="normal">1636</span>
-<span class="normal">1637</span>
-<span class="normal">1638</span>
-<span class="normal">1639</span>
-<span class="normal">1640</span>
-<span class="normal">1641</span>
-<span class="normal">1642</span>
-<span class="normal">1643</span>
-<span class="normal">1644</span>
-<span class="normal">1645</span>
-<span class="normal">1646</span>
-<span class="normal">1647</span>
-<span class="normal">1648</span>
-<span class="normal">1649</span>
-<span class="normal">1650</span>
-<span class="normal">1651</span>
-<span class="normal">1652</span>
-<span class="normal">1653</span>
-<span class="normal">1654</span>
-<span class="normal">1655</span>
-<span class="normal">1656</span>
-<span class="normal">1657</span>
-<span class="normal">1658</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1658</span>
 <span class="normal">1659</span>
 <span class="normal">1660</span>
 <span class="normal">1661</span>
@@ -4113,7 +4073,54 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1663</span>
 <span class="normal">1664</span>
 <span class="normal">1665</span>
-<span class="normal">1666</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">maft_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1666</span>
+<span class="normal">1667</span>
+<span class="normal">1668</span>
+<span class="normal">1669</span>
+<span class="normal">1670</span>
+<span class="normal">1671</span>
+<span class="normal">1672</span>
+<span class="normal">1673</span>
+<span class="normal">1674</span>
+<span class="normal">1675</span>
+<span class="normal">1676</span>
+<span class="normal">1677</span>
+<span class="normal">1678</span>
+<span class="normal">1679</span>
+<span class="normal">1680</span>
+<span class="normal">1681</span>
+<span class="normal">1682</span>
+<span class="normal">1683</span>
+<span class="normal">1684</span>
+<span class="normal">1685</span>
+<span class="normal">1686</span>
+<span class="normal">1687</span>
+<span class="normal">1688</span>
+<span class="normal">1689</span>
+<span class="normal">1690</span>
+<span class="normal">1691</span>
+<span class="normal">1692</span>
+<span class="normal">1693</span>
+<span class="normal">1694</span>
+<span class="normal">1695</span>
+<span class="normal">1696</span>
+<span class="normal">1697</span>
+<span class="normal">1698</span>
+<span class="normal">1699</span>
+<span class="normal">1700</span>
+<span class="normal">1701</span>
+<span class="normal">1702</span>
+<span class="normal">1703</span>
+<span class="normal">1704</span>
+<span class="normal">1705</span>
+<span class="normal">1706</span>
+<span class="normal">1707</span>
+<span class="normal">1708</span>
+<span class="normal">1709</span>
+<span class="normal">1710</span>
+<span class="normal">1711</span>
+<span class="normal">1712</span>
+<span class="normal">1713</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">maft_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Run a multiple sequence alignment tool (MAFT) for the ORFs nucleotide and amino acid sequences.</span>
 
 <span class="sd">    Note:</span>
@@ -4206,51 +4213,51 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1565</span>
-<span class="normal">1566</span>
-<span class="normal">1567</span>
-<span class="normal">1568</span>
-<span class="normal">1569</span>
-<span class="normal">1570</span>
-<span class="normal">1571</span>
-<span class="normal">1572</span>
-<span class="normal">1573</span>
-<span class="normal">1574</span>
-<span class="normal">1575</span>
-<span class="normal">1576</span>
-<span class="normal">1577</span>
-<span class="normal">1578</span>
-<span class="normal">1579</span>
-<span class="normal">1580</span>
-<span class="normal">1581</span>
-<span class="normal">1582</span>
-<span class="normal">1583</span>
-<span class="normal">1584</span>
-<span class="normal">1585</span>
-<span class="normal">1586</span>
-<span class="normal">1587</span>
-<span class="normal">1588</span>
-<span class="normal">1589</span>
-<span class="normal">1590</span>
-<span class="normal">1591</span>
-<span class="normal">1592</span>
-<span class="normal">1593</span>
-<span class="normal">1594</span>
-<span class="normal">1595</span>
-<span class="normal">1596</span>
-<span class="normal">1597</span>
-<span class="normal">1598</span>
-<span class="normal">1599</span>
-<span class="normal">1600</span>
-<span class="normal">1601</span>
-<span class="normal">1602</span>
-<span class="normal">1603</span>
-<span class="normal">1604</span>
-<span class="normal">1605</span>
-<span class="normal">1606</span>
-<span class="normal">1607</span>
-<span class="normal">1608</span>
-<span class="normal">1609</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">muscle_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1612</span>
+<span class="normal">1613</span>
+<span class="normal">1614</span>
+<span class="normal">1615</span>
+<span class="normal">1616</span>
+<span class="normal">1617</span>
+<span class="normal">1618</span>
+<span class="normal">1619</span>
+<span class="normal">1620</span>
+<span class="normal">1621</span>
+<span class="normal">1622</span>
+<span class="normal">1623</span>
+<span class="normal">1624</span>
+<span class="normal">1625</span>
+<span class="normal">1626</span>
+<span class="normal">1627</span>
+<span class="normal">1628</span>
+<span class="normal">1629</span>
+<span class="normal">1630</span>
+<span class="normal">1631</span>
+<span class="normal">1632</span>
+<span class="normal">1633</span>
+<span class="normal">1634</span>
+<span class="normal">1635</span>
+<span class="normal">1636</span>
+<span class="normal">1637</span>
+<span class="normal">1638</span>
+<span class="normal">1639</span>
+<span class="normal">1640</span>
+<span class="normal">1641</span>
+<span class="normal">1642</span>
+<span class="normal">1643</span>
+<span class="normal">1644</span>
+<span class="normal">1645</span>
+<span class="normal">1646</span>
+<span class="normal">1647</span>
+<span class="normal">1648</span>
+<span class="normal">1649</span>
+<span class="normal">1650</span>
+<span class="normal">1651</span>
+<span class="normal">1652</span>
+<span class="normal">1653</span>
+<span class="normal">1654</span>
+<span class="normal">1655</span>
+<span class="normal">1656</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">muscle_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Run a multiple sequence alignment tool (muscle) for the ORFs nucleotide and amino acid sequences.</span>
 
 <span class="sd">    Note:</span>
@@ -4337,53 +4344,53 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1697</span>
-<span class="normal">1698</span>
-<span class="normal">1699</span>
-<span class="normal">1700</span>
-<span class="normal">1701</span>
-<span class="normal">1702</span>
-<span class="normal">1703</span>
-<span class="normal">1704</span>
-<span class="normal">1705</span>
-<span class="normal">1706</span>
-<span class="normal">1707</span>
-<span class="normal">1708</span>
-<span class="normal">1709</span>
-<span class="normal">1710</span>
-<span class="normal">1711</span>
-<span class="normal">1712</span>
-<span class="normal">1713</span>
-<span class="normal">1714</span>
-<span class="normal">1715</span>
-<span class="normal">1716</span>
-<span class="normal">1717</span>
-<span class="normal">1718</span>
-<span class="normal">1719</span>
-<span class="normal">1720</span>
-<span class="normal">1721</span>
-<span class="normal">1722</span>
-<span class="normal">1723</span>
-<span class="normal">1724</span>
-<span class="normal">1725</span>
-<span class="normal">1726</span>
-<span class="normal">1727</span>
-<span class="normal">1728</span>
-<span class="normal">1729</span>
-<span class="normal">1730</span>
-<span class="normal">1731</span>
-<span class="normal">1732</span>
-<span class="normal">1733</span>
-<span class="normal">1734</span>
-<span class="normal">1735</span>
-<span class="normal">1736</span>
-<span class="normal">1737</span>
-<span class="normal">1738</span>
-<span class="normal">1739</span>
-<span class="normal">1740</span>
-<span class="normal">1741</span>
-<span class="normal">1742</span>
-<span class="normal">1743</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ggmsa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1744</span>
+<span class="normal">1745</span>
+<span class="normal">1746</span>
+<span class="normal">1747</span>
+<span class="normal">1748</span>
+<span class="normal">1749</span>
+<span class="normal">1750</span>
+<span class="normal">1751</span>
+<span class="normal">1752</span>
+<span class="normal">1753</span>
+<span class="normal">1754</span>
+<span class="normal">1755</span>
+<span class="normal">1756</span>
+<span class="normal">1757</span>
+<span class="normal">1758</span>
+<span class="normal">1759</span>
+<span class="normal">1760</span>
+<span class="normal">1761</span>
+<span class="normal">1762</span>
+<span class="normal">1763</span>
+<span class="normal">1764</span>
+<span class="normal">1765</span>
+<span class="normal">1766</span>
+<span class="normal">1767</span>
+<span class="normal">1768</span>
+<span class="normal">1769</span>
+<span class="normal">1770</span>
+<span class="normal">1771</span>
+<span class="normal">1772</span>
+<span class="normal">1773</span>
+<span class="normal">1774</span>
+<span class="normal">1775</span>
+<span class="normal">1776</span>
+<span class="normal">1777</span>
+<span class="normal">1778</span>
+<span class="normal">1779</span>
+<span class="normal">1780</span>
+<span class="normal">1781</span>
+<span class="normal">1782</span>
+<span class="normal">1783</span>
+<span class="normal">1784</span>
+<span class="normal">1785</span>
+<span class="normal">1786</span>
+<span class="normal">1787</span>
+<span class="normal">1788</span>
+<span class="normal">1789</span>
+<span class="normal">1790</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ggmsa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot MSA of conserved ORFs saved as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -4467,54 +4474,7 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1745</span>
-<span class="normal">1746</span>
-<span class="normal">1747</span>
-<span class="normal">1748</span>
-<span class="normal">1749</span>
-<span class="normal">1750</span>
-<span class="normal">1751</span>
-<span class="normal">1752</span>
-<span class="normal">1753</span>
-<span class="normal">1754</span>
-<span class="normal">1755</span>
-<span class="normal">1756</span>
-<span class="normal">1757</span>
-<span class="normal">1758</span>
-<span class="normal">1759</span>
-<span class="normal">1760</span>
-<span class="normal">1761</span>
-<span class="normal">1762</span>
-<span class="normal">1763</span>
-<span class="normal">1764</span>
-<span class="normal">1765</span>
-<span class="normal">1766</span>
-<span class="normal">1767</span>
-<span class="normal">1768</span>
-<span class="normal">1769</span>
-<span class="normal">1770</span>
-<span class="normal">1771</span>
-<span class="normal">1772</span>
-<span class="normal">1773</span>
-<span class="normal">1774</span>
-<span class="normal">1775</span>
-<span class="normal">1776</span>
-<span class="normal">1777</span>
-<span class="normal">1778</span>
-<span class="normal">1779</span>
-<span class="normal">1780</span>
-<span class="normal">1781</span>
-<span class="normal">1782</span>
-<span class="normal">1783</span>
-<span class="normal">1784</span>
-<span class="normal">1785</span>
-<span class="normal">1786</span>
-<span class="normal">1787</span>
-<span class="normal">1788</span>
-<span class="normal">1789</span>
-<span class="normal">1790</span>
-<span class="normal">1791</span>
-<span class="normal">1792</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1792</span>
 <span class="normal">1793</span>
 <span class="normal">1794</span>
 <span class="normal">1795</span>
@@ -4551,7 +4511,54 @@ for different sequences (nt, aa, sd) as keys.</p>
 <span class="normal">1826</span>
 <span class="normal">1827</span>
 <span class="normal">1828</span>
-<span class="normal">1829</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1829</span>
+<span class="normal">1830</span>
+<span class="normal">1831</span>
+<span class="normal">1832</span>
+<span class="normal">1833</span>
+<span class="normal">1834</span>
+<span class="normal">1835</span>
+<span class="normal">1836</span>
+<span class="normal">1837</span>
+<span class="normal">1838</span>
+<span class="normal">1839</span>
+<span class="normal">1840</span>
+<span class="normal">1841</span>
+<span class="normal">1842</span>
+<span class="normal">1843</span>
+<span class="normal">1844</span>
+<span class="normal">1845</span>
+<span class="normal">1846</span>
+<span class="normal">1847</span>
+<span class="normal">1848</span>
+<span class="normal">1849</span>
+<span class="normal">1850</span>
+<span class="normal">1851</span>
+<span class="normal">1852</span>
+<span class="normal">1853</span>
+<span class="normal">1854</span>
+<span class="normal">1855</span>
+<span class="normal">1856</span>
+<span class="normal">1857</span>
+<span class="normal">1858</span>
+<span class="normal">1859</span>
+<span class="normal">1860</span>
+<span class="normal">1861</span>
+<span class="normal">1862</span>
+<span class="normal">1863</span>
+<span class="normal">1864</span>
+<span class="normal">1865</span>
+<span class="normal">1866</span>
+<span class="normal">1867</span>
+<span class="normal">1868</span>
+<span class="normal">1869</span>
+<span class="normal">1870</span>
+<span class="normal">1871</span>
+<span class="normal">1872</span>
+<span class="normal">1873</span>
+<span class="normal">1874</span>
+<span class="normal">1875</span>
+<span class="normal">1876</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot sequence Logo of conserved ORFs MSA saved as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -4666,34 +4673,34 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1668</span>
-<span class="normal">1669</span>
-<span class="normal">1670</span>
-<span class="normal">1671</span>
-<span class="normal">1672</span>
-<span class="normal">1673</span>
-<span class="normal">1674</span>
-<span class="normal">1675</span>
-<span class="normal">1676</span>
-<span class="normal">1677</span>
-<span class="normal">1678</span>
-<span class="normal">1679</span>
-<span class="normal">1680</span>
-<span class="normal">1681</span>
-<span class="normal">1682</span>
-<span class="normal">1683</span>
-<span class="normal">1684</span>
-<span class="normal">1685</span>
-<span class="normal">1686</span>
-<span class="normal">1687</span>
-<span class="normal">1688</span>
-<span class="normal">1689</span>
-<span class="normal">1690</span>
-<span class="normal">1691</span>
-<span class="normal">1692</span>
-<span class="normal">1693</span>
-<span class="normal">1694</span>
-<span class="normal">1695</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1715</span>
+<span class="normal">1716</span>
+<span class="normal">1717</span>
+<span class="normal">1718</span>
+<span class="normal">1719</span>
+<span class="normal">1720</span>
+<span class="normal">1721</span>
+<span class="normal">1722</span>
+<span class="normal">1723</span>
+<span class="normal">1724</span>
+<span class="normal">1725</span>
+<span class="normal">1726</span>
+<span class="normal">1727</span>
+<span class="normal">1728</span>
+<span class="normal">1729</span>
+<span class="normal">1730</span>
+<span class="normal">1731</span>
+<span class="normal">1732</span>
+<span class="normal">1733</span>
+<span class="normal">1734</span>
+<span class="normal">1735</span>
+<span class="normal">1736</span>
+<span class="normal">1737</span>
+<span class="normal">1738</span>
+<span class="normal">1739</span>
+<span class="normal">1740</span>
+<span class="normal">1741</span>
+<span class="normal">1742</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot MSA of conserved ORFs.</span>
 
 <span class="sd">    Returns:</span>
@@ -4751,17 +4758,17 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1530</span>
-<span class="normal">1531</span>
-<span class="normal">1532</span>
-<span class="normal">1533</span>
-<span class="normal">1534</span>
-<span class="normal">1535</span>
-<span class="normal">1536</span>
-<span class="normal">1537</span>
-<span class="normal">1538</span>
-<span class="normal">1539</span>
-<span class="normal">1540</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1577</span>
+<span class="normal">1578</span>
+<span class="normal">1579</span>
+<span class="normal">1580</span>
+<span class="normal">1581</span>
+<span class="normal">1582</span>
+<span class="normal">1583</span>
+<span class="normal">1584</span>
+<span class="normal">1585</span>
+<span class="normal">1586</span>
+<span class="normal">1587</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Sort list of ORFs by their names.</span>
 
 <span class="sd">    Returns:</span>
@@ -4815,19 +4822,19 @@ for different sequences (nt, aa, sd) as keys.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1516</span>
-<span class="normal">1517</span>
-<span class="normal">1518</span>
-<span class="normal">1519</span>
-<span class="normal">1520</span>
-<span class="normal">1521</span>
-<span class="normal">1522</span>
-<span class="normal">1523</span>
-<span class="normal">1524</span>
-<span class="normal">1525</span>
-<span class="normal">1526</span>
-<span class="normal">1527</span>
-<span class="normal">1528</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orf</span><span class="p">:</span> <span class="n">ORF</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1563</span>
+<span class="normal">1564</span>
+<span class="normal">1565</span>
+<span class="normal">1566</span>
+<span class="normal">1567</span>
+<span class="normal">1568</span>
+<span class="normal">1569</span>
+<span class="normal">1570</span>
+<span class="normal">1571</span>
+<span class="normal">1572</span>
+<span class="normal">1573</span>
+<span class="normal">1574</span>
+<span class="normal">1575</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orf</span><span class="p">:</span> <span class="n">ORF</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Update a Path with a new ORF.</span>
 
 <span class="sd">    Arguments:</span>
@@ -5165,7 +5172,54 @@ the protein obtained from ipg ncbi database.</p>
 <span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
-<span class="normal">281</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RefSeqProtein</span><span class="p">:</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RefSeqProtein</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A RefSeqProtein object holds a RefSeq protein and information about it.</span>
 
 <span class="sd">    Attributes:</span>
@@ -5324,8 +5378,8 @@ the protein obtained from ipg ncbi database.</p>
 <span class="sd">        return self.loci</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="nf">blastp_searching_for_homologues</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Search for a protein&#39;s homologues with blastp against the &#39;refseq_protein&#39; database.</span>
+    <span class="k">def</span> <span class="nf">local_blastp_searching_for_homologues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Search for a protein&#39;s homologues with blastp against the local database.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            This function does not create a new object&#39;s attribute; It only returns a list of accession numbers.</span>
@@ -5335,16 +5389,61 @@ the protein obtained from ipg ncbi database.</p>
 <span class="sd">                protein&#39;s accession number.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp&quot;</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;You have to specify a path to your local blastp with --blastp_path &quot;</span>
+                                             <span class="s2">&quot;parameter before using local blastp database.&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;👀 Searching for homologues of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="si">}</span><span class="s2"> with blastp against your local&quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot; database...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
+            <span class="n">temp_input</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+            <span class="n">Bio</span><span class="o">.</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="p">,</span> <span class="n">temp_input</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+            <span class="n">temp_output</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp&quot;</span><span class="p">],</span> <span class="s2">&quot;-num_threads&quot;</span><span class="p">,</span> <span class="s2">&quot;7&quot;</span><span class="p">,</span> <span class="s2">&quot;-outfmt&quot;</span><span class="p">,</span> <span class="s2">&quot;6&quot;</span><span class="p">,</span> <span class="s2">&quot;-query&quot;</span><span class="p">,</span>
+                            <span class="n">temp_input</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;-db&quot;</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span>
+                            <span class="s2">&quot;-evalue&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_evalue_cutoff&quot;</span><span class="p">]),</span>
+                            <span class="s2">&quot;-max_target_seqs&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_hit_list_size&quot;</span><span class="p">]),</span>
+                            <span class="s2">&quot;-out&quot;</span><span class="p">,</span> <span class="n">temp_output</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="n">temp_input</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">blastp_out</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">temp_output</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+                                           <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;qseqid&quot;</span><span class="p">,</span> <span class="s2">&quot;sseqid&quot;</span><span class="p">,</span> <span class="s2">&quot;pident&quot;</span><span class="p">,</span> <span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="s2">&quot;mismatch&quot;</span><span class="p">,</span> <span class="s2">&quot;gapopen&quot;</span><span class="p">,</span>
+                                                  <span class="s2">&quot;qstart&quot;</span><span class="p">,</span> <span class="s2">&quot;qend&quot;</span><span class="p">,</span> <span class="s2">&quot;sstart&quot;</span><span class="p">,</span> <span class="s2">&quot;send&quot;</span><span class="p">,</span> <span class="s2">&quot;evalue&quot;</span><span class="p">,</span> <span class="s2">&quot;bitscore&quot;</span><span class="p">])</span>
+            <span class="n">temp_output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">blastp_out</span> <span class="o">=</span> <span class="n">blastp_out</span><span class="p">[</span>
+                <span class="n">blastp_out</span><span class="p">[</span><span class="s2">&quot;pident&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_pident_to_query_length_cutoff&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">]):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">])</span>
+            <span class="n">output_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">],</span> <span class="s2">&quot;found_homologues.tsv&quot;</span><span class="p">)</span>
+            <span class="n">blastp_out</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s1">&#39;NA&#39;</span><span class="p">)</span>
+
+            <span class="n">hits_an_list</span> <span class="o">=</span> <span class="n">blastp_out</span><span class="p">[</span><span class="s2">&quot;sseqid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">hits_an_list</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for homologues with blastp.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+
+    <span class="k">def</span> <span class="nf">blastp_searching_for_homologues</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Search for a protein&#39;s homologues with blastp against the &#39;refseq_protein&#39; database.</span>
+<span class="sd">        Note:</span>
+<span class="sd">            This function does not create a new object&#39;s attribute; It only returns a list of accession numbers.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of proteins&#39; accession numbers obtained with blastp searching. This list also contains the query</span>
+<span class="sd">                protein&#39;s accession number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;👀 Searching for homologues of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="si">}</span><span class="s2"> with blastp against the RefSeq database...&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;👀 Searching for homologues of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="si">}</span><span class="s2"> with blastp against the&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;blastp_database&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> database...</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Note: you can choose between refseq_select (contains representative records)</span><span class="se">\n\t</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;and refseq_protein (full). To switch between them use -bdb parameter.&quot;</span><span class="p">,</span>
                     <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isrefseq</span><span class="p">:</span>
                 <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span>
-            <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Blast</span><span class="o">.</span><span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastp&quot;</span><span class="p">,</span> <span class="s2">&quot;refseq_protein&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
+            <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Blast</span><span class="o">.</span><span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastp&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;blastp_database&#39;</span><span class="p">],</span> <span class="n">request</span><span class="p">,</span>
                                               <span class="n">expect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_evalue_cutoff&quot;</span><span class="p">],</span>
                                               <span class="n">hitlist_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_hit_list_size&quot;</span><span class="p">],</span>
                                               <span class="n">alignments</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_max_number_of_alignments&quot;</span><span class="p">])</span>
@@ -5357,7 +5456,9 @@ the protein obtained from ipg ncbi database.</p>
             <span class="n">root</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_output</span><span class="p">)</span>
             <span class="n">query_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;BlastOutput_query-len&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;Hit&quot;</span><span class="p">):</span>
-                <span class="n">hit_id</span> <span class="o">=</span> <span class="n">hit</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Hit_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;ref&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;|-&quot;</span><span class="p">)</span>
+                <span class="n">an_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[ANYXW]P_\d+\.\d&quot;</span><span class="p">)</span>
+                <span class="n">hit_id_l</span> <span class="o">=</span> <span class="n">an_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Hit_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">hit_id</span> <span class="o">=</span> <span class="n">hit_id_l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">hit_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="p">:</span>
                     <span class="n">hit_description</span> <span class="o">=</span> <span class="n">hit</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Hit_def&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
                     <span class="n">subject_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Hit_len&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -5598,52 +5699,7 @@ protein's accession number.</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
 <span class="normal">246</span>
@@ -5681,27 +5737,74 @@ protein's accession number.</p>
 <span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
-<span class="normal">281</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">blastp_searching_for_homologues</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">blastp_searching_for_homologues</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Search for a protein&#39;s homologues with blastp against the &#39;refseq_protein&#39; database.</span>
-
 <span class="sd">    Note:</span>
 <span class="sd">        This function does not create a new object&#39;s attribute; It only returns a list of accession numbers.</span>
-
 <span class="sd">    Returns:</span>
 <span class="sd">        list: List of proteins&#39; accession numbers obtained with blastp searching. This list also contains the query</span>
 <span class="sd">            protein&#39;s accession number.</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;👀 Searching for homologues of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="si">}</span><span class="s2"> with blastp against the RefSeq database...&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;👀 Searching for homologues of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="si">}</span><span class="s2"> with blastp against the&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;blastp_database&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> database...</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Note: you can choose between refseq_select (contains representative records)</span><span class="se">\n\t</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;and refseq_protein (full). To switch between them use -bdb parameter.&quot;</span><span class="p">,</span>
                 <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isrefseq</span><span class="p">:</span>
             <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span>
-        <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Blast</span><span class="o">.</span><span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastp&quot;</span><span class="p">,</span> <span class="s2">&quot;refseq_protein&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
+        <span class="n">handle</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">Blast</span><span class="o">.</span><span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastp&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;blastp_database&#39;</span><span class="p">],</span> <span class="n">request</span><span class="p">,</span>
                                           <span class="n">expect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_evalue_cutoff&quot;</span><span class="p">],</span>
                                           <span class="n">hitlist_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_hit_list_size&quot;</span><span class="p">],</span>
                                           <span class="n">alignments</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_max_number_of_alignments&quot;</span><span class="p">])</span>
@@ -5714,7 +5817,9 @@ protein's accession number.</p>
         <span class="n">root</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_output</span><span class="p">)</span>
         <span class="n">query_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;BlastOutput_query-len&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;Hit&quot;</span><span class="p">):</span>
-            <span class="n">hit_id</span> <span class="o">=</span> <span class="n">hit</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Hit_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;ref&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;|-&quot;</span><span class="p">)</span>
+            <span class="n">an_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[ANYXW]P_\d+\.\d&quot;</span><span class="p">)</span>
+            <span class="n">hit_id_l</span> <span class="o">=</span> <span class="n">an_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Hit_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">hit_id</span> <span class="o">=</span> <span class="n">hit_id_l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">hit_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="p">:</span>
                 <span class="n">hit_description</span> <span class="o">=</span> <span class="n">hit</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Hit_def&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
                 <span class="n">subject_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Hit_len&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -6020,6 +6125,131 @@ from the ipg ncbi database.</p>
 
 </div>
 
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="uorf4u.data_processing.RefSeqProtein.local_blastp_searching_for_homologues" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">local_blastp_searching_for_homologues</span><span class="p">(</span><span class="n">db</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Search for a protein's homologues with blastp against the local database.</p>
+
+
+<p> <b>Note:</b> <p>This function does not create a new object's attribute; It only returns a list of accession numbers.</p></p>
+
+
+
+
+
+  <p> <b>Returns:</b></p>
+  <ul>
+      <li class="field-body">
+<b>list</b>(            <code>list</code>
+)        – <p>List of proteins' accession numbers obtained with blastp searching. This list also contains the query
+protein's accession number.</p>
+      </li>
+  </ul>
+
+      <details class="quote">
+        <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">local_blastp_searching_for_homologues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Search for a protein&#39;s homologues with blastp against the local database.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This function does not create a new object&#39;s attribute; It only returns a list of accession numbers.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: List of proteins&#39; accession numbers obtained with blastp searching. This list also contains the query</span>
+<span class="sd">            protein&#39;s accession number.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp&quot;</span><span class="p">]):</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;You have to specify a path to your local blastp with --blastp_path &quot;</span>
+                                         <span class="s2">&quot;parameter before using local blastp database.&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;👀 Searching for homologues of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">accession_number</span><span class="si">}</span><span class="s2"> with blastp against your local&quot;</span>
+                  <span class="sa">f</span><span class="s2">&quot; database...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
+        <span class="n">temp_input</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+        <span class="n">Bio</span><span class="o">.</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="p">,</span> <span class="n">temp_input</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+        <span class="n">temp_output</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp&quot;</span><span class="p">],</span> <span class="s2">&quot;-num_threads&quot;</span><span class="p">,</span> <span class="s2">&quot;7&quot;</span><span class="p">,</span> <span class="s2">&quot;-outfmt&quot;</span><span class="p">,</span> <span class="s2">&quot;6&quot;</span><span class="p">,</span> <span class="s2">&quot;-query&quot;</span><span class="p">,</span>
+                        <span class="n">temp_input</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;-db&quot;</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span>
+                        <span class="s2">&quot;-evalue&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_evalue_cutoff&quot;</span><span class="p">]),</span>
+                        <span class="s2">&quot;-max_target_seqs&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_hit_list_size&quot;</span><span class="p">]),</span>
+                        <span class="s2">&quot;-out&quot;</span><span class="p">,</span> <span class="n">temp_output</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+        <span class="n">temp_input</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">blastp_out</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">temp_output</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+                                       <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;qseqid&quot;</span><span class="p">,</span> <span class="s2">&quot;sseqid&quot;</span><span class="p">,</span> <span class="s2">&quot;pident&quot;</span><span class="p">,</span> <span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="s2">&quot;mismatch&quot;</span><span class="p">,</span> <span class="s2">&quot;gapopen&quot;</span><span class="p">,</span>
+                                              <span class="s2">&quot;qstart&quot;</span><span class="p">,</span> <span class="s2">&quot;qend&quot;</span><span class="p">,</span> <span class="s2">&quot;sstart&quot;</span><span class="p">,</span> <span class="s2">&quot;send&quot;</span><span class="p">,</span> <span class="s2">&quot;evalue&quot;</span><span class="p">,</span> <span class="s2">&quot;bitscore&quot;</span><span class="p">])</span>
+        <span class="n">temp_output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">blastp_out</span> <span class="o">=</span> <span class="n">blastp_out</span><span class="p">[</span>
+            <span class="n">blastp_out</span><span class="p">[</span><span class="s2">&quot;pident&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;blastp_pident_to_query_length_cutoff&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">]):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">])</span>
+        <span class="n">output_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">],</span> <span class="s2">&quot;found_homologues.tsv&quot;</span><span class="p">)</span>
+        <span class="n">blastp_out</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s1">&#39;NA&#39;</span><span class="p">)</span>
+
+        <span class="n">hits_an_list</span> <span class="o">=</span> <span class="n">blastp_out</span><span class="p">[</span><span class="s2">&quot;sseqid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">hits_an_list</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="s2">&quot;Unable to perform searching for homologues with blastp.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
 
 
   </div>
@@ -6068,54 +6298,7 @@ sequences and information about them).</p>
 
         <details class="quote">
           <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 615</span>
-<span class="normal"> 616</span>
-<span class="normal"> 617</span>
-<span class="normal"> 618</span>
-<span class="normal"> 619</span>
-<span class="normal"> 620</span>
-<span class="normal"> 621</span>
-<span class="normal"> 622</span>
-<span class="normal"> 623</span>
-<span class="normal"> 624</span>
-<span class="normal"> 625</span>
-<span class="normal"> 626</span>
-<span class="normal"> 627</span>
-<span class="normal"> 628</span>
-<span class="normal"> 629</span>
-<span class="normal"> 630</span>
-<span class="normal"> 631</span>
-<span class="normal"> 632</span>
-<span class="normal"> 633</span>
-<span class="normal"> 634</span>
-<span class="normal"> 635</span>
-<span class="normal"> 636</span>
-<span class="normal"> 637</span>
-<span class="normal"> 638</span>
-<span class="normal"> 639</span>
-<span class="normal"> 640</span>
-<span class="normal"> 641</span>
-<span class="normal"> 642</span>
-<span class="normal"> 643</span>
-<span class="normal"> 644</span>
-<span class="normal"> 645</span>
-<span class="normal"> 646</span>
-<span class="normal"> 647</span>
-<span class="normal"> 648</span>
-<span class="normal"> 649</span>
-<span class="normal"> 650</span>
-<span class="normal"> 651</span>
-<span class="normal"> 652</span>
-<span class="normal"> 653</span>
-<span class="normal"> 654</span>
-<span class="normal"> 655</span>
-<span class="normal"> 656</span>
-<span class="normal"> 657</span>
-<span class="normal"> 658</span>
-<span class="normal"> 659</span>
-<span class="normal"> 660</span>
-<span class="normal"> 661</span>
-<span class="normal"> 662</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 662</span>
 <span class="normal"> 663</span>
 <span class="normal"> 664</span>
 <span class="normal"> 665</span>
@@ -6803,7 +6986,54 @@ sequences and information about them).</p>
 <span class="normal">1347</span>
 <span class="normal">1348</span>
 <span class="normal">1349</span>
-<span class="normal">1350</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UpstreamSequences</span><span class="p">:</span>
+<span class="normal">1350</span>
+<span class="normal">1351</span>
+<span class="normal">1352</span>
+<span class="normal">1353</span>
+<span class="normal">1354</span>
+<span class="normal">1355</span>
+<span class="normal">1356</span>
+<span class="normal">1357</span>
+<span class="normal">1358</span>
+<span class="normal">1359</span>
+<span class="normal">1360</span>
+<span class="normal">1361</span>
+<span class="normal">1362</span>
+<span class="normal">1363</span>
+<span class="normal">1364</span>
+<span class="normal">1365</span>
+<span class="normal">1366</span>
+<span class="normal">1367</span>
+<span class="normal">1368</span>
+<span class="normal">1369</span>
+<span class="normal">1370</span>
+<span class="normal">1371</span>
+<span class="normal">1372</span>
+<span class="normal">1373</span>
+<span class="normal">1374</span>
+<span class="normal">1375</span>
+<span class="normal">1376</span>
+<span class="normal">1377</span>
+<span class="normal">1378</span>
+<span class="normal">1379</span>
+<span class="normal">1380</span>
+<span class="normal">1381</span>
+<span class="normal">1382</span>
+<span class="normal">1383</span>
+<span class="normal">1384</span>
+<span class="normal">1385</span>
+<span class="normal">1386</span>
+<span class="normal">1387</span>
+<span class="normal">1388</span>
+<span class="normal">1389</span>
+<span class="normal">1390</span>
+<span class="normal">1391</span>
+<span class="normal">1392</span>
+<span class="normal">1393</span>
+<span class="normal">1394</span>
+<span class="normal">1395</span>
+<span class="normal">1396</span>
+<span class="normal">1397</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UpstreamSequences</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;An UpstreamSequences object holds list of upstream sequences records and information about them.</span>
 
 <span class="sd">    Attributes:</span>
@@ -7584,19 +7814,19 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">627</span>
-<span class="normal">628</span>
-<span class="normal">629</span>
-<span class="normal">630</span>
-<span class="normal">631</span>
-<span class="normal">632</span>
-<span class="normal">633</span>
-<span class="normal">634</span>
-<span class="normal">635</span>
-<span class="normal">636</span>
-<span class="normal">637</span>
-<span class="normal">638</span>
-<span class="normal">639</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">674</span>
+<span class="normal">675</span>
+<span class="normal">676</span>
+<span class="normal">677</span>
+<span class="normal">678</span>
+<span class="normal">679</span>
+<span class="normal">680</span>
+<span class="normal">681</span>
+<span class="normal">682</span>
+<span class="normal">683</span>
+<span class="normal">684</span>
+<span class="normal">685</span>
+<span class="normal">686</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">Parameters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create an UpstreamSequences object.</span>
 
 <span class="sd">    Arguments:</span>
@@ -7646,54 +7876,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">660</span>
-<span class="normal">661</span>
-<span class="normal">662</span>
-<span class="normal">663</span>
-<span class="normal">664</span>
-<span class="normal">665</span>
-<span class="normal">666</span>
-<span class="normal">667</span>
-<span class="normal">668</span>
-<span class="normal">669</span>
-<span class="normal">670</span>
-<span class="normal">671</span>
-<span class="normal">672</span>
-<span class="normal">673</span>
-<span class="normal">674</span>
-<span class="normal">675</span>
-<span class="normal">676</span>
-<span class="normal">677</span>
-<span class="normal">678</span>
-<span class="normal">679</span>
-<span class="normal">680</span>
-<span class="normal">681</span>
-<span class="normal">682</span>
-<span class="normal">683</span>
-<span class="normal">684</span>
-<span class="normal">685</span>
-<span class="normal">686</span>
-<span class="normal">687</span>
-<span class="normal">688</span>
-<span class="normal">689</span>
-<span class="normal">690</span>
-<span class="normal">691</span>
-<span class="normal">692</span>
-<span class="normal">693</span>
-<span class="normal">694</span>
-<span class="normal">695</span>
-<span class="normal">696</span>
-<span class="normal">697</span>
-<span class="normal">698</span>
-<span class="normal">699</span>
-<span class="normal">700</span>
-<span class="normal">701</span>
-<span class="normal">702</span>
-<span class="normal">703</span>
-<span class="normal">704</span>
-<span class="normal">705</span>
-<span class="normal">706</span>
-<span class="normal">707</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">707</span>
 <span class="normal">708</span>
 <span class="normal">709</span>
 <span class="normal">710</span>
@@ -7776,7 +7959,54 @@ sequences and information about them).</p>
 <span class="normal">787</span>
 <span class="normal">788</span>
 <span class="normal">789</span>
-<span class="normal">790</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">annotate_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">790</span>
+<span class="normal">791</span>
+<span class="normal">792</span>
+<span class="normal">793</span>
+<span class="normal">794</span>
+<span class="normal">795</span>
+<span class="normal">796</span>
+<span class="normal">797</span>
+<span class="normal">798</span>
+<span class="normal">799</span>
+<span class="normal">800</span>
+<span class="normal">801</span>
+<span class="normal">802</span>
+<span class="normal">803</span>
+<span class="normal">804</span>
+<span class="normal">805</span>
+<span class="normal">806</span>
+<span class="normal">807</span>
+<span class="normal">808</span>
+<span class="normal">809</span>
+<span class="normal">810</span>
+<span class="normal">811</span>
+<span class="normal">812</span>
+<span class="normal">813</span>
+<span class="normal">814</span>
+<span class="normal">815</span>
+<span class="normal">816</span>
+<span class="normal">817</span>
+<span class="normal">818</span>
+<span class="normal">819</span>
+<span class="normal">820</span>
+<span class="normal">821</span>
+<span class="normal">822</span>
+<span class="normal">823</span>
+<span class="normal">824</span>
+<span class="normal">825</span>
+<span class="normal">826</span>
+<span class="normal">827</span>
+<span class="normal">828</span>
+<span class="normal">829</span>
+<span class="normal">830</span>
+<span class="normal">831</span>
+<span class="normal">832</span>
+<span class="normal">833</span>
+<span class="normal">834</span>
+<span class="normal">835</span>
+<span class="normal">836</span>
+<span class="normal">837</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">annotate_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Annotate ORFs in upstream sequences.</span>
 
 <span class="sd">    Note:</span>
@@ -7944,54 +8174,7 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 873</span>
-<span class="normal"> 874</span>
-<span class="normal"> 875</span>
-<span class="normal"> 876</span>
-<span class="normal"> 877</span>
-<span class="normal"> 878</span>
-<span class="normal"> 879</span>
-<span class="normal"> 880</span>
-<span class="normal"> 881</span>
-<span class="normal"> 882</span>
-<span class="normal"> 883</span>
-<span class="normal"> 884</span>
-<span class="normal"> 885</span>
-<span class="normal"> 886</span>
-<span class="normal"> 887</span>
-<span class="normal"> 888</span>
-<span class="normal"> 889</span>
-<span class="normal"> 890</span>
-<span class="normal"> 891</span>
-<span class="normal"> 892</span>
-<span class="normal"> 893</span>
-<span class="normal"> 894</span>
-<span class="normal"> 895</span>
-<span class="normal"> 896</span>
-<span class="normal"> 897</span>
-<span class="normal"> 898</span>
-<span class="normal"> 899</span>
-<span class="normal"> 900</span>
-<span class="normal"> 901</span>
-<span class="normal"> 902</span>
-<span class="normal"> 903</span>
-<span class="normal"> 904</span>
-<span class="normal"> 905</span>
-<span class="normal"> 906</span>
-<span class="normal"> 907</span>
-<span class="normal"> 908</span>
-<span class="normal"> 909</span>
-<span class="normal"> 910</span>
-<span class="normal"> 911</span>
-<span class="normal"> 912</span>
-<span class="normal"> 913</span>
-<span class="normal"> 914</span>
-<span class="normal"> 915</span>
-<span class="normal"> 916</span>
-<span class="normal"> 917</span>
-<span class="normal"> 918</span>
-<span class="normal"> 919</span>
-<span class="normal"> 920</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 920</span>
 <span class="normal"> 921</span>
 <span class="normal"> 922</span>
 <span class="normal"> 923</span>
@@ -8125,7 +8308,54 @@ sequences and information about them).</p>
 <span class="normal">1051</span>
 <span class="normal">1052</span>
 <span class="normal">1053</span>
-<span class="normal">1054</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">conserved_orf_searching</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1054</span>
+<span class="normal">1055</span>
+<span class="normal">1056</span>
+<span class="normal">1057</span>
+<span class="normal">1058</span>
+<span class="normal">1059</span>
+<span class="normal">1060</span>
+<span class="normal">1061</span>
+<span class="normal">1062</span>
+<span class="normal">1063</span>
+<span class="normal">1064</span>
+<span class="normal">1065</span>
+<span class="normal">1066</span>
+<span class="normal">1067</span>
+<span class="normal">1068</span>
+<span class="normal">1069</span>
+<span class="normal">1070</span>
+<span class="normal">1071</span>
+<span class="normal">1072</span>
+<span class="normal">1073</span>
+<span class="normal">1074</span>
+<span class="normal">1075</span>
+<span class="normal">1076</span>
+<span class="normal">1077</span>
+<span class="normal">1078</span>
+<span class="normal">1079</span>
+<span class="normal">1080</span>
+<span class="normal">1081</span>
+<span class="normal">1082</span>
+<span class="normal">1083</span>
+<span class="normal">1084</span>
+<span class="normal">1085</span>
+<span class="normal">1086</span>
+<span class="normal">1087</span>
+<span class="normal">1088</span>
+<span class="normal">1089</span>
+<span class="normal">1090</span>
+<span class="normal">1091</span>
+<span class="normal">1092</span>
+<span class="normal">1093</span>
+<span class="normal">1094</span>
+<span class="normal">1095</span>
+<span class="normal">1096</span>
+<span class="normal">1097</span>
+<span class="normal">1098</span>
+<span class="normal">1099</span>
+<span class="normal">1100</span>
+<span class="normal">1101</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">conserved_orf_searching</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Search for sets of conserved ORFs in upstream sequences.</span>
 
 <span class="sd">    Note:</span>
@@ -8337,39 +8567,39 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">792</span>
-<span class="normal">793</span>
-<span class="normal">794</span>
-<span class="normal">795</span>
-<span class="normal">796</span>
-<span class="normal">797</span>
-<span class="normal">798</span>
-<span class="normal">799</span>
-<span class="normal">800</span>
-<span class="normal">801</span>
-<span class="normal">802</span>
-<span class="normal">803</span>
-<span class="normal">804</span>
-<span class="normal">805</span>
-<span class="normal">806</span>
-<span class="normal">807</span>
-<span class="normal">808</span>
-<span class="normal">809</span>
-<span class="normal">810</span>
-<span class="normal">811</span>
-<span class="normal">812</span>
-<span class="normal">813</span>
-<span class="normal">814</span>
-<span class="normal">815</span>
-<span class="normal">816</span>
-<span class="normal">817</span>
-<span class="normal">818</span>
-<span class="normal">819</span>
-<span class="normal">820</span>
-<span class="normal">821</span>
-<span class="normal">822</span>
-<span class="normal">823</span>
-<span class="normal">824</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter_orfs_by_sd_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">839</span>
+<span class="normal">840</span>
+<span class="normal">841</span>
+<span class="normal">842</span>
+<span class="normal">843</span>
+<span class="normal">844</span>
+<span class="normal">845</span>
+<span class="normal">846</span>
+<span class="normal">847</span>
+<span class="normal">848</span>
+<span class="normal">849</span>
+<span class="normal">850</span>
+<span class="normal">851</span>
+<span class="normal">852</span>
+<span class="normal">853</span>
+<span class="normal">854</span>
+<span class="normal">855</span>
+<span class="normal">856</span>
+<span class="normal">857</span>
+<span class="normal">858</span>
+<span class="normal">859</span>
+<span class="normal">860</span>
+<span class="normal">861</span>
+<span class="normal">862</span>
+<span class="normal">863</span>
+<span class="normal">864</span>
+<span class="normal">865</span>
+<span class="normal">866</span>
+<span class="normal">867</span>
+<span class="normal">868</span>
+<span class="normal">869</span>
+<span class="normal">870</span>
+<span class="normal">871</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter_orfs_by_sd_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Filter annotated ORFs by presence the Shine-Dalgarno sequence.</span>
 
 <span class="sd">    Returns:</span>
@@ -8441,41 +8671,41 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1056</span>
-<span class="normal">1057</span>
-<span class="normal">1058</span>
-<span class="normal">1059</span>
-<span class="normal">1060</span>
-<span class="normal">1061</span>
-<span class="normal">1062</span>
-<span class="normal">1063</span>
-<span class="normal">1064</span>
-<span class="normal">1065</span>
-<span class="normal">1066</span>
-<span class="normal">1067</span>
-<span class="normal">1068</span>
-<span class="normal">1069</span>
-<span class="normal">1070</span>
-<span class="normal">1071</span>
-<span class="normal">1072</span>
-<span class="normal">1073</span>
-<span class="normal">1074</span>
-<span class="normal">1075</span>
-<span class="normal">1076</span>
-<span class="normal">1077</span>
-<span class="normal">1078</span>
-<span class="normal">1079</span>
-<span class="normal">1080</span>
-<span class="normal">1081</span>
-<span class="normal">1082</span>
-<span class="normal">1083</span>
-<span class="normal">1084</span>
-<span class="normal">1085</span>
-<span class="normal">1086</span>
-<span class="normal">1087</span>
-<span class="normal">1088</span>
-<span class="normal">1089</span>
-<span class="normal">1090</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter_out_similar_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1103</span>
+<span class="normal">1104</span>
+<span class="normal">1105</span>
+<span class="normal">1106</span>
+<span class="normal">1107</span>
+<span class="normal">1108</span>
+<span class="normal">1109</span>
+<span class="normal">1110</span>
+<span class="normal">1111</span>
+<span class="normal">1112</span>
+<span class="normal">1113</span>
+<span class="normal">1114</span>
+<span class="normal">1115</span>
+<span class="normal">1116</span>
+<span class="normal">1117</span>
+<span class="normal">1118</span>
+<span class="normal">1119</span>
+<span class="normal">1120</span>
+<span class="normal">1121</span>
+<span class="normal">1122</span>
+<span class="normal">1123</span>
+<span class="normal">1124</span>
+<span class="normal">1125</span>
+<span class="normal">1126</span>
+<span class="normal">1127</span>
+<span class="normal">1128</span>
+<span class="normal">1129</span>
+<span class="normal">1130</span>
+<span class="normal">1131</span>
+<span class="normal">1132</span>
+<span class="normal">1133</span>
+<span class="normal">1134</span>
+<span class="normal">1135</span>
+<span class="normal">1136</span>
+<span class="normal">1137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter_out_similar_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Filter out duplicates in sets of annotated conserved ORFs.</span>
 
 <span class="sd">    Note:</span>
@@ -8540,34 +8770,34 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1323</span>
-<span class="normal">1324</span>
-<span class="normal">1325</span>
-<span class="normal">1326</span>
-<span class="normal">1327</span>
-<span class="normal">1328</span>
-<span class="normal">1329</span>
-<span class="normal">1330</span>
-<span class="normal">1331</span>
-<span class="normal">1332</span>
-<span class="normal">1333</span>
-<span class="normal">1334</span>
-<span class="normal">1335</span>
-<span class="normal">1336</span>
-<span class="normal">1337</span>
-<span class="normal">1338</span>
-<span class="normal">1339</span>
-<span class="normal">1340</span>
-<span class="normal">1341</span>
-<span class="normal">1342</span>
-<span class="normal">1343</span>
-<span class="normal">1344</span>
-<span class="normal">1345</span>
-<span class="normal">1346</span>
-<span class="normal">1347</span>
-<span class="normal">1348</span>
-<span class="normal">1349</span>
-<span class="normal">1350</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1370</span>
+<span class="normal">1371</span>
+<span class="normal">1372</span>
+<span class="normal">1373</span>
+<span class="normal">1374</span>
+<span class="normal">1375</span>
+<span class="normal">1376</span>
+<span class="normal">1377</span>
+<span class="normal">1378</span>
+<span class="normal">1379</span>
+<span class="normal">1380</span>
+<span class="normal">1381</span>
+<span class="normal">1382</span>
+<span class="normal">1383</span>
+<span class="normal">1384</span>
+<span class="normal">1385</span>
+<span class="normal">1386</span>
+<span class="normal">1387</span>
+<span class="normal">1388</span>
+<span class="normal">1389</span>
+<span class="normal">1390</span>
+<span class="normal">1391</span>
+<span class="normal">1392</span>
+<span class="normal">1393</span>
+<span class="normal">1394</span>
+<span class="normal">1395</span>
+<span class="normal">1396</span>
+<span class="normal">1397</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot loci&#39; annotations figures with conserved ORFs highlighting.</span>
 
 <span class="sd">    Returns:</span>
@@ -8638,41 +8868,41 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1253</span>
-<span class="normal">1254</span>
-<span class="normal">1255</span>
-<span class="normal">1256</span>
-<span class="normal">1257</span>
-<span class="normal">1258</span>
-<span class="normal">1259</span>
-<span class="normal">1260</span>
-<span class="normal">1261</span>
-<span class="normal">1262</span>
-<span class="normal">1263</span>
-<span class="normal">1264</span>
-<span class="normal">1265</span>
-<span class="normal">1266</span>
-<span class="normal">1267</span>
-<span class="normal">1268</span>
-<span class="normal">1269</span>
-<span class="normal">1270</span>
-<span class="normal">1271</span>
-<span class="normal">1272</span>
-<span class="normal">1273</span>
-<span class="normal">1274</span>
-<span class="normal">1275</span>
-<span class="normal">1276</span>
-<span class="normal">1277</span>
-<span class="normal">1278</span>
-<span class="normal">1279</span>
-<span class="normal">1280</span>
-<span class="normal">1281</span>
-<span class="normal">1282</span>
-<span class="normal">1283</span>
-<span class="normal">1284</span>
-<span class="normal">1285</span>
-<span class="normal">1286</span>
-<span class="normal">1287</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ggmsa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1300</span>
+<span class="normal">1301</span>
+<span class="normal">1302</span>
+<span class="normal">1303</span>
+<span class="normal">1304</span>
+<span class="normal">1305</span>
+<span class="normal">1306</span>
+<span class="normal">1307</span>
+<span class="normal">1308</span>
+<span class="normal">1309</span>
+<span class="normal">1310</span>
+<span class="normal">1311</span>
+<span class="normal">1312</span>
+<span class="normal">1313</span>
+<span class="normal">1314</span>
+<span class="normal">1315</span>
+<span class="normal">1316</span>
+<span class="normal">1317</span>
+<span class="normal">1318</span>
+<span class="normal">1319</span>
+<span class="normal">1320</span>
+<span class="normal">1321</span>
+<span class="normal">1322</span>
+<span class="normal">1323</span>
+<span class="normal">1324</span>
+<span class="normal">1325</span>
+<span class="normal">1326</span>
+<span class="normal">1327</span>
+<span class="normal">1328</span>
+<span class="normal">1329</span>
+<span class="normal">1330</span>
+<span class="normal">1331</span>
+<span class="normal">1332</span>
+<span class="normal">1333</span>
+<span class="normal">1334</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ggmsa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot MSA plots of conserved ORFs saved as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -8745,39 +8975,39 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1289</span>
-<span class="normal">1290</span>
-<span class="normal">1291</span>
-<span class="normal">1292</span>
-<span class="normal">1293</span>
-<span class="normal">1294</span>
-<span class="normal">1295</span>
-<span class="normal">1296</span>
-<span class="normal">1297</span>
-<span class="normal">1298</span>
-<span class="normal">1299</span>
-<span class="normal">1300</span>
-<span class="normal">1301</span>
-<span class="normal">1302</span>
-<span class="normal">1303</span>
-<span class="normal">1304</span>
-<span class="normal">1305</span>
-<span class="normal">1306</span>
-<span class="normal">1307</span>
-<span class="normal">1308</span>
-<span class="normal">1309</span>
-<span class="normal">1310</span>
-<span class="normal">1311</span>
-<span class="normal">1312</span>
-<span class="normal">1313</span>
-<span class="normal">1314</span>
-<span class="normal">1315</span>
-<span class="normal">1316</span>
-<span class="normal">1317</span>
-<span class="normal">1318</span>
-<span class="normal">1319</span>
-<span class="normal">1320</span>
-<span class="normal">1321</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_logo_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1336</span>
+<span class="normal">1337</span>
+<span class="normal">1338</span>
+<span class="normal">1339</span>
+<span class="normal">1340</span>
+<span class="normal">1341</span>
+<span class="normal">1342</span>
+<span class="normal">1343</span>
+<span class="normal">1344</span>
+<span class="normal">1345</span>
+<span class="normal">1346</span>
+<span class="normal">1347</span>
+<span class="normal">1348</span>
+<span class="normal">1349</span>
+<span class="normal">1350</span>
+<span class="normal">1351</span>
+<span class="normal">1352</span>
+<span class="normal">1353</span>
+<span class="normal">1354</span>
+<span class="normal">1355</span>
+<span class="normal">1356</span>
+<span class="normal">1357</span>
+<span class="normal">1358</span>
+<span class="normal">1359</span>
+<span class="normal">1360</span>
+<span class="normal">1361</span>
+<span class="normal">1362</span>
+<span class="normal">1363</span>
+<span class="normal">1364</span>
+<span class="normal">1365</span>
+<span class="normal">1366</span>
+<span class="normal">1367</span>
+<span class="normal">1368</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_logo_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot sequence Logo figures of conserved ORFs saved as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -8840,32 +9070,32 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1226</span>
-<span class="normal">1227</span>
-<span class="normal">1228</span>
-<span class="normal">1229</span>
-<span class="normal">1230</span>
-<span class="normal">1231</span>
-<span class="normal">1232</span>
-<span class="normal">1233</span>
-<span class="normal">1234</span>
-<span class="normal">1235</span>
-<span class="normal">1236</span>
-<span class="normal">1237</span>
-<span class="normal">1238</span>
-<span class="normal">1239</span>
-<span class="normal">1240</span>
-<span class="normal">1241</span>
-<span class="normal">1242</span>
-<span class="normal">1243</span>
-<span class="normal">1244</span>
-<span class="normal">1245</span>
-<span class="normal">1246</span>
-<span class="normal">1247</span>
-<span class="normal">1248</span>
-<span class="normal">1249</span>
-<span class="normal">1250</span>
-<span class="normal">1251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_msa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1273</span>
+<span class="normal">1274</span>
+<span class="normal">1275</span>
+<span class="normal">1276</span>
+<span class="normal">1277</span>
+<span class="normal">1278</span>
+<span class="normal">1279</span>
+<span class="normal">1280</span>
+<span class="normal">1281</span>
+<span class="normal">1282</span>
+<span class="normal">1283</span>
+<span class="normal">1284</span>
+<span class="normal">1285</span>
+<span class="normal">1286</span>
+<span class="normal">1287</span>
+<span class="normal">1288</span>
+<span class="normal">1289</span>
+<span class="normal">1290</span>
+<span class="normal">1291</span>
+<span class="normal">1292</span>
+<span class="normal">1293</span>
+<span class="normal">1294</span>
+<span class="normal">1295</span>
+<span class="normal">1296</span>
+<span class="normal">1297</span>
+<span class="normal">1298</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_msa_figs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Plot MSA plots of  conserved ORFs</span>
 
 <span class="sd">    Returns:</span>
@@ -8921,21 +9151,21 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1092</span>
-<span class="normal">1093</span>
-<span class="normal">1094</span>
-<span class="normal">1095</span>
-<span class="normal">1096</span>
-<span class="normal">1097</span>
-<span class="normal">1098</span>
-<span class="normal">1099</span>
-<span class="normal">1100</span>
-<span class="normal">1101</span>
-<span class="normal">1102</span>
-<span class="normal">1103</span>
-<span class="normal">1104</span>
-<span class="normal">1105</span>
-<span class="normal">1106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1139</span>
+<span class="normal">1140</span>
+<span class="normal">1141</span>
+<span class="normal">1142</span>
+<span class="normal">1143</span>
+<span class="normal">1144</span>
+<span class="normal">1145</span>
+<span class="normal">1146</span>
+<span class="normal">1147</span>
+<span class="normal">1148</span>
+<span class="normal">1149</span>
+<span class="normal">1150</span>
+<span class="normal">1151</span>
+<span class="normal">1152</span>
+<span class="normal">1153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Run msa tool (muscle) for each path object (set of conserved ORFs).</span>
 
 <span class="sd">    Returns:</span>
@@ -8987,52 +9217,52 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">826</span>
-<span class="normal">827</span>
-<span class="normal">828</span>
-<span class="normal">829</span>
-<span class="normal">830</span>
-<span class="normal">831</span>
-<span class="normal">832</span>
-<span class="normal">833</span>
-<span class="normal">834</span>
-<span class="normal">835</span>
-<span class="normal">836</span>
-<span class="normal">837</span>
-<span class="normal">838</span>
-<span class="normal">839</span>
-<span class="normal">840</span>
-<span class="normal">841</span>
-<span class="normal">842</span>
-<span class="normal">843</span>
-<span class="normal">844</span>
-<span class="normal">845</span>
-<span class="normal">846</span>
-<span class="normal">847</span>
-<span class="normal">848</span>
-<span class="normal">849</span>
-<span class="normal">850</span>
-<span class="normal">851</span>
-<span class="normal">852</span>
-<span class="normal">853</span>
-<span class="normal">854</span>
-<span class="normal">855</span>
-<span class="normal">856</span>
-<span class="normal">857</span>
-<span class="normal">858</span>
-<span class="normal">859</span>
-<span class="normal">860</span>
-<span class="normal">861</span>
-<span class="normal">862</span>
-<span class="normal">863</span>
-<span class="normal">864</span>
-<span class="normal">865</span>
-<span class="normal">866</span>
-<span class="normal">867</span>
-<span class="normal">868</span>
-<span class="normal">869</span>
-<span class="normal">870</span>
-<span class="normal">871</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_annotated_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">873</span>
+<span class="normal">874</span>
+<span class="normal">875</span>
+<span class="normal">876</span>
+<span class="normal">877</span>
+<span class="normal">878</span>
+<span class="normal">879</span>
+<span class="normal">880</span>
+<span class="normal">881</span>
+<span class="normal">882</span>
+<span class="normal">883</span>
+<span class="normal">884</span>
+<span class="normal">885</span>
+<span class="normal">886</span>
+<span class="normal">887</span>
+<span class="normal">888</span>
+<span class="normal">889</span>
+<span class="normal">890</span>
+<span class="normal">891</span>
+<span class="normal">892</span>
+<span class="normal">893</span>
+<span class="normal">894</span>
+<span class="normal">895</span>
+<span class="normal">896</span>
+<span class="normal">897</span>
+<span class="normal">898</span>
+<span class="normal">899</span>
+<span class="normal">900</span>
+<span class="normal">901</span>
+<span class="normal">902</span>
+<span class="normal">903</span>
+<span class="normal">904</span>
+<span class="normal">905</span>
+<span class="normal">906</span>
+<span class="normal">907</span>
+<span class="normal">908</span>
+<span class="normal">909</span>
+<span class="normal">910</span>
+<span class="normal">911</span>
+<span class="normal">912</span>
+<span class="normal">913</span>
+<span class="normal">914</span>
+<span class="normal">915</span>
+<span class="normal">916</span>
+<span class="normal">917</span>
+<span class="normal">918</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_annotated_orfs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save information about annotated ORFs as a set of tsv files.</span>
 
 <span class="sd">    Note:</span>
@@ -9117,43 +9347,43 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1108</span>
-<span class="normal">1109</span>
-<span class="normal">1110</span>
-<span class="normal">1111</span>
-<span class="normal">1112</span>
-<span class="normal">1113</span>
-<span class="normal">1114</span>
-<span class="normal">1115</span>
-<span class="normal">1116</span>
-<span class="normal">1117</span>
-<span class="normal">1118</span>
-<span class="normal">1119</span>
-<span class="normal">1120</span>
-<span class="normal">1121</span>
-<span class="normal">1122</span>
-<span class="normal">1123</span>
-<span class="normal">1124</span>
-<span class="normal">1125</span>
-<span class="normal">1126</span>
-<span class="normal">1127</span>
-<span class="normal">1128</span>
-<span class="normal">1129</span>
-<span class="normal">1130</span>
-<span class="normal">1131</span>
-<span class="normal">1132</span>
-<span class="normal">1133</span>
-<span class="normal">1134</span>
-<span class="normal">1135</span>
-<span class="normal">1136</span>
-<span class="normal">1137</span>
-<span class="normal">1138</span>
-<span class="normal">1139</span>
-<span class="normal">1140</span>
-<span class="normal">1141</span>
-<span class="normal">1142</span>
-<span class="normal">1143</span>
-<span class="normal">1144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1155</span>
+<span class="normal">1156</span>
+<span class="normal">1157</span>
+<span class="normal">1158</span>
+<span class="normal">1159</span>
+<span class="normal">1160</span>
+<span class="normal">1161</span>
+<span class="normal">1162</span>
+<span class="normal">1163</span>
+<span class="normal">1164</span>
+<span class="normal">1165</span>
+<span class="normal">1166</span>
+<span class="normal">1167</span>
+<span class="normal">1168</span>
+<span class="normal">1169</span>
+<span class="normal">1170</span>
+<span class="normal">1171</span>
+<span class="normal">1172</span>
+<span class="normal">1173</span>
+<span class="normal">1174</span>
+<span class="normal">1175</span>
+<span class="normal">1176</span>
+<span class="normal">1177</span>
+<span class="normal">1178</span>
+<span class="normal">1179</span>
+<span class="normal">1180</span>
+<span class="normal">1181</span>
+<span class="normal">1182</span>
+<span class="normal">1183</span>
+<span class="normal">1184</span>
+<span class="normal">1185</span>
+<span class="normal">1186</span>
+<span class="normal">1187</span>
+<span class="normal">1188</span>
+<span class="normal">1189</span>
+<span class="normal">1190</span>
+<span class="normal">1191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save MSA of conserved ORFs as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -9229,48 +9459,48 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1146</span>
-<span class="normal">1147</span>
-<span class="normal">1148</span>
-<span class="normal">1149</span>
-<span class="normal">1150</span>
-<span class="normal">1151</span>
-<span class="normal">1152</span>
-<span class="normal">1153</span>
-<span class="normal">1154</span>
-<span class="normal">1155</span>
-<span class="normal">1156</span>
-<span class="normal">1157</span>
-<span class="normal">1158</span>
-<span class="normal">1159</span>
-<span class="normal">1160</span>
-<span class="normal">1161</span>
-<span class="normal">1162</span>
-<span class="normal">1163</span>
-<span class="normal">1164</span>
-<span class="normal">1165</span>
-<span class="normal">1166</span>
-<span class="normal">1167</span>
-<span class="normal">1168</span>
-<span class="normal">1169</span>
-<span class="normal">1170</span>
-<span class="normal">1171</span>
-<span class="normal">1172</span>
-<span class="normal">1173</span>
-<span class="normal">1174</span>
-<span class="normal">1175</span>
-<span class="normal">1176</span>
-<span class="normal">1177</span>
-<span class="normal">1178</span>
-<span class="normal">1179</span>
-<span class="normal">1180</span>
-<span class="normal">1181</span>
-<span class="normal">1182</span>
-<span class="normal">1183</span>
-<span class="normal">1184</span>
-<span class="normal">1185</span>
-<span class="normal">1186</span>
-<span class="normal">1187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_orfs_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1193</span>
+<span class="normal">1194</span>
+<span class="normal">1195</span>
+<span class="normal">1196</span>
+<span class="normal">1197</span>
+<span class="normal">1198</span>
+<span class="normal">1199</span>
+<span class="normal">1200</span>
+<span class="normal">1201</span>
+<span class="normal">1202</span>
+<span class="normal">1203</span>
+<span class="normal">1204</span>
+<span class="normal">1205</span>
+<span class="normal">1206</span>
+<span class="normal">1207</span>
+<span class="normal">1208</span>
+<span class="normal">1209</span>
+<span class="normal">1210</span>
+<span class="normal">1211</span>
+<span class="normal">1212</span>
+<span class="normal">1213</span>
+<span class="normal">1214</span>
+<span class="normal">1215</span>
+<span class="normal">1216</span>
+<span class="normal">1217</span>
+<span class="normal">1218</span>
+<span class="normal">1219</span>
+<span class="normal">1220</span>
+<span class="normal">1221</span>
+<span class="normal">1222</span>
+<span class="normal">1223</span>
+<span class="normal">1224</span>
+<span class="normal">1225</span>
+<span class="normal">1226</span>
+<span class="normal">1227</span>
+<span class="normal">1228</span>
+<span class="normal">1229</span>
+<span class="normal">1230</span>
+<span class="normal">1231</span>
+<span class="normal">1232</span>
+<span class="normal">1233</span>
+<span class="normal">1234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_orfs_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save sequences of conserved ORFs as fasta files.</span>
 
 <span class="sd">    Note:</span>
@@ -9349,42 +9579,42 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1189</span>
-<span class="normal">1190</span>
-<span class="normal">1191</span>
-<span class="normal">1192</span>
-<span class="normal">1193</span>
-<span class="normal">1194</span>
-<span class="normal">1195</span>
-<span class="normal">1196</span>
-<span class="normal">1197</span>
-<span class="normal">1198</span>
-<span class="normal">1199</span>
-<span class="normal">1200</span>
-<span class="normal">1201</span>
-<span class="normal">1202</span>
-<span class="normal">1203</span>
-<span class="normal">1204</span>
-<span class="normal">1205</span>
-<span class="normal">1206</span>
-<span class="normal">1207</span>
-<span class="normal">1208</span>
-<span class="normal">1209</span>
-<span class="normal">1210</span>
-<span class="normal">1211</span>
-<span class="normal">1212</span>
-<span class="normal">1213</span>
-<span class="normal">1214</span>
-<span class="normal">1215</span>
-<span class="normal">1216</span>
-<span class="normal">1217</span>
-<span class="normal">1218</span>
-<span class="normal">1219</span>
-<span class="normal">1220</span>
-<span class="normal">1221</span>
-<span class="normal">1222</span>
-<span class="normal">1223</span>
-<span class="normal">1224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_results_summary_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1236</span>
+<span class="normal">1237</span>
+<span class="normal">1238</span>
+<span class="normal">1239</span>
+<span class="normal">1240</span>
+<span class="normal">1241</span>
+<span class="normal">1242</span>
+<span class="normal">1243</span>
+<span class="normal">1244</span>
+<span class="normal">1245</span>
+<span class="normal">1246</span>
+<span class="normal">1247</span>
+<span class="normal">1248</span>
+<span class="normal">1249</span>
+<span class="normal">1250</span>
+<span class="normal">1251</span>
+<span class="normal">1252</span>
+<span class="normal">1253</span>
+<span class="normal">1254</span>
+<span class="normal">1255</span>
+<span class="normal">1256</span>
+<span class="normal">1257</span>
+<span class="normal">1258</span>
+<span class="normal">1259</span>
+<span class="normal">1260</span>
+<span class="normal">1261</span>
+<span class="normal">1262</span>
+<span class="normal">1263</span>
+<span class="normal">1264</span>
+<span class="normal">1265</span>
+<span class="normal">1266</span>
+<span class="normal">1267</span>
+<span class="normal">1268</span>
+<span class="normal">1269</span>
+<span class="normal">1270</span>
+<span class="normal">1271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_results_summary_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save results summary table.</span>
 
 <span class="sd">    Note:</span>
@@ -9450,24 +9680,24 @@ sequences and information about them).</p>
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/data_processing.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">641</span>
-<span class="normal">642</span>
-<span class="normal">643</span>
-<span class="normal">644</span>
-<span class="normal">645</span>
-<span class="normal">646</span>
-<span class="normal">647</span>
-<span class="normal">648</span>
-<span class="normal">649</span>
-<span class="normal">650</span>
-<span class="normal">651</span>
-<span class="normal">652</span>
-<span class="normal">653</span>
-<span class="normal">654</span>
-<span class="normal">655</span>
-<span class="normal">656</span>
-<span class="normal">657</span>
-<span class="normal">658</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">688</span>
+<span class="normal">689</span>
+<span class="normal">690</span>
+<span class="normal">691</span>
+<span class="normal">692</span>
+<span class="normal">693</span>
+<span class="normal">694</span>
+<span class="normal">695</span>
+<span class="normal">696</span>
+<span class="normal">697</span>
+<span class="normal">698</span>
+<span class="normal">699</span>
+<span class="normal">700</span>
+<span class="normal">701</span>
+<span class="normal">702</span>
+<span class="normal">703</span>
+<span class="normal">704</span>
+<span class="normal">705</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_upstream_sequences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Save upstream sequences as a fasta file.</span>
 
 <span class="sd">    Returns:</span>

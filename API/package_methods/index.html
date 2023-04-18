@@ -655,6 +655,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#uorf4u.methods.set_blastp_path" class="md-nav__link">
+    set_blastp_path()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#uorf4u.methods.string_height_to_font_size" class="md-nav__link">
     string_height_to_font_size()
   </a>
@@ -816,20 +823,20 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/methods.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">copy_package_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">copy_package_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Copy the uorf4u package data folder to your current dir.</span>
 
 <span class="sd">    Returns:</span>
@@ -887,19 +894,19 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/methods.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_color</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_color</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get color code by a name.</span>
 
 <span class="sd">    Arguments:</span>
@@ -951,24 +958,24 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/methods.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">hex_to_rgb</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">hex_to_rgb</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Convert HEX color to RGB format.</span>
 
 <span class="sd">    Arguments:</span>
@@ -1018,34 +1025,34 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/methods.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
-<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_fasta_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_fasta_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Parse fasta file with sequences.</span>
 
 <span class="sd">    Arguments</span>
@@ -1073,6 +1080,79 @@
         <span class="k">return</span> <span class="n">processed_records</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to process the fasta file with sequences.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="uorf4u.methods.set_blastp_path" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">set_blastp_path</span><span class="p">(</span><span class="n">blastp_path</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Set a path to blastp.</p>
+
+  <p> <b>Returns:</b></p>
+  <ul>
+      <li class="field-body">
+            <code>None</code>
+        – <p>None</p>
+      </li>
+  </ul>
+
+      <details class="quote">
+        <summary>Source code in <code>uorf4u/methods.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">set_blastp_path</span><span class="p">(</span><span class="n">blastp_path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Set a path to blastp.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">blastp_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You have to specify the absolute path (starts with /) to blastp.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">blastp_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">uorf4u</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">uORF4uError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A file with path you provided does not exist.&quot;</span><span class="p">)</span>
+    <span class="n">internal_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;uorf4u_data&quot;</span><span class="p">)</span>
+    <span class="n">config_files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;uorf4u_eukaryotes.cfg&quot;</span><span class="p">,</span> <span class="s2">&quot;uorf4u_bacteria.cfg&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">config_file</span> <span class="ow">in</span> <span class="n">config_files</span><span class="p">:</span>
+        <span class="n">config_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">internal_dir</span><span class="p">,</span> <span class="n">config_file</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file_path</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">config_txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(blastp\s*=\s*).*&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\1</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">blastp_path</span><span class="p">),</span> <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">config_txt</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✨ blastp path was successfuly updated.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -1122,22 +1202,22 @@
 
       <details class="quote">
         <summary>Source code in <code>uorf4u/methods.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">string_height_to_font_size</span><span class="p">(</span><span class="n">height</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">font_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">string_height_to_font_size</span><span class="p">(</span><span class="n">height</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">font_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Transform string height to the font size.</span>
 
 <span class="sd">    Arguments:</span>
