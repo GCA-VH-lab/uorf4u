@@ -506,8 +506,7 @@ class Homologues:
                 if not os.path.exists(self.parameters.arguments["output_dir"]):
                     os.mkdir(self.parameters.arguments["output_dir"])
                 assemblies_table_path = os.path.join(self.parameters.arguments["output_dir"], "assemblies_list.tsv")
-                assemblies_selected_table_path = os.path.join(self.parameters.arguments["output_dir"],
-                                                              "selected_assemblies_list.tsv")
+
                 assemblies_table_file = open(assemblies_table_path, "w")
                 assemblies_table_file.write("\n".join(assemblies_table))
                 assemblies_table_file.close()
@@ -517,7 +516,8 @@ class Homologues:
                                                            "proteins_wo_assembly.txt")
                 proteins_wo_assemblies_file = open(proteins_wo_assemblies_path, "w")
                 proteins_wo_assemblies_file.write(proteins_wo_assemblies_txt)
-
+                assemblies_selected_table_path = os.path.join(self.parameters.arguments["output_dir"],
+                                                              "selected_assemblies_list.tsv")
                 if numbers_of_assemblies.count(0) > 0:
                     print(f"❗️Warning message:\n\tFor {numbers_of_assemblies.count(0)} proteins "
                           f"no assembly was found.\n"
@@ -567,6 +567,8 @@ class Homologues:
                         f"{assembly['locus_id']}:{assembly['start']}:{assembly['stop']}({assembly['strand']})"
                         f"\t{assembly['assembly']}"
                         f"\t{assembly['org']}\t{assembly['strain']}\t{assembly['taxid']}")
+            assemblies_selected_table_path = os.path.join(self.parameters.arguments["output_dir"],
+                                                          "selected_assemblies_list.tsv")
             assemblies_table_file = open(assemblies_selected_table_path, "w")
             assemblies_table_file.write("\n".join(assemblies_table))
             assemblies_table_file.close()

@@ -1,4 +1,6 @@
 # Version log
+* **Ver 0.9.4** - 19 April 2023
+	* A minor bug with `-al` parameter is fixed.
 * Ver 0.9.3 - 18 April 2023
 	* New cmd parameter `-pdb` for choosing an online blastp database.
 	* New cmd parameter `-lpdb` for using local blastp database.

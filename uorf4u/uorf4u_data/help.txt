@@ -1,4 +1,4 @@
-uorf4u (version 0.9.3):
+uorf4u (version 0.9.4):
 a bioinformatics tool for conserved upstream ORF annotation.
 Home page and documentation:
 art-egorov.github.io/uorf4u
@@ -18,7 +18,6 @@ COMMAND-LINE PARAMETERS
 --blastp_path
     Update the blastp path in the pre-made config files.
     Required for using local blastp databases with -lbdb parameter.
-
 -----------------------------
 [MANDATORY ARGUMENTS]
 -an <accession_number>	
