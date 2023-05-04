@@ -1,5 +1,7 @@
 # Version log
-* **Ver 0.9.4** - 19 April 2023
+* **Ver 0.9.5** - 4 May 2023
+	* Local blastp searching function now also returns the query accession number.
+* Ver 0.9.4 - 19 April 2023
 	* A minor bug with `-al` parameter is fixed.
 * Ver 0.9.3 - 18 April 2023
 	* New cmd parameter `-pdb` for choosing an online blastp database.

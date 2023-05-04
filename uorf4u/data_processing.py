@@ -214,6 +214,8 @@ class RefSeqProtein:
                 print(f"👀 Searching for homologues of {self.accession_number} with blastp against your local"
                       f" database...", file=sys.stdout)
 
+            hits_an_list = [self.record.id]
+
             temp_input = tempfile.NamedTemporaryFile()
             Bio.SeqIO.write(self.record, temp_input.name, "fasta")
             temp_output = tempfile.NamedTemporaryFile()
@@ -234,7 +236,7 @@ class RefSeqProtein:
             output_filename = os.path.join(self.parameters.arguments["output_dir"], "found_homologues.tsv")
             blastp_out.to_csv(output_filename, sep='\t', index=False, na_rep='NA')
 
-            hits_an_list = blastp_out["sseqid"].to_list()
+            hits_an_list += blastp_out["sseqid"].to_list()
 
             return hits_an_list
         except Exception as error:
