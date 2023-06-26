@@ -47,7 +47,7 @@ python3 -m pip install -e .
 ## Reference 📃
 
 If you find uorf4u useful, please cite:  
-Artyom. A. Egorov, Gemma C. Atkinson, **uORF4u: a tool for annotation of conserved upstream open reading frames**, *bioRxiv 2022.10.27.514069; doi: [10.1101/2022.10.27.514069](https://doi.org/10.1101/2022.10.27.514069)*
+Artyom. A. Egorov, Gemma C. Atkinson, **uORF4u: a tool for annotation of conserved upstream open reading frames**, * Bioinformatics, Volume 39, Issue 5, May 2023, btad323; doi: [10.1093/bioinformatics/btad323](https://doi.org/10.1093/bioinformatics/btad323)*
 
 ## Contact 📇
 
