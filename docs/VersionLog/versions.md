@@ -1,4 +1,6 @@
 # Version log
+* **Ver 0.9.6** - 21 Jan 2025
+	* Bug fixes due to the update of packages.
 * **Ver 0.9.5** - 4 May 2023
 	* Local blastp searching function now also returns the query accession number.
 * Ver 0.9.4 - 19 April 2023

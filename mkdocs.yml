@@ -82,9 +82,6 @@ plugins:
           show_category_heading: False
           merge_init_into_class: False
           docstring_section_style: list
- - exclude:
-        glob:
-            - assets/images/favicon.png
 
 extra:
   generator: false

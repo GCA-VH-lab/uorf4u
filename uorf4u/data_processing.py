@@ -35,6 +35,13 @@ import uorf4u.drawing_annotation
 import uorf4u.methods
 import uorf4u.drawing_msa
 
+import warnings
+from Bio import BiopythonDeprecationWarning
+
+# Suppress BiopythonDeprecationWarning
+warnings.simplefilter('ignore', BiopythonDeprecationWarning)
+
+
 
 class RefSeqProtein:
     """A RefSeqProtein object holds a RefSeq protein and information about it.
@@ -479,7 +486,7 @@ class Homologues:
                 records_subset = self.records[i:i + 200]
                 accession_numbers = [record.accession_number for record in records_subset]
                 handle = Bio.Entrez.efetch(db="protein", id=accession_numbers, rettype="ipg", retmode="xml")
-                handle_txt = handle.read().decode('utf-8')
+                handle_txt = handle.read().decode("utf-8")
                 for record in records_subset:
                     record.get_assemblies(handle_txt)
                 handle_fasta = Bio.Entrez.efetch(db="protein", id=accession_numbers, rettype="fasta", retmode="text")
@@ -1006,7 +1013,7 @@ class UpstreamSequences:
                 if len(useq_indexes_with_filtered_orfs) / number_of_useqs >= self.parameters.arguments[
                     "orfs_presence_cutoff"]:
                     if self.parameters.arguments["fast_searching"]:
-                        genome_iterator = random.sample(filtered_orfs.keys(),
+                        genome_iterator = random.sample(list(filtered_orfs.keys()),
                                                         max(1, min(round(self.parameters.arguments["fast_searching_"
                                                                                                    "fraction_of_initial"
                                                                                                    "_genomes"] * len(
@@ -1014,7 +1021,7 @@ class UpstreamSequences:
                                                                    self.parameters.arguments[
                                                                        "max_num_of_initial_genome_iteration"])))
                     elif len(filtered_orfs.keys()) > self.parameters.arguments["max_num_of_initial_genome_iteration"]:
-                        genome_iterator = random.sample(filtered_orfs.keys(),
+                        genome_iterator = random.cr(list(filtered_orfs.keys()),
                                                         self.parameters.arguments[
                                                             "max_num_of_initial_genome_iteration"])
                     else:
@@ -1027,7 +1034,7 @@ class UpstreamSequences:
                             if initial_orf not in already_conserved_orfs:
                                 conserved_path = Path(self.parameters)
                                 conserved_path.update(initial_orf)
-                                for useq in random.sample(filtered_orfs.keys(), len(filtered_orfs.keys())):
+                                for useq in random.sample(list(filtered_orfs.keys()), len(filtered_orfs.keys())):
                                     useq_candidates = filtered_orfs[useq]
                                     if self.parameters.arguments["fast_searching"]:
                                         if self.parameters.arguments["fast_searching_skip"]:

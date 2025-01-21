@@ -12,7 +12,7 @@
 **Python version:** >= 3.7  
 **OS-level dependencies:** mafft (v7.490 is included in the package)  
 **License:** CC0  
-**Version:** 0.9.5 (May 2023)
+**Version:** 0.9.6 (January 2025)
 
 **Web version is available at the Atkinson Lab Server Portal: [server.atkinson-lab.com/uorf4u](https://server.atkinson-lab.com)**
 

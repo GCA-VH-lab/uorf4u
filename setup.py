@@ -1,4 +1,4 @@
-from setuptools import setup
+import setuptools
 import os
 
 with open("uorf4u/docs/pypi.md", "r") as fh:
@@ -16,8 +16,8 @@ def package_files(directory):
 extra_files = package_files("uorf4u/uorf4u_data")
 extra_files.append("docs/pypi.md")
 
-setup(name="uorf4u",
-      version="0.9.5",
+setuptools.setup(name="uorf4u",
+      version="0.9.6",
       description="A tool for short uORF annotation.",
       python_requires='>=3.7',
       url="https://art-egorov.github.io/uorf4u/",
@@ -26,8 +26,8 @@ setup(name="uorf4u",
       license="WTFPL",
       packages=["uorf4u"],
       package_data={"uorf4u": extra_files},
-      install_requires=["biopython", "configs", "argparse", "statistics", "logomaker", "matplotlib", "pandas==1.4.0",
-                        "reportlab", "msa4u"],
+      install_requires=["biopython", "configs", "statistics", "logomaker", "matplotlib", "pandas==1.4.0",
+                        "numpy==1.26.4" "reportlab", "msa4u"],
       long_description=long_description,
       long_description_content_type="text/markdown",
       scripts=["bin/uorf4u"],
