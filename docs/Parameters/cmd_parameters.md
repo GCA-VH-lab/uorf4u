@@ -74,7 +74,7 @@ Length of upstream sequences to retrieve.
 Length of downstream sequences to retrieve.
 
 - `-asc`   
-Include alternative start codons in uORF annotation step. List of alternative start codons are taken from the ncbi genetic code.
+Include alternative start codons in uORF annotation step. List of alternative start codons can be set through the config files. Default list: TTG,CTG,ATT,ATC,ATA,ATG,GTG.
 
 - `-nsd`  
 Deactivate filtering ORFs by SD sequence presence. [default: True for 'prokaryotes' config and False for 'eukaryotes' config].

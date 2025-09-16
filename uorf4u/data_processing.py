@@ -729,7 +729,8 @@ class UpstreamSequences:
             if self.parameters.arguments["verbose"]:
                 print(f"🔎 Annotating ORFs in the upstream sequences...", file=sys.stdout)
             if self.parameters.arguments["alternative_start_codons"]:
-                start_codons_list = self.codon_table.start_codons
+                #start_codons_list = self.codon_table.start_codons
+                start_codons_list = self.parameters.arguments["alternative_start_codons_list"]
             else:
                 start_codons_list = [self.parameters.arguments["main_start_codon"]]
 

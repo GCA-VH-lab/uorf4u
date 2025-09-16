@@ -60,7 +60,7 @@ class Parameters:
         parser.add_argument("-fast", dest="fast_searching", action="store_true", default=None)
         parser.add_argument("-o", dest="output_dir", type=str, default=None)
         parser.add_argument("-c", dest="config_file", type=str, default="Not selected")
-        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.9.6")
+        parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.9.7")
         parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false")
         parser.add_argument("--debug", "-debug", dest="debug", action="store_true")
         parser.add_argument("-h", "--help", dest="help", action="store_true")
@@ -110,7 +110,7 @@ class Parameters:
             if config["root"]["blastp_database"] not in ["refseq_select", "refseq_protein"]:
                 raise uORF4uError("Config's parameter 'blastp_database' should be either refseq_select or "
                                   "refseq_protein. ")
-
+            config["root"]["alternative_start_codons_list"] = list(config["root"]["alternative_start_codons_list"])
             self.arguments.update(config["root"])
             self.arguments.update(self.cmd_arguments)
             self.load_palette()
